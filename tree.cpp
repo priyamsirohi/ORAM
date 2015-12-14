@@ -829,12 +829,12 @@ int main()
 		case 2:
 			cout<<"Enter the block to be written"<<endl;
 			cin>>daaattt;
-			cout<<"Now the data to be written"<<endl;
-			cin>>wrrrrr;
-			if (wrrrrr < 0 || wrrrrr > numblocks -1 ){
+			if (daaattt < 0 || daaattt > numblocks -1 ){
 				cout<<"Enter a proper value"<<endl;
 				exit(EXIT_FAILURE);
 				}
+			cout<<"Now the data to be written"<<endl;
+			cin>>wrrrrr;
 			write(daaattt,wrrrrr);
 			break;
 		case 3:
