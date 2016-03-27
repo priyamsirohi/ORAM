@@ -1,0 +1,56 @@
+package ringoam;
+
+import java.io.IOException;
+
+import Operations.*;
+
+public class TreeORAM {
+
+	protected int bucket_size;
+	protected int num_dummy_blocks;
+	private int N;
+	
+	private int capacity;
+	private int depth; 
+	public Node[] tree;
+	
+	TreeORAM (int N, int bucket_size, int capacity){
+		this.N = N;
+		this.bucket_size = bucket_size;
+		this.capacity = capacity;
+		tree = new Node[2*N];
+		this.depth = (int) (Math.log10(N)/Math.log(2));
+		
+	}
+	
+	protected void build_tree(Node root) throws IOException{
+		
+		String key = "Node#" + root.getNode_id();
+		root.left_id = root.getNode_id()+1;
+		root.right_id = root.getNode_id()+2;
+		WriteNode wn = new WriteNode(key);
+		wn.write_to_file(root);
+	
+		Node left_child = new Node(root.getNode_id()+1, this.bucket_size,this.num_dummy_blocks);
+		left_child.setNode_depth(root.getNode_depth()+1);
+		Node right_child = new Node(root.getNode_id()+2, this.bucket_size,this.num_dummy_blocks);
+		right_child.setNode_depth(root.getNode_depth()+1);
+		
+		build_tree(left_child);
+		build_tree(right_child);
+	}
+	
+	
+	public static void main(String args[]) throws IOException{
+		
+
+		TreeORAM tree;
+		tree = new TreeORAM(8,32,8);
+		
+		Node root;
+		root = new Node(1,32,16);
+		tree.build_tree(root);
+				
+		
+	}
+}

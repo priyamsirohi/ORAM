@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.io.ObjectInputStream"/>
+<fullyQualifiedTypeName name="java.net.Socket"/>
+<fullyQualifiedTypeName name="java.io.Serializable"/>
+<fullyQualifiedTypeName name="java.io.ObjectOutputStream"/>
+<fullyQualifiedTypeName name="message.Message.MessageType"/>
+<fullyQualifiedTypeName name="ringoram.DataBlock"/>
+<fullyQualifiedTypeName name="ringoram.Node"/>
+<fullyQualifiedTypeName name="ringoram.DataResultLog"/>
+<fullyQualifiedTypeName name="ringoram.Stash"/>
+</qualifiedTypeNameHistroy>

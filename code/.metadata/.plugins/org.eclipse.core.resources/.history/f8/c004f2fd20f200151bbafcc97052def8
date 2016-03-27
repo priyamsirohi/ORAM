@@ -1,0 +1,17 @@
+package ringoam;
+
+public class Node {
+
+	protected int left_id;
+	protected int right_id;
+	
+	private int node_id;
+	private bucket bkt;
+	
+	
+	node(int node_id, int bucket_size, int num_dummy_blocks){
+		this.node_id = node_id;
+		bkt = new bucket(node_id,bucket_size,num_dummy_blocks);
+	}
+			
+}

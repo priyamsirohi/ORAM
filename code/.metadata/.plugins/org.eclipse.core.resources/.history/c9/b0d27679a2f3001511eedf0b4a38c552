@@ -1,0 +1,27 @@
+package Test;
+
+import java.io.IOException;
+
+import server.*;
+import client.*;
+
+public class ORAMTest {
+
+public static void main(String[] args) throws IOException, ClassNotFoundException{
+		
+
+		Server server;
+		server = new Server(8,32,8,20000);
+		
+		Client client;
+		client = new Client(20000,"127.0.0.1");
+			
+		
+		server.run();
+		System.out.println("Server is UP");
+		client.writeToSocket();
+		
+		System.out.println("Successful");
+		
+	}
+}

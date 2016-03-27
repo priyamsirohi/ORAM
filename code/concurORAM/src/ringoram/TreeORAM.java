@@ -14,7 +14,7 @@ public class TreeORAM {
 	private int depth; 
 	private int counter;
 	
-	TreeORAM (int N, int bucket_size, int num_dummy_blocks){
+	public TreeORAM (int N, int bucket_size, int num_dummy_blocks){
 		this.N = N;
 		this.bucket_size = bucket_size;
 		this.depth = (int) (Math.log10(N)/Math.log10(2));
@@ -112,19 +112,4 @@ public class TreeORAM {
 	
 	
 	
-	
-	
-	
-	public static void main(String args[]) throws IOException, ClassNotFoundException{
-		
-
-		TreeORAM tree;
-		tree = new TreeORAM(8,32,8);
-		tree.build_tree(tree.root);
-		
-		tree.read_path(2);
-			
-		System.out.println("Successful");
-		
-	}
 }

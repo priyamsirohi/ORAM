@@ -4,7 +4,7 @@ public class Stash {
 
 	private DataBlock[] blocks;
 	
-	 Stash(){
+	 public Stash(){
 	    	blocks = new DataBlock[200];
 	 }
 	 

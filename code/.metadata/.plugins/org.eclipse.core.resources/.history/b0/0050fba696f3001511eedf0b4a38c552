@@ -1,0 +1,12 @@
+package message;
+
+public class GetMetadata extends Message{
+
+	
+	
+	
+	@Override
+	public MessageType getMessageType(){return MessageType.GetMetadata;}
+	
+	
+}

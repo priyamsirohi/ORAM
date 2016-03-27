@@ -1,0 +1,86 @@
+package ringoam;
+
+import java.io.IOException;
+
+import Operations.*;
+
+public class TreeORAM {
+
+	protected int bucket_size;
+	protected int num_dummy_blocks;
+	private int N;
+	
+	Node root;
+	private int depth; 
+	public Node[] tree_nodes;
+	private int counter;
+	
+	TreeORAM (int N, int bucket_size, int num_dummy_blocks){
+		this.N = N;
+		this.bucket_size = bucket_size;
+		tree_nodes = new Node[2*N];
+		this.depth = (int) (Math.log10(N)/Math.log10(2));
+		this.counter = 0;
+		this.num_dummy_blocks = num_dummy_blocks;
+		this.root = new Node(0,bucket_size,num_dummy_blocks);
+		this.root.setNode_depth(0);
+		this.root.setNode_id(1);
+	}
+	
+	
+	protected void build_tree(Node root) throws IOException{
+		
+		String key = "Node#" + root.getNode_id();
+		WriteNode wn = new WriteNode(key);
+		wn.write_to_file(root);
+		tree_nodes[root.getNode_id()] = root;
+	
+		if (root.getNode_depth() == this.depth)
+			return;
+		
+		else{
+			root.left_id = ++counter;
+			root.right_id = ++counter;			
+			Node left_child = new Node(root.left_id, this.bucket_size,this.num_dummy_blocks);
+			left_child.setNode_depth(root.getNode_depth()+1);
+			Node right_child = new Node(root.right_id, this.bucket_size,this.num_dummy_blocks);
+			right_child.setNode_depth(root.getNode_depth()+1);
+			
+			build_tree(left_child);
+			build_tree(right_child);
+		}
+	}
+	
+	
+	protected Node[] read_path(int leaf_id){
+		
+		Node[] path;
+		path = new Node[depth];
+		
+		path[0] = this.root;
+		
+		for (int i = 1;i<depth;i++){
+			if (leaf_id < N/2)
+				path[i] = tree_nodes[2*path[i-1].getNode_id()];
+			else 
+				path[i] = tree_nodes[2*path[i-1].getNode_id()+1];
+			N = N/2;
+			System.out.println(path[i].getNode_id());
+		}
+		
+		return path;
+	}
+	
+	public static void main(String args[]) throws IOException{
+		
+
+		TreeORAM tree;
+		tree = new TreeORAM(8,32,8);
+		tree.build_tree(tree.root);
+		
+		tree.read_path(4);
+			
+		System.out.println("Successful");
+		
+	}
+}

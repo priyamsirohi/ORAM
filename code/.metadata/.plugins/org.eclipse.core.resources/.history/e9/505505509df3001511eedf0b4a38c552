@@ -1,0 +1,28 @@
+package server;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.UnknownHostException;
+
+import ringoram.*;
+import message.*;
+
+public class Server {
+
+	private Stash stash;
+	private TreeORAM tree;
+	private ServerSocket serverListener;
+
+	Server(int N, int bucket_size, int num_dummy_blocks, int portnum) throws UnknownHostException, IOException{
+		this.stash = new Stash();
+		this.tree = new TreeORAM(N,bucket_size,num_dummy_blocks);
+		this.serverListener = new ServerSocket(portnum);
+	}
+	
+	public void serverstart(){
+		
+		
+		
+	}
+	
+}

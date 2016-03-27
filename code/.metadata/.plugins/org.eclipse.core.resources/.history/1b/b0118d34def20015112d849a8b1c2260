@@ -1,0 +1,11 @@
+package ringoam;
+
+public class RingORAMServer {
+
+	private TreeORAM oramtree;
+	
+	
+}
+
+
+
