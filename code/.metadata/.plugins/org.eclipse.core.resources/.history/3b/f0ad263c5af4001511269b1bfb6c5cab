@@ -1,0 +1,9 @@
+package ringoram;
+
+public class MetaData {
+
+	public int bucket_access_counter;		// number of times this bucket has been accessed
+	public int[] dummy_pos;					// dummy positions in the bucket
+	boolean[] dummy;					// to check if a block in a bucket is a dummy block
+	private int [] bucket_pos_map;
+}

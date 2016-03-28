@@ -1,13 +1,14 @@
 package message;
 
-import ringoram.DataBlock;
+import ringoram.MetaData;
 
 public class GetMetadata extends Message{
 
 	private int leaf_id;
-	public DataBlock[] blocks;
+	public MetaData[] metadata;
 	
-	GetMetadata(int MessageID, int ClientID, int leaf_id) { super(MessageID,ClientID); this.leaf_id = leaf_id;} 
+	
+	public GetMetadata(int MessageID, int ClientID, int leaf_id) { super(MessageID,ClientID); this.leaf_id = leaf_id;} 
 	
 	
 	@Override

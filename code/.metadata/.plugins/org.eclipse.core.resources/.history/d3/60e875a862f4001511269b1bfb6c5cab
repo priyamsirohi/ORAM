@@ -1,0 +1,18 @@
+package ringoram;
+
+public class MetaData {
+
+	
+	protected int[] dummy_pos;					// dummy positions in the bucket
+	boolean[] dummy;					// to check if a block in a bucket is a dummy block
+	protected int [][] bucket_pos_map;
+	
+
+
+	MetaData(int num_dummy_blocks, int bucket_size){
+		dummy_pos = new int[num_dummy_blocks];
+		dummy = new boolean[bucket_size];
+		bucket_pos_map = new int[bucket_size][1];
+		
+	}
+}

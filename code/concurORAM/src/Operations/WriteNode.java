@@ -16,8 +16,8 @@ public class WriteNode extends Operations {
 	
 	public void write_to_file(Node node) throws IOException{
 		
-		String fp = key;
-		File f = new File(fp);
+		
+		File f = new File(super.key);
 		FileOutputStream fs = new FileOutputStream(f);
 		ObjectOutputStream os = new ObjectOutputStream(fs);
 		os.writeObject(node);

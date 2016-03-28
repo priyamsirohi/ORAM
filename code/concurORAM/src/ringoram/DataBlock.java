@@ -7,7 +7,7 @@ public class DataBlock implements Serializable {
 		private long Id;
 		private char[] payload;
 		
-		DataBlock(long ID) {
+		public DataBlock(long ID) {
 			Id = ID;
 			payload = new char[4096];
 				

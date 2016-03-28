@@ -1,0 +1,35 @@
+\begin{thebibliography}{1}
+
+\bibitem{goldreich}
+{\sc Goldreich, O., and Ostrovsky, R.}
+\newblock Software protection and simulation on oblivious rams.
+\newblock {\em Journal of the ACM 43\/} (1996), 431--473.
+
+\bibitem{ringoram}
+{\sc Ren, L., Fletcher, C., Kwon, A., Stefanov, E., Shi, E., van Dijk, M., and
+  Devadas, S.}
+\newblock Constants count: Practical improvements to oblivious ram.
+\newblock In {\em 24th USENIX Security Symposium (USENIX Security 15)\/}
+  (Washington, D.C., Aug. 2015), USENIX Association, pp.~415--430.
+
+\bibitem{binarytreeoram}
+{\sc Shi, E., Chan, T.-H.~H., Stefanov, E., and Li, M.}
+\newblock Oblivious ram with o((logn)3) worst-case cost.
+\newblock In {\em ASIACRYPT\/} (2011).
+
+\bibitem{pathoram}
+{\sc Stefanov, E., van Dijk, M., Shi, E., Fletcher, C., Ren, L., Yu, X., and
+  Devadas, S.}
+\newblock Path oram: An extremely simple oblivious ram protocol.
+\newblock In {\em Proceedings of the 2013 ACM SIGSAC Conference on Computer
+  \&\#38; Communications Security\/} (New York, NY, USA, 2013), CCS '13, ACM,
+  pp.~299--310.
+
+\bibitem{privatefs}
+{\sc Williams, P., Sion, R., and Tomescu, A.}
+\newblock Privatefs: A parallel oblivious file system.
+\newblock In {\em Proceedings of the 2012 ACM Conference on Computer and
+  Communications Security\/} (New York, NY, USA, 2012), CCS '12, ACM,
+  pp.~977--988.
+
+\end{thebibliography}

@@ -9,9 +9,9 @@ import client.*;
 public class ORAMTest {
 	
 
-public static void main(String[] args) throws IOException, ClassNotFoundException{
+public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException{
 		
-
+	
 		Thread server_thread = new Thread(){
 			public void run(){
 				Server server = null;
@@ -39,28 +39,25 @@ public static void main(String[] args) throws IOException, ClassNotFoundExceptio
 			public void run(){
 			Client client = null;
 			try {
-				client = new Client(20000,"127.0.0.1",1);
+				client = new Client(20000,"127.0.0.1",1,8);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			System.out.println("Client is up");
 			try {
-				client.writeToSocket();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
+				client.clientAccessRingORAM(5);
+			} catch (ClassNotFoundException
+					| IOException | InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			}
 		};
 		
+		
 		server_thread.start();
+		Thread.sleep(5000);
 		client_thread.start();
 		
 		System.out.println("Successful");

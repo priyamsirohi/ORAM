@@ -6,7 +6,7 @@ public class WriteBlock extends Message{
 
 	private DataBlock blk;
 		
-		WriteBlock(int MessageID, int ClientID, DataBlock blk) { super(MessageID,ClientID); this.blk = blk;} 
+		public WriteBlock(int MessageID, int ClientID, DataBlock blk) { super(MessageID,ClientID); this.blk = blk;} 
 		
 		
 		@Override

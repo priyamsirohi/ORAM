@@ -5,8 +5,8 @@ public class DataResultLog {
 	private DataBlock[] blocks;
 	private int head;
 
-    DataResultLog(){
-    	blocks = new DataBlock[32];
+    public DataResultLog(int num_of_access){
+    	blocks = new DataBlock[num_of_access];
     	head = 0;
     }
     
@@ -15,8 +15,8 @@ public class DataResultLog {
     	return blocks;
     }
     
-    public void setandincDataResultLog(DataBlock node){
-    	blocks[head++] = node;
+    public void setandincDataResultLog(DataBlock block){
+    	blocks[head++] = block;
       }
     
     public void clearDataResultLog(){

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Node implements Serializable{
 	
-	private static final long serialVersionUID = 1L;
+
 	protected int left_id;
 	protected int right_id;
 	

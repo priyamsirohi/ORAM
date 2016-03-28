@@ -8,5 +8,7 @@
 <fullyQualifiedTypeName name="ringoram.DataBlock"/>
 <fullyQualifiedTypeName name="ringoram.Node"/>
 <fullyQualifiedTypeName name="ringoram.DataResultLog"/>
+<fullyQualifiedTypeName name="java.util.logging.FileHandler"/>
+<fullyQualifiedTypeName name="java.util.logging.SimpleFormatter"/>
 <fullyQualifiedTypeName name="ringoram.Stash"/>
 </qualifiedTypeNameHistroy>

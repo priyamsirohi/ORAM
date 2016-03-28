@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public abstract class Message implements Serializable {
 
-	public enum MessageType {Ping, GetMetadata, GetBlocks, GetNodes, WriteBlock, WritePath, GetResultLog, GetStash};
-	protected int MessageID;
-	protected int clientID;
+	public enum MessageType {Ping, GetMetadata, GetBlocksFromPath, GetPath, WriteBlock, WritePath, GetResultLog, GetStash};
+	public int MessageID;
+	public int clientID;
 	
 	Message(int MessageID, int ClientID){
 		this.MessageID = MessageID;
@@ -14,5 +14,6 @@ public abstract class Message implements Serializable {
 	}
 	
 	public abstract MessageType getMessageType(); 
+		
 
 }
