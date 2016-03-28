@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
 import message.*;
 import message.Message.MessageType;
 
+import java.util.Random;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -27,6 +28,7 @@ public class Client {
      private SimpleFormatter formatter;
     private PositionMap pm;
     private int N;
+   
     
     public Client(int portnum, String host,int clientID, int N) throws UnknownHostException, IOException{
         this.portNum=portnum;
@@ -38,6 +40,7 @@ public class Client {
         String fname = "Client#" + clientID;
         clientLog = Logger.getLogger(fname);
         fh = new FileHandler(fname);
+        clientLog.addHandler(fh);
         formatter = new SimpleFormatter();
         fh.setFormatter(formatter);
         this.N = N;
@@ -46,10 +49,14 @@ public class Client {
 	
     public void clientSetup(ObjectInputStream is, ObjectOutputStream os) throws IOException, ClassNotFoundException, InterruptedException{
     	
+    	Random rn;
+    	rn = new Random();
+    	rn.setSeed(12345678);
     	for(int i = 0;i<N;i++)
 			try {
 				{
-					pm.setMap(i, i); 			// Testing with linear mapping
+					int map = rn.nextInt(N);				
+					pm.setMap(i, map); 			// Testing with linear mapping
 					GetPath gp = new GetPath(clientID,messageID++,i);
 					os.writeObject(gp);
 					os.flush();
@@ -60,7 +67,7 @@ public class Client {
 				    	Thread.sleep(5000); 	
 						}
 				    gp = (GetPath) ms;
-				    Node[] path;
+				
 				    
 				    
 				    for (int j = gp.path.length-1; j>=0;j--){
@@ -71,7 +78,7 @@ public class Client {
 				    		next_free = gp.path[j].getBucket().getMetaData().next_free[next_free];
 				    		gp.path[j].getBucket().setDataBlock(next_free,block);
 				    		gp.path[j].getBucket().getMetaData().log_bucket_pos_map[next_free] = i;
-				    		gp.path[j].getBucket().getMetaData().phy_bucket_pos_map[next_free] = i;
+				    		gp.path[j].getBucket().getMetaData().phy_bucket_pos_map[next_free] = map;
 				    		gp.path[j].getBucket().getMetaData().num_free--;
 				    		gp.path[j].getBucket().getMetaData().next_free_counter++;
 				    						    		
@@ -117,6 +124,7 @@ public class Client {
     	clientLog.info("Retrieved MetaData");
       	  	    			
     	/* Getting Path and Stash */
+    	clientLog.info("Get Blocks and stash");
     	GetBlocksFromPath gbp = new GetBlocksFromPath(clientID,messageID++,leaf_id,md.length);
     	int req_index_in_path = -1;
     	int req_index_in_stash = -1;
@@ -128,28 +136,28 @@ public class Client {
     				gbp.blk_num[i] = j; 	
     				req_index_in_path = i;
     			}
-    			else
-    				gbp.blk_num[i] = md[i].dummy_pos[md[i].bucket_access_counter++];
     		}
-   		
+    			if (req_index_in_path == -1)
+    				gbp.blk_num[i] = md[i].dummy_pos[md[i].bucket_access_counter++];
+    		  		
     	}
 
     	
-    	clientLog.info("Get Blocks and stash");
+    
     	DataBlock[] blocks;
     	blocks = getBlocks(gbp,is,os);
     	
-    	Stash stash;
-    	stash = gbp.stash;
+     	clientLog.info("Blocks and stash Retrieved");
     	
-    	clientLog.info("Blocks and stash Retrieved");
     	
-    	for (int i=0;i<stash.getLogPosMap().length;i++){
-    		if (stash.getLogPosMap()[i] == blk_id){
+    	
+    	for (int i=0;i<gbp.stash.getLogPosMap().length;i++){
+    		if (gbp.stash.getLogPosMap()[i] == blk_id){
     			req_index_in_stash = i;
     		}
     			
     	}
+    	
     	
     	DataBlock req_block = null;
     	    	
@@ -159,7 +167,7 @@ public class Client {
     		unlikely = false;
     	}
     	else if (req_index_in_stash!=-1){
-    		req_block = blocks[req_index_in_stash];
+    		req_block = gbp.stash.getStash()[req_index_in_stash];
     		unlikely = false;
     	}
     	
@@ -242,7 +250,6 @@ public class Client {
          
          return;
     }
-    
     
 }
     

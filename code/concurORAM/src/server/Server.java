@@ -19,6 +19,7 @@ public class Server {
 	private Socket server;
 	private int portnum;
 	private DataResultLog drs;
+	private int accessCounter;
 	
 	public Server(int N, int bucket_size, int num_dummy_blocks, int portnum) throws UnknownHostException, IOException{
 		this.stash = new Stash();
@@ -26,6 +27,7 @@ public class Server {
 		this.portnum = portnum;
 		this.serverListener = new ServerSocket(portnum);
 		this.drs = new DataResultLog(32);
+		this.accessCounter = 0;
 		
 	}
 	
@@ -36,7 +38,7 @@ public class Server {
 		while(true){
 		
 		Message ms = (Message) is.readObject();
-		System.out.println(ms.getMessageType());
+	
 		
 		if (ms.getMessageType().compareTo(MessageType.Ping) == 0){
 			Ping ping = new Ping(0,0);
@@ -48,9 +50,11 @@ public class Server {
 			GetMetadata gm = (GetMetadata) ms;
 			gm.clientID = 0;
 			Node [] node;
-			node = tree.read_path(gm.getLeaf_ID());			
+			node = tree.read_path(gm.getLeaf_ID());		
+			gm.metadata = new MetaData[tree.getDepth()];
 			for (int i = 0;i<tree.getDepth();i++){
 				gm.metadata[i] = node[i].getBucket().getMetaData();
+				node[i].getBucket().getMetaData().bucket_access_counter++;
 			}
 			os.writeObject(gm);
 			os.flush();
@@ -61,11 +65,12 @@ public class Server {
 			GetBlocksFromPath gbp = (GetBlocksFromPath) ms;
 			gbp.clientID = 0;
 			Node [] node;
-			node = tree.read_path(gbp.getLeaf_ID());			
+			node = tree.read_path(gbp.getLeaf_ID());
+			gbp.blocks = new DataBlock[tree.getDepth()];
 			for (int i = 0;i<tree.getDepth();i++){
 				gbp.blocks[i] = node[i].getBucket().getDataBlocks()[gbp.blk_num[i]];
 			}
-			gbp.stash = stash;
+			gbp.stash = this.stash;
 			os.writeObject(gbp);
 			os.flush();
 		}
@@ -80,6 +85,7 @@ public class Server {
 		if (ms.getMessageType().compareTo(MessageType.WriteBlock)==0){
 			WriteBlock wb = (WriteBlock) ms;
 			drs.setandincDataResultLog(wb.getBlk());
+			accessCounter++;
 			
 		}
 		

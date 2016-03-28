@@ -1,0 +1,24 @@
+Mar 28, 2016 3:07:12 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID5
+Mar 28, 2016 3:07:12 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 28, 2016 3:07:12 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 28, 2016 3:07:13 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 28, 2016 3:07:13 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 28, 2016 3:07:13 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 28, 2016 3:07:13 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 28, 2016 3:07:13 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 28, 2016 3:07:13 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 28, 2016 3:07:13 AM client.Client clientAccessRingORAM
+INFO: Required item found
+Mar 28, 2016 3:07:23 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 28, 2016 3:07:23 AM client.Client clientAccessRingORAM
+INFO: Access Complete

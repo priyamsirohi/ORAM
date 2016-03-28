@@ -1,7 +1,10 @@
 package ringoram;
 
-public class Stash {
+import java.io.Serializable;
 
+public class Stash implements Serializable {
+
+	
 	private DataBlock[] blocks;
 	private int[] log_pos_map;
 	private int[] phy_pos_map;
@@ -9,7 +12,7 @@ public class Stash {
 	 public Stash(){
 	    	blocks = new DataBlock[200];
 	    	log_pos_map = new int[200];
-	    	setPhyPosMap(new int[200]);
+	    	phy_pos_map = new int[200];
 	 }
 	 
 	 public DataBlock[] getStash(){

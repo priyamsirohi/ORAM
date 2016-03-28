@@ -110,7 +110,7 @@ public class TreeORAM {
 				
 				N = N/2;
 				leaf_id = (int) (leaf_id%(Math.pow(2,depth-i)+1));
-				System.out.println(key);
+				
 			}
 			
 	}
@@ -125,4 +125,9 @@ public class TreeORAM {
 	public void setAccessCounter() {this.access_counter = 0;}
 	
 	public int getDepth() {return this.depth;}
+	
+	public int getBucketSize() {return this.bucket_size;}
+	
+	public int getNumDummyBlocks() {return this.num_dummy_blocks;}
+	
 }
