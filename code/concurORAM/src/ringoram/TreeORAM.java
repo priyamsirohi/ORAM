@@ -14,6 +14,7 @@ public class TreeORAM {
 	private int depth; 
 	private int node_counter;
 	private int access_counter;
+	String path_to_data = "Data/";
 	
 	public TreeORAM (int N, int bucket_size, int num_dummy_blocks) throws IOException{
 		this.N = N;
@@ -31,8 +32,8 @@ public class TreeORAM {
 	
 	
 	public void build_tree(Node root) throws IOException{
-		
-		String key = "Node#" + root.getNode_id();
+	
+		String key = path_to_data+"Node#" + root.getNode_id();
 		WriteNode wn = new WriteNode(key);
 		wn.write_to_file(root);
 	
@@ -71,10 +72,10 @@ public class TreeORAM {
 		
 		for (int i = 1;i<=depth;i++){
 			if (leaf_id <= N/2)
-				key = "Node#" + 2*path[i-1].getNode_id();
+				key = path_to_data+ "Node#" + 2*path[i-1].getNode_id();
 				
 			else
-				key = "Node#" + (2*(path[i-1].getNode_id())+1);
+				key = path_to_data+"Node#" + (2*(path[i-1].getNode_id())+1);
 		
 			rn = new ReadNode(key);
 			path[i] = rn.read_from_file();
@@ -99,10 +100,10 @@ public class TreeORAM {
 			
 			for (int i = 1;i<=depth;i++){
 				if (leaf_id <= N/2)
-					key = "Node#" + 2*path[i-1].getNode_id();
+					key = path_to_data+"Node#" + 2*path[i-1].getNode_id();
 					
 				else
-					key = "Node#" + (2*(path[i-1].getNode_id())+1);
+					key = path_to_data+ "Node#" + (2*(path[i-1].getNode_id())+1);
 			
 				wn = new WriteNode(key);
 				wn.write_to_file(path[i]);

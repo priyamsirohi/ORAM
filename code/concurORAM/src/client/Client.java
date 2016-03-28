@@ -37,7 +37,7 @@ public class Client {
         this.messageID = 0;
         this.clientID = clientID;
         clientListener = new Socket(hostname,portNum);
-        String fname = "Client#" + clientID;
+        String fname = "Logs/Client#" + clientID+ ".log";
         clientLog = Logger.getLogger(fname);
         fh = new FileHandler(fname);
         clientLog.addHandler(fh);
