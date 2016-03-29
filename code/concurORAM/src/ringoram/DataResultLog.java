@@ -1,6 +1,8 @@
 package ringoram;
 
-public class DataResultLog {
+import java.io.Serializable;
+
+public class DataResultLog implements Serializable{
 
 	private DataBlock[] blocks;
 	private int head;
@@ -21,5 +23,9 @@ public class DataResultLog {
     
     public void clearDataResultLog(){
     	head = 0;
+    }
+    
+    public int getHead(){
+    	return this.head;
     }
 }

@@ -98,9 +98,18 @@ public class Client {
     }
   
      
-    public void clientAccessRingORAM(int blk_id) throws UnknownHostException, IOException, InterruptedException, ClassNotFoundException{
+    public void clientAccessRingORAM() throws UnknownHostException, IOException, InterruptedException, ClassNotFoundException{
     	ObjectOutputStream os = new ObjectOutputStream(clientListener.getOutputStream());		
     	ObjectInputStream is = new ObjectInputStream(clientListener.getInputStream());
+    	
+    	
+    	Random rn;
+    	rn = new Random();
+    	rn.setSeed(12345678);
+    	
+    	while (true){
+    	int blk_id = rn.nextInt(this.N);
+    	
     	
     	
     	/* Testing Server Response */
@@ -111,7 +120,7 @@ public class Client {
     	
     	/* Client Setup ( if initialization) */
     	
-    	clientSetup(is, os);
+    	clientSetup(is,os);
     	
     	/* Getting PM entry */
     	clientLog.info("Get PM entry");
@@ -126,7 +135,7 @@ public class Client {
     	/* Getting Path and Stash */
     	clientLog.info("Get Blocks and stash");
     	GetBlocksFromPath gbp = new GetBlocksFromPath(clientID,messageID++,leaf_id,md.length);
-    	int req_index_in_path = -1;
+       	int req_index_in_path = -1;
     	int req_index_in_stash = -1;
     	boolean unlikely = true;
     	
@@ -150,13 +159,16 @@ public class Client {
      	clientLog.info("Blocks and stash Retrieved");
     	
     	
+     	
+  
     	
-    	for (int i=0;i<gbp.stash.getLogPosMap().length;i++){
-    		if (gbp.stash.getLogPosMap()[i] == blk_id){
+    	for (int i=0;i<gbp.stash.num_of_elements;i++){
+    		if (gbp.stash.getStash()[i].get_id() == blk_id){
     			req_index_in_stash = i;
     		}
     			
     	}
+    	
     	
     	
     	DataBlock req_block = null;
@@ -172,25 +184,67 @@ public class Client {
     	}
     	
     	if(!(unlikely))
-    		clientLog.info("Required item found");
+    		clientLog.info("Required item found in Path/Stash");
     	    	
-    	Thread.sleep(10000);
+    	//Thread.sleep(10000);
     	
     	/* Write back item */
     	clientLog.info("Writing back block");
+    	if (req_block != null){
+    		WriteBlock wb = new WriteBlock(clientID,messageID++,req_block);
+    		WriteBackBlock(wb,os);
+    	}
     	
-    	WriteBlock wb = new WriteBlock(clientID,messageID++,req_block);
-    	WriteBackBlock(wb,os);
-    	clientLog.info("Access Complete");
-    	    	    	
+    	/* Retrieve ResultLog */
+    	
+    	clientLog.info("Get Result Log");
+    	GetResultLogs grl = new GetResultLogs(clientID,messageID++);
+        	
+    	grl = getResultLog(grl,is,os);
+    	clientLog.info("Result Log Retrieved");
+    	
+    
+    	
+    	if (unlikely){
+    		for (int i = 0;i<grl.drs.getHead();i++){
+    			if (grl.drs.getDataResultLog()[i].get_id() == blk_id){
+    				req_block = grl.drs.getDataResultLog()[i];
+    				clientLog.info("Required item found in Data Result Log");
+    			}
+    		}
+    		
+    	}
+    	
+    	
+    	
+    
+    	GetAccessCounter gac = new GetAccessCounter(clientID,messageID++);
+    	gac = getAccessCounter(gac,is,os);
+    	System.out.println(gac.access_counter);
+    	System.out.println(gac.eviction_rate);
+    	if(gac.access_counter == gac.eviction_rate){
+    		/* EVICTION */
+    		clientLog.info("Eviction round");
+    		do_evict(getAccessCounter(gac,is,os).path_counter,grl,gbp,is,os);
+    		ClearLogs cl = new ClearLogs(clientID,messageID++);
+    		os.writeObject(cl);
+    		os.flush();
+    		clientLog.info("Eviction Complete");
+    		
+    	}
+    	
+    	clientLog.info("Access Complete");   	
     } 	
-    	
-    	
-    public int getPM(int blk_id){
+    
+    }    	
+   
+
+	public int getPM(int blk_id){
     	
     	return pm.getMap(blk_id);
     }
-    	
+    
+	
     public MetaData[] getMetadata(int leaf_id,ObjectInputStream is, ObjectOutputStream os) throws IOException, ClassNotFoundException, InterruptedException{
     	
     	//TODO: check for message authenticity
@@ -251,5 +305,129 @@ public class Client {
          return;
     }
     
+    
+    public GetResultLogs getResultLog(GetResultLogs grl, ObjectInputStream is, ObjectOutputStream os) throws IOException, ClassNotFoundException, InterruptedException{
+    	
+    	os.writeObject(grl);
+    	os.flush();
+    	
+    	 Message ms = (Message) is.readObject();
+         while (ms.getMessageType().compareTo(MessageType.GetResultLogs) != 0){
+         	Thread.sleep(5000); 	
+			}
+         
+         grl = (GetResultLogs) ms;
+         return grl;
+    }
+    
+    public GetAccessCounter getAccessCounter(GetAccessCounter gac, ObjectInputStream is, ObjectOutputStream os) throws IOException, ClassNotFoundException, InterruptedException{
+    
+    	os.writeObject(gac);
+    	os.flush();
+    	
+
+   	 Message ms = (Message) is.readObject();
+        while (ms.getMessageType().compareTo(MessageType.GetAccessCounter) != 0){
+        	Thread.sleep(5000); 	
+			}
+        
+        gac = (GetAccessCounter) ms;
+        return gac;
+    	
+    	
+    }
+    
+    
+       
+    public void do_evict(int leaf_id, GetResultLogs grs, GetBlocksFromPath gbp, ObjectInputStream is, ObjectOutputStream os) throws IOException, ClassNotFoundException, InterruptedException{
+    	
+    	Node[] path;
+    	GetPath gp = new GetPath(clientID,messageID++,leaf_id);
+    	os.writeObject(gp);
+    	os.flush();
+    	
+    	Message ms = (Message) is.readObject();
+	    while (ms.getMessageType().compareTo(MessageType.GetPath) != 0){
+	    	Thread.sleep(5000); 	
+			}
+	    gp = (GetPath) ms;
+    	
+	    path = gp.path;
+    	Random rn;
+    	rn = new Random();
+    	rn.setSeed(12345678);
+    	
+    	DataBlock [] stash_log_comb;
+    	stash_log_comb = new DataBlock[grs.drs.getHead() + gbp.stash.num_of_elements];
+    	
+    	for (int i = 0;i<grs.drs.getHead();i++){ stash_log_comb[i] = grs.drs.getDataResultLog()[i];}
+    	
+    	for (int i = 0;i<gbp.stash.num_of_elements;i++) { stash_log_comb[i] = gbp.stash.getStash()[i];}
+ 
+    	Stash new_stash;
+    	new_stash = new Stash();
+    	int stash_head = 0;
+   
+    	for (int i = 0; i<stash_log_comb.length;i++){
+    		int map = rn.nextInt(this.N);
+    		int counter = 2;
+    		int lca = LCA(map,leaf_id,path.length,this.N,counter);
+    		boolean mapped = false;
+	    	for (int j = path.length-1; j>=0;j--){
+	    		if (lca <= j){
+	    			
+	    			if (path[j].getBucket().getMetaData().num_free == 0)
+			    		continue;
+			    	else{ 
+			    		int next_free = path[j].getBucket().getMetaData().next_free_counter;
+			    		next_free = path[j].getBucket().getMetaData().next_free[next_free];
+			    		path[j].getBucket().setDataBlock(next_free,stash_log_comb[i]);
+			    		path[j].getBucket().getMetaData().log_bucket_pos_map[next_free] = i;
+			    		path[j].getBucket().getMetaData().phy_bucket_pos_map[next_free] = map;
+			    		path[j].getBucket().getMetaData().num_free--;
+			    		path[j].getBucket().getMetaData().next_free_counter++;
+			    		mapped = true;
+			    	}	
+	    		
+	    		if (!mapped)
+	    			new_stash.getStash()[stash_head++] = stash_log_comb[i];
+	    		else
+	    			this.pm.setMap((int) stash_log_comb[i].get_id(), map);
+	    			 		
+	    	}
+		    	
+	    }
+	         	
+    	}
+    	
+    	WritePath wp = new WritePath(clientID,messageID++,leaf_id,path);
+	    WriteStash ws = new WriteStash(clientID,messageID++,new_stash);
+	   
+	    os.writeObject(wp);
+    	os.flush();
+    	
+    	os.writeObject(ws);
+    	os.flush();
+    }
+    	
+    	
+    	public int LCA(int map,int leaf_id,int depth,int N,int counter){
+    		int val = leaf_id - map;
+    		try{
+    		
+    		if (Math.abs(val) > N/counter)
+    			return depth;
+       		
+    		else{
+    			counter = counter*2;
+    			return LCA(map,leaf_id,depth-1,N,counter);
+    		}
+    		}
+    	
+    	catch(Exception e){
+    		System.out.println("Division error");
+    		return 0;
+    	}
+    	}
 }
     

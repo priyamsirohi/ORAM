@@ -5,14 +5,14 @@ import java.io.Serializable;
 public class Stash implements Serializable {
 
 	
-	private DataBlock[] blocks;
-	private int[] log_pos_map;
-	private int[] phy_pos_map;
+	public DataBlock[] blocks;
+	public int[] phy_pos_map;
+	public int num_of_elements;
 	
 	 public Stash(){
 	    	blocks = new DataBlock[200];
-	    	log_pos_map = new int[200];
 	    	phy_pos_map = new int[200];
+	    	num_of_elements = 0;
 	 }
 	 
 	 public DataBlock[] getStash(){
@@ -23,14 +23,7 @@ public class Stash implements Serializable {
 	    	this.blocks = blocks;
       }
 
-	public int[] getLogPosMap() {
-		return log_pos_map;
-	}
-
-	public void setLogPosMap(int[] log_pos_map) {
-		this.log_pos_map = log_pos_map;
-	}
-
+	
 	public int[] getPhyPosMap() {
 		return phy_pos_map;
 	}

@@ -1,0 +1,586 @@
+Mar 29, 2016 12:56:52 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID5
+Mar 29, 2016 12:56:52 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:56:52 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:56:52 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:56:52 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:56:52 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:56:53 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:56:53 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:56:53 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:56:53 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:56:53 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:56:53 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:56:53 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:56:53 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:56:53 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID5
+Mar 29, 2016 12:56:53 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:56:53 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:56:54 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:56:54 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:56:54 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:56:54 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:56:54 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:56:54 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:56:54 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:56:54 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:56:54 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:56:54 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:56:54 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:56:54 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID7
+Mar 29, 2016 12:56:54 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:56:54 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:56:55 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:56:55 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:56:55 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:56:55 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:56:55 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:56:55 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:56:55 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:56:55 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:56:55 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:56:55 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:56:55 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:56:55 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID7
+Mar 29, 2016 12:56:55 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:56:55 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:56:56 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:56:56 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:56:56 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:56:56 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:56:56 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:56:56 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:56:56 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:56:56 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:56:56 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:56:56 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:56:56 AM client.Client clientAccessRingORAM
+INFO: Eviction round
+Mar 29, 2016 12:56:56 AM client.Client clientAccessRingORAM
+INFO: Eviction Complete
+Mar 29, 2016 12:56:56 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:56:56 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID2
+Mar 29, 2016 12:56:56 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:56:56 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:56:57 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:56:57 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:56:57 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:56:57 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:56:57 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:56:57 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:56:57 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:56:57 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:56:57 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:56:57 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:56:57 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:56:57 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID4
+Mar 29, 2016 12:56:57 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:56:57 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:56:58 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:56:58 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:56:58 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:56:58 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:56:58 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:56:58 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:56:58 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:56:58 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:56:58 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:56:58 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:56:58 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:56:58 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID1
+Mar 29, 2016 12:56:58 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:56:59 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:56:59 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:56:59 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:56:59 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:56:59 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:56:59 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:56:59 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:56:59 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:56:59 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:56:59 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:56:59 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:57:00 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:57:00 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID2
+Mar 29, 2016 12:57:00 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:57:00 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:57:00 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:57:00 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:57:00 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:57:00 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:57:00 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:57:00 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:57:00 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:57:00 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:57:00 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:57:01 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:57:01 AM client.Client clientAccessRingORAM
+INFO: Eviction round
+Mar 29, 2016 12:57:01 AM client.Client clientAccessRingORAM
+INFO: Eviction Complete
+Mar 29, 2016 12:57:01 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:57:01 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID6
+Mar 29, 2016 12:57:01 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:57:01 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:57:02 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:57:02 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:57:02 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:57:02 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:57:02 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:57:02 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:57:02 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:57:02 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:57:02 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:57:02 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:57:02 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:57:02 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID7
+Mar 29, 2016 12:57:02 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:57:02 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:57:03 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:57:03 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:57:03 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:57:03 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:57:03 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:57:03 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:57:03 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:57:03 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:57:03 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:57:03 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:57:03 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:57:03 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID6
+Mar 29, 2016 12:57:03 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:57:03 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:57:04 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:57:04 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:57:04 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:57:04 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:57:04 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:57:04 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:57:04 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:57:04 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:57:04 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:57:04 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:57:04 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:57:04 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID4
+Mar 29, 2016 12:57:04 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:57:04 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:57:05 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:57:05 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:57:05 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:57:05 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:57:05 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:57:05 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:57:05 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:57:05 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:57:05 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:57:05 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:57:05 AM client.Client clientAccessRingORAM
+INFO: Eviction round
+Mar 29, 2016 12:57:05 AM client.Client clientAccessRingORAM
+INFO: Eviction Complete
+Mar 29, 2016 12:57:05 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:57:05 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID2
+Mar 29, 2016 12:57:05 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:57:05 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:57:06 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:57:06 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:57:06 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:57:06 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:57:06 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:57:06 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:57:06 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:57:06 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:57:06 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:57:06 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:57:06 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:57:06 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID4
+Mar 29, 2016 12:57:06 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:57:06 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:57:07 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:57:07 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:57:07 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:57:07 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:57:07 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:57:07 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:57:07 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:57:07 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:57:07 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:57:07 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:57:07 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:57:07 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID0
+Mar 29, 2016 12:57:07 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:57:08 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:57:08 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:57:08 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:57:08 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:57:08 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:57:08 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:57:08 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:57:08 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:57:08 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:57:08 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:57:09 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:57:09 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:57:09 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID2
+Mar 29, 2016 12:57:09 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:57:09 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:57:09 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:57:09 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:57:09 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:57:09 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:57:09 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:57:10 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:57:10 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:57:10 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:57:10 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:57:10 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:57:10 AM client.Client clientAccessRingORAM
+INFO: Eviction round
+Mar 29, 2016 12:57:10 AM client.Client clientAccessRingORAM
+INFO: Eviction Complete
+Mar 29, 2016 12:57:10 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:57:10 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID4
+Mar 29, 2016 12:57:10 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:57:10 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:57:11 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:57:11 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:57:11 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:57:11 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:57:11 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:57:11 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:57:11 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:57:11 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:57:11 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:57:11 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:57:11 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:57:11 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID5
+Mar 29, 2016 12:57:11 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:57:11 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:57:12 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:57:12 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:57:12 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:57:12 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:57:12 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:57:12 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:57:12 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:57:12 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:57:12 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:57:12 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:57:12 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:57:12 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID0
+Mar 29, 2016 12:57:12 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:57:12 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:57:13 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:57:13 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:57:13 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:57:13 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:57:13 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:57:13 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:57:13 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:57:13 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:57:13 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:57:13 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:57:13 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:57:13 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID3
+Mar 29, 2016 12:57:13 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:57:13 AM client.Client clientAccessRingORAM
+INFO: Response from Server received
+Mar 29, 2016 12:57:14 AM client.Client clientAccessRingORAM
+INFO: Get PM entry
+Mar 29, 2016 12:57:14 AM client.Client clientAccessRingORAM
+INFO: Retrieved PM entry
+Mar 29, 2016 12:57:14 AM client.Client clientAccessRingORAM
+INFO: Get MetaData
+Mar 29, 2016 12:57:14 AM client.Client clientAccessRingORAM
+INFO: Retrieved MetaData
+Mar 29, 2016 12:57:14 AM client.Client clientAccessRingORAM
+INFO: Get Blocks and stash
+Mar 29, 2016 12:57:14 AM client.Client clientAccessRingORAM
+INFO: Blocks and stash Retrieved
+Mar 29, 2016 12:57:14 AM client.Client clientAccessRingORAM
+INFO: Required item found in Path/Stash
+Mar 29, 2016 12:57:14 AM client.Client clientAccessRingORAM
+INFO: Writing back block
+Mar 29, 2016 12:57:14 AM client.Client clientAccessRingORAM
+INFO: Get Result Log
+Mar 29, 2016 12:57:14 AM client.Client clientAccessRingORAM
+INFO: Result Log Retrieved
+Mar 29, 2016 12:57:14 AM client.Client clientAccessRingORAM
+INFO: Eviction round
+Mar 29, 2016 12:57:14 AM client.Client clientAccessRingORAM
+INFO: Eviction Complete
+Mar 29, 2016 12:57:14 AM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 29, 2016 12:57:14 AM client.Client clientAccessRingORAM
+INFO: Starting access for block ID6
+Mar 29, 2016 12:57:14 AM client.Client clientAccessRingORAM
+INFO: Pinging Server
+Mar 29, 2016 12:57:14 AM client.Client clientAccessRingORAM
+INFO: Response from Server received

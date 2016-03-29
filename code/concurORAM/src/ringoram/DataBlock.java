@@ -7,8 +7,13 @@ public class DataBlock implements Serializable {
 		private long Id;
 		private char[] payload;
 		
+		public DataBlock(){
+			this.Id = 0;
+			this.payload = null;
+		}
+		
 		public DataBlock(long ID) {
-			Id = ID;
+			this.Id = ID;
 			payload = new char[4096];
 				
 		}

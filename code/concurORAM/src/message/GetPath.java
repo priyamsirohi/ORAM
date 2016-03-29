@@ -1,12 +1,14 @@
 package message;
 
 import ringoram.Node;
+import ringoram.Stash;
 
 
 public class GetPath extends Message{
 
 	private int leaf_id;
 	public Node[] path;
+	
 	
 	public GetPath(int MessageID, int ClientID, int leaf_id) { super(MessageID,ClientID); this.leaf_id = leaf_id;} 
 	
