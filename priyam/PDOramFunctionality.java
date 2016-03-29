@@ -93,17 +93,15 @@ public class PDOramFunctionality {
        
        for (int k = 0; k < 4; k++) {
             int shift = (4 - 1 - k) * 8;
-            value += (inHash.read() & 0x000000FF) << shift;
+            value += (inDB.read() & 0x000000FF) << shift;
         }
+       
        ret.add(value);
        inDB.skip(skipAfter);
-       
     }
     
     inHash.close();
     inDB.close();
-    
-        System.out.println(ret);
     
     return ret;
     }

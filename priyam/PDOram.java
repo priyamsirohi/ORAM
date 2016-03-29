@@ -19,7 +19,7 @@ public class PDOram {
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
-        PDOramFunctionality oram = new PDOramFunctionality(20);
+        PDOramFunctionality oram = new PDOramFunctionality(5);
        oram.PDOramRead(4);
     }
    
