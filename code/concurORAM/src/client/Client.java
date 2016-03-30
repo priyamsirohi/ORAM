@@ -36,7 +36,7 @@ public class Client {
         pm = new PositionMap(N);
         this.messageID = 0;
         this.clientID = clientID;
-        clientListener = new Socket(hostname,portNum);
+        
         String fname = "Logs/Client#" + clientID+ ".log";
         clientLog = Logger.getLogger(fname);
         fh = new FileHandler(fname);
@@ -49,6 +49,7 @@ public class Client {
 	
     public void clientSetup(ObjectInputStream is, ObjectOutputStream os) throws IOException, ClassNotFoundException, InterruptedException{
     	
+  
     	Random rn;
     	rn = new Random();
     	rn.setSeed(12345678);
@@ -99,6 +100,7 @@ public class Client {
   
      
     public void clientAccessRingORAM() throws UnknownHostException, IOException, InterruptedException, ClassNotFoundException{
+    	clientListener = new Socket(hostname,portNum);
     	ObjectOutputStream os = new ObjectOutputStream(clientListener.getOutputStream());		
     	ObjectInputStream is = new ObjectInputStream(clientListener.getInputStream());
     	
@@ -234,8 +236,9 @@ public class Client {
     	}
     	
     	clientLog.info("Access Complete");   	
+    	
     } 	
-    
+    	
     }    	
    
 

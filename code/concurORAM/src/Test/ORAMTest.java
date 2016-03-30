@@ -44,7 +44,7 @@ public static void main(String[] args) throws IOException, ClassNotFoundExceptio
 		};
 		
 		
-		Thread client_thread = new Thread(){
+		Thread client_thread1 = new Thread(){
 			public void run(){
 			Client client = null;
 			try {
@@ -64,10 +64,31 @@ public static void main(String[] args) throws IOException, ClassNotFoundExceptio
 			}
 		};
 		
+		Thread client_thread2 = new Thread(){
+			public void run(){
+			Client client = null;
+			try {
+				client = new Client(server_portnum,"127.0.0.1",2,N);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			System.out.println("Client is up");
+			try {
+				client.clientAccessRingORAM();
+			} catch (ClassNotFoundException
+					| IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			}
+		};
+		
 		
 		server_thread.start();
 		Thread.sleep(5000);
-		client_thread.start();
+		//client_thread1.start();
+		client_thread2.start();
 		
 		System.out.println("Successful");
 		

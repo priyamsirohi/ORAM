@@ -3,55 +3,58 @@ package server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
-import ringoram.*;
-import message.*;
+import ringoram.DataBlock;
+import ringoram.MetaData;
+import ringoram.Node;
+import ringoram.Stash;
+import ringoram.TreeORAM;
+
+import message.GetAccessCounter;
+import message.GetBlocksFromPath;
+import message.GetMetadata;
+import message.GetPath;
+import message.GetResultLogs;
+import message.Message;
+import message.Ping;
+import message.WriteBlock;
+import message.WritePath;
+import message.WriteStash;
 import message.Message.MessageType;
 
-public class Server {
+public class ServerWorkerSerial {
 
-	protected Stash stash;
-	protected TreeORAM tree;
-	protected ServerSocket serverListener;
-	protected Socket server;
-	protected int portnum;
-	protected DataResultLog drs;
-	protected int accessCounter;
-	protected int eviction_rate;
-	protected int path_counter;
+	Socket server;
+	ObjectInputStream is;
+	ObjectOutputStream os;
+	Stash stash;
+	TreeORAM tree;
 	
-	public Server(int N, int bucket_size, int num_dummy_blocks, int portnum, int eviction_rate) throws UnknownHostException, IOException{
-		this.stash = new Stash();
-		this.tree = new TreeORAM(N,bucket_size,num_dummy_blocks);
-		this.portnum = portnum;
-		this.serverListener = new ServerSocket(portnum);
-		this.drs = new DataResultLog(eviction_rate);
-		this.accessCounter = 0;
-		this.path_counter = 0;
-		this.eviction_rate = eviction_rate;
+	
+	
+	ServerWorkerSerial(Socket server) throws IOException {
+		this.server = server;
+		is = new ObjectInputStream(server.getInputStream());
+		os = new ObjectOutputStream(server.getOutputStream());
 		
 	}
 	
-	
-	
-	
-	public void run() throws IOException, ClassNotFoundException, InterruptedException{
-		this.server = serverListener.accept();
-		ObjectInputStream is = new ObjectInputStream(server.getInputStream());
-		ObjectOutputStream os = new ObjectOutputStream(server.getOutputStream());
-		while(true){
+	public void setup() throws IOException, ClassNotFoundException{
 		
 		Message ms = (Message) is.readObject();
-	
 		
 		if (ms.getMessageType().compareTo(MessageType.Ping) == 0){
 			Ping ping = new Ping(0,0);
 			os.writeObject(ping);
 			os.flush();
 		}
+		
+	}
+	
+	public synchronized void run(){
+		
+		Message ms = (Message) is.readObject();
 		
 		if (ms.getMessageType().compareTo(MessageType.GetMetadata)==0){
 			GetMetadata gm = (GetMetadata) ms;
@@ -142,5 +145,9 @@ public class Server {
 		
 		
 	}
-}
+		
+		
+	}
+	
+	
 }
