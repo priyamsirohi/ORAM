@@ -11,17 +11,19 @@ import ringoram.*;
 import message.*;
 import message.Message.MessageType;
 
-public class Server {
+public class Server extends Thread{
 
 	protected Stash stash;
 	protected TreeORAM tree;
 	protected ServerSocket serverListener;
-	protected Socket server;
+	
 	protected int portnum;
 	protected DataResultLog drs;
 	protected int accessCounter;
 	protected int eviction_rate;
 	protected int path_counter;
+	protected ObjectInputStream is;
+	protected ObjectOutputStream os;
 	
 	public Server(int N, int bucket_size, int num_dummy_blocks, int portnum, int eviction_rate) throws UnknownHostException, IOException{
 		this.stash = new Stash();
@@ -38,109 +40,20 @@ public class Server {
 	
 	
 	
-	public void run() throws IOException, ClassNotFoundException, InterruptedException{
-		this.server = serverListener.accept();
-		ObjectInputStream is = new ObjectInputStream(server.getInputStream());
-		ObjectOutputStream os = new ObjectOutputStream(server.getOutputStream());
-		while(true){
+	public void run(int num_clients) throws IOException, ClassNotFoundException, InterruptedException{
 		
-		Message ms = (Message) is.readObject();
+			for(int i = 0;i<num_clients;i++){
+				ServerSocket ss = new ServerSocket(++portnum);
+				ServerWorkerSerial worker = new ServerWorkerSerial(ss, this.tree, this.stash,this.drs,
+						this.accessCounter, this.eviction_rate,this.path_counter);
+				Thread thread = new Thread(worker);
+				thread.start();
+				System.out.println("The server is up");
+			}
+			
+			
+		}
 	
-		
-		if (ms.getMessageType().compareTo(MessageType.Ping) == 0){
-			Ping ping = new Ping(0,0);
-			os.writeObject(ping);
-			os.flush();
-		}
-		
-		if (ms.getMessageType().compareTo(MessageType.GetMetadata)==0){
-			GetMetadata gm = (GetMetadata) ms;
-			gm.clientID = 0;
-			Node [] node;
-			node = tree.read_path(gm.getLeaf_ID());		
-			gm.metadata = new MetaData[tree.getDepth()];
-			for (int i = 0;i<tree.getDepth();i++){
-				gm.metadata[i] = node[i].getBucket().getMetaData();
-				node[i].getBucket().getMetaData().bucket_access_counter++;
-			}
-			os.writeObject(gm);
-			os.flush();
-		}
-		
-		
-		if (ms.getMessageType().compareTo(MessageType.GetBlocksFromPath)==0){
-			GetBlocksFromPath gbp = (GetBlocksFromPath) ms;
-			gbp.clientID = 0;
-			Node [] node;
-			node = tree.read_path(gbp.getLeaf_ID());
-			gbp.blocks = new DataBlock[tree.getDepth()];
-			for (int i = 0;i<tree.getDepth();i++){
-				gbp.blocks[i] = node[i].getBucket().getDataBlocks()[gbp.blk_num[i]];
-			}
 			
-			gbp.stash = this.stash;
-			os.writeObject(gbp);
-			os.flush();
-		}
-		
-		
-		
-		if (ms.getMessageType().compareTo(MessageType.WriteBlock)==0){
-			WriteBlock wb = (WriteBlock) ms;
-			drs.setandincDataResultLog(wb.getBlk());
-			accessCounter++;
-			
-		}
-		
-		if (ms.getMessageType().compareTo(MessageType.GetPath)==0){
-			GetPath gp = (GetPath) ms;
-			gp.clientID = 0;
-			gp.path = tree.read_path(gp.getLeaf_ID());
-			os.writeObject(gp);
-			os.flush();
-			
-		}
-		
-		if (ms.getMessageType().compareTo(MessageType.WritePath)==0){
-			WritePath wp = (WritePath) ms;
-			tree.write_path(wp.getLeaf_ID(), wp.getNodes());
-					
-		}
-		
-		if (ms.getMessageType().compareTo(MessageType.GetResultLogs)==0){
-			GetResultLogs grl = (GetResultLogs) ms;
-			grl.clientID = 0;
-			grl.drs = this.drs;
-			os.writeObject(grl);
-			os.flush();
-		}
-		
-		if (ms.getMessageType().compareTo(MessageType.WriteStash)==0){
-			WriteStash ws = (WriteStash) ms;
-			this.stash = ws.stash;
-		}
-		
-		if (ms.getMessageType().compareTo(MessageType.ClearLogs)==0){
-			this.drs.clearDataResultLog();
-		}
-		
-		if (ms.getMessageType().compareTo(MessageType.GetAccessCounter)==0){
-			GetAccessCounter gac = (GetAccessCounter) ms;
-			gac.access_counter = this.accessCounter;
-			gac.clientID = 0;
-			gac.eviction_rate = this.eviction_rate;
-			gac.path_counter = this.path_counter++;
-			os.writeObject(gac);
-			os.flush();
-			
-		}
-		
-		if (ms.getMessageType().compareTo(MessageType.ClearLogs)==0){
-			this.drs.clearDataResultLog();
-			accessCounter = 0;
-		}
-		
-		
 	}
-}
-}
+

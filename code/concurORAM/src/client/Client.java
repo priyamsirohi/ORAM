@@ -16,7 +16,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-public class Client {
+public class Client extends Thread{
 
 	private Socket clientListener;
     private int clientID;
@@ -135,8 +135,9 @@ public class Client {
     	clientLog.info("Retrieved MetaData");
       	  	    			
     	/* Getting Path and Stash */
-    	clientLog.info("Get Blocks and stash");
+    	
     	GetBlocksFromPath gbp = new GetBlocksFromPath(clientID,messageID++,leaf_id,md.length);
+    	clientLog.info("Get Blocks and stash");
        	int req_index_in_path = -1;
     	int req_index_in_stash = -1;
     	boolean unlikely = true;
@@ -154,7 +155,8 @@ public class Client {
     	}
 
     	
-    
+    	
+    	
     	DataBlock[] blocks;
     	blocks = getBlocks(gbp,is,os);
     	
@@ -432,5 +434,8 @@ public class Client {
     		return 0;
     	}
     	}
+
+
+
+
 }
-    

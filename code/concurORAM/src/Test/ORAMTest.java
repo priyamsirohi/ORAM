@@ -7,7 +7,7 @@ import java.util.Random;
 import server.*;
 import client.*;
 
-public class ORAMTest {
+public class ORAMTest{
 	
 
 public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException{
@@ -17,10 +17,15 @@ public static void main(String[] args) throws IOException, ClassNotFoundExceptio
 		final int eviction_freq = 4;
 		final int bucket_size = 32;
 		final int num_dummy_blocks = 8;
+		final int num_clients = 2;
 		final Random rn;
 		rn = new Random();
 		rn.setSeed(12345678);
 		
+		Server server = new Server(N,bucket_size,num_dummy_blocks,server_portnum,eviction_freq);
+		server.run(num_clients);
+		
+/*
 		Thread server_thread = new Thread(){
 			public void run(){
 				Server server = null;
@@ -31,7 +36,7 @@ public static void main(String[] args) throws IOException, ClassNotFoundExceptio
 					e1.printStackTrace();
 				}
 				try {
-					server.run();
+					check = server.run(num_clients);
 				} catch (ClassNotFoundException | IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -42,13 +47,13 @@ public static void main(String[] args) throws IOException, ClassNotFoundExceptio
 				System.out.println("Server is UP");
 			}
 		};
-		
+	*/	
 		
 		Thread client_thread1 = new Thread(){
 			public void run(){
 			Client client = null;
 			try {
-				client = new Client(server_portnum,"127.0.0.1",1,N);
+				client = new Client(server_portnum+1,"127.0.0.1",1,N);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -68,7 +73,7 @@ public static void main(String[] args) throws IOException, ClassNotFoundExceptio
 			public void run(){
 			Client client = null;
 			try {
-				client = new Client(server_portnum,"127.0.0.1",2,N);
+				client = new Client(server_portnum+2,"127.0.0.1",2,N);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -85,9 +90,9 @@ public static void main(String[] args) throws IOException, ClassNotFoundExceptio
 		};
 		
 		
-		server_thread.start();
-		Thread.sleep(5000);
-		//client_thread1.start();
+		
+		
+		client_thread1.start();
 		client_thread2.start();
 		
 		System.out.println("Successful");
