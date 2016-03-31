@@ -2,7 +2,6 @@
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="java.io.ObjectInputStream"/>
 <fullyQualifiedTypeName name="java.net.Socket"/>
-<fullyQualifiedTypeName name="java.io.Serializable"/>
 <fullyQualifiedTypeName name="java.io.ObjectOutputStream"/>
 <fullyQualifiedTypeName name="message.Message.MessageType"/>
 <fullyQualifiedTypeName name="ringoram.DataBlock"/>
@@ -11,4 +10,11 @@
 <fullyQualifiedTypeName name="java.util.logging.FileHandler"/>
 <fullyQualifiedTypeName name="java.util.logging.SimpleFormatter"/>
 <fullyQualifiedTypeName name="ringoram.Stash"/>
+<fullyQualifiedTypeName name="ringoram.TreeORAM"/>
+<fullyQualifiedTypeName name="java.io.Serializable"/>
+<fullyQualifiedTypeName name="java.util.Random"/>
+<fullyQualifiedTypeName name="server.Server"/>
+<fullyQualifiedTypeName name="java.net.ServerSocket"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="java.util.concurrent.atomic.AtomicInteger"/>
 </qualifiedTypeNameHistroy>

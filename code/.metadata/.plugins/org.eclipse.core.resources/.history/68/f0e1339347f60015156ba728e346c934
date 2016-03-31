@@ -1,0 +1,63 @@
+package server;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+import ringoram.*;
+import message.*;
+import message.Message.MessageType;
+
+public class Server {
+
+	protected Stash stash;
+	protected TreeORAM tree;
+	protected ServerSocket serverListener;
+	protected Socket server;
+	protected int portnum;
+	protected DataResultLog drs;
+	protected int accessCounter;
+	protected int eviction_rate;
+	protected int path_counter;
+	protected ObjectInputStream is;
+	protected ObjectOutputStream os;
+	
+	public Server(int N, int bucket_size, int num_dummy_blocks, int portnum, int eviction_rate) throws UnknownHostException, IOException{
+		this.stash = new Stash();
+		this.tree = new TreeORAM(N,bucket_size,num_dummy_blocks);
+		this.portnum = portnum;
+		this.serverListener = new ServerSocket(portnum);
+		this.server = serverListener.accept();
+		this.drs = new DataResultLog(eviction_rate);
+		this.accessCounter = 0;
+		this.path_counter = 0;
+		this.eviction_rate = eviction_rate;
+		is = new ObjectInputStream(server.getInputStream());
+		os = new ObjectOutputStream(server.getOutputStream());
+	}
+	
+	
+	
+	
+	public void run(int num_clients) throws IOException, ClassNotFoundException, InterruptedException{
+		
+			for(int i = 0;i<num_clients;i++){
+				ServerSocket ss = new ServerSocket(++portnum);
+				Socket s = new Socket();
+				s = ss.accept();
+				System.out.println("The server is up");
+				ServerWorkerSerial worker = new ServerWorkerSerial(s, this.tree, this.stash,this.drs,
+						this.accessCounter, this.eviction_rate,this.path_counter);
+				worker.run();
+				
+			}
+			
+			
+		}
+	
+			
+	}
+
