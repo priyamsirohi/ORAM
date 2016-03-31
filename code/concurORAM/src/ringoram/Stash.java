@@ -11,6 +11,7 @@ public class Stash implements Serializable {
 	
 	 public Stash(){
 	    	blocks = new DataBlock[200];
+	    	
 	    	phy_pos_map = new int[200];
 	    	num_of_elements = 0;
 	 }

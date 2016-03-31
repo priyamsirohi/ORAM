@@ -43,21 +43,22 @@ public class SuperClient extends Thread {
 	    	
 	    	rn = new Random();
 	    	rn.setSeed(12345678);
-	    	for(int i = 0;i<N;i++){
+	    	Ping ping = new Ping(clientID,messageID++);
+			os.writeObject(ping);
+			os.flush();
+			
+			Message ms = (Message) is.readObject();
+		
+			  while (ms.getMessageType().compareTo(MessageType.Ping) != 0){
+			    	Thread.sleep(5000); 	
+			    	
+					}
+			  
+	    	for(int i = 1;i<=N;i++){
 	    		
 	    		try {
 					
-						Ping ping = new Ping(clientID,messageID++);
-						os.writeObject(ping);
-						os.flush();
-						
-						Message ms = (Message) is.readObject();
-					
-						  while (ms.getMessageType().compareTo(MessageType.Ping) != 0){
-						    	Thread.sleep(5000); 	
-						    	
-								}
-						  
+							  
 						int map = rn.nextInt(N);				
 						pm.setMap(i, map); 			// Testing with linear mapping
 						GetPath gp = new GetPath(clientID,messageID++,i);
@@ -114,14 +115,14 @@ public class SuperClient extends Thread {
 	 }
 	 
 	public void start_clients(int num_clients) throws UnknownHostException, IOException{
-		System.out.println("All client threads started");
+	
 		for (int i = 0;i<num_clients;i++){
 			Client client= new Client(++server_portnum,"127.0.0.1",this.clientID+1+i,this.N,this.pm);
 			Thread thread = new Thread(client);
 			thread.start();
 			
 		}
-		
+		System.out.println("All client threads started");
 		
 	}
 }

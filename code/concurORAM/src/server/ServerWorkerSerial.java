@@ -5,11 +5,16 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import ringoram.DataBlock;
 import ringoram.DataResultLog;
 import ringoram.MetaData;
 import ringoram.Node;
+import ringoram.PositionMap;
 import ringoram.Stash;
 import ringoram.TreeORAM;
 
@@ -25,6 +30,8 @@ import message.WritePath;
 import message.WriteStash;
 import message.Message.MessageType;
 
+
+
 public class ServerWorkerSerial implements Runnable{
 
 	private static final LockObject lock = new LockObject();
@@ -34,13 +41,17 @@ public class ServerWorkerSerial implements Runnable{
 	Stash stash;
 	TreeORAM tree;
 	DataResultLog drs;
-	int accessCounter;
+	AtomicInteger accessCounter;
 	int eviction_rate;
-	int path_counter;
+	AtomicInteger path_counter;
 	ClientQueue queue;
+	private Logger ServerLog;
+    private FileHandler fh;
+    private SimpleFormatter formatter;
+    private PositionMap pm;
 	
 	ServerWorkerSerial(ServerSocket ss, TreeORAM tree, Stash stash, DataResultLog drs, 
-			int accessCounter, int eviction_rate, int path_counter, ClientQueue queue) 
+			AtomicInteger accessCounter, int eviction_rate, AtomicInteger path_counter, ClientQueue queue) 
 			throws IOException {
 		this.ss = ss;
 		this.stash = stash;
@@ -50,6 +61,13 @@ public class ServerWorkerSerial implements Runnable{
 		this.path_counter = path_counter;
 		this.eviction_rate = eviction_rate;
 		this.queue = queue;
+		
+		 String fname = "Logs/Worker#" + ss.getLocalPort() + ".log";
+	        ServerLog = Logger.getLogger(fname);
+	        fh = new FileHandler(fname);
+	        ServerLog.addHandler(fh);
+	        formatter = new SimpleFormatter();
+	        fh.setFormatter(formatter);
 	}
 
 	
@@ -88,7 +106,8 @@ public class ServerWorkerSerial implements Runnable{
 			
 		} catch (ClassNotFoundException | IOException e2) {
 			// TODO Auto-generated catch block
-			e2.printStackTrace();
+			//e2.printStackTrace();
+			continue;
 		}
 		
 		if (ms.getMessageType().compareTo(MessageType.Ping) == 0){
@@ -98,16 +117,20 @@ public class ServerWorkerSerial implements Runnable{
 			}
 			
 			while (ms.clientID != queue.getTop()){
+			
+				//ServerLog.info("Waiting for-" + queue.getTop());
 				
-					try {
+				try {
 						Thread.sleep(100);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					
 			}
 		
 			
+			System.out.println("Serving client-"+ms.clientID);
 			Ping ping = new Ping(0,0);
 			
 			try {
@@ -200,7 +223,7 @@ public class ServerWorkerSerial implements Runnable{
 		if (ms.getMessageType().compareTo(MessageType.WriteBlock)==0){
 			WriteBlock wb = (WriteBlock) ms;
 			drs.setandincDataResultLog(wb.getBlk());
-			accessCounter++;
+			
 			
 		}
 		
@@ -266,10 +289,10 @@ public class ServerWorkerSerial implements Runnable{
 		
 		if (ms.getMessageType().compareTo(MessageType.GetAccessCounter)==0){
 			GetAccessCounter gac = (GetAccessCounter) ms;
-			gac.access_counter = this.accessCounter;
+			gac.access_counter = this.accessCounter.get();
 			gac.clientID = 0;
 			gac.eviction_rate = this.eviction_rate;
-			gac.path_counter = this.path_counter++;
+			gac.path_counter = this.path_counter.getAndIncrement();
 			try {
 				os.writeObject(gac);
 			} catch (IOException e) {
@@ -287,16 +310,18 @@ public class ServerWorkerSerial implements Runnable{
 		
 		if (ms.getMessageType().compareTo(MessageType.ClearLogs)==0){
 			this.drs.clearDataResultLog();
-			accessCounter = 0;
+			accessCounter.set(0);
 		}
 		
 		if (ms.getMessageType().compareTo(MessageType.AccessComplete)==0){
-			this.queue.pop();
+			
+			this.accessCounter.getAndIncrement();
+			synchronized(this.lock) {this.queue.pop();}
 			}
 		
 					
 	
-	}	
+		}	
 	}	
 	}
 

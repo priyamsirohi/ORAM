@@ -74,9 +74,9 @@ public class Client extends Thread{
 		}
     	
     	while(true){
-    		System.out.println("debug");
+    	
     	try {
-			clientAccessRingORAM(rn.nextInt(N),os,is);
+			clientAccessRingORAM(rn.nextInt(N)+1,os,is);
 		} catch (ClassNotFoundException | IOException
 				| InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -92,28 +92,28 @@ public class Client extends Thread{
     	
     	/* Testing Server Response */
     	clientLog.info("Starting access for block ID-"+blk_id);
-     	clientLog.info("Pinging Server");
+     	//clientLog.info("Pinging Server");
     	ConnTest(is,os);
-    	clientLog.info("Response from Server received");
+    	//clientLog.info("Response from Server received");
     	
     	/* Client Setup ( if initialization) */
     	
     	
     	
     	/* Getting PM entry */
-    	clientLog.info("Get PM entry");
+    //	clientLog.info("Get PM entry");
     	int leaf_id = getPM(blk_id);
-    	clientLog.info("Retrieved PM entry"); 
+   // 	clientLog.info("Retrieved PM entry"); 
     
     	/* Getting MetaData */
-    	clientLog.info("Get MetaData");
+    //	clientLog.info("Get MetaData");
     	MetaData[] md = getMetadata(leaf_id,is,os);
-    	clientLog.info("Retrieved MetaData");
+   // 	clientLog.info("Retrieved MetaData");
       	  	    			
     	/* Getting Path and Stash */
     	
     	GetBlocksFromPath gbp = new GetBlocksFromPath(clientID,messageID++,leaf_id,md.length);
-    	clientLog.info("Get Blocks and stash");
+    //	clientLog.info("Get Blocks and stash");
        	int req_index_in_path = -1;
     	int req_index_in_stash = -1;
     	boolean unlikely = true;
@@ -139,7 +139,7 @@ public class Client extends Thread{
     	DataBlock[] blocks;
     	blocks = getBlocks(gbp,is,os);
     	
-     	clientLog.info("Blocks and stash Retrieved");
+     //	clientLog.info("Blocks and stash Retrieved");
     	
     	
      	
@@ -160,31 +160,33 @@ public class Client extends Thread{
     	if (req_index_in_path != -1){
     		req_block = blocks[req_index_in_path];
     		unlikely = false;
+    		clientLog.info("Required item found in Path");
     	}
     	else if (req_index_in_stash!=-1){
     		req_block = gbp.stash.getStash()[req_index_in_stash];
     		unlikely = false;
+    		clientLog.info("Required item found in Stash");
     	}
     	
-    	if(!(unlikely))
-    		clientLog.info("Required item found in Path/Stash");
     	    	
-    	//Thread.sleep(10000);
+    	Thread.sleep(500);
     	
     	/* Write back item */
-    	clientLog.info("Writing back block");
+    //	clientLog.info("Writing back block");
     	if (req_block != null){
+    		System.out.println("Access for-"+blk_id);
+    		System.out.println("Writing back-"+req_block.get_id());
     		WriteBlock wb = new WriteBlock(clientID,messageID++,req_block);
     		WriteBackBlock(wb,os);
     	}
     	
     	/* Retrieve ResultLog */
     	
-    	clientLog.info("Get Result Log");
+    //	clientLog.info("Get Result Log");
     	GetResultLogs grl = new GetResultLogs(clientID,messageID++);
         	
     	grl = getResultLog(grl,is,os);
-    	clientLog.info("Result Log Retrieved");
+    //	clientLog.info("Result Log Retrieved");
     	
     
     	
@@ -211,7 +213,7 @@ public class Client extends Thread{
     		ClearLogs cl = new ClearLogs(clientID,messageID++);
     		os.writeObject(cl);
     		os.flush();
-    		clientLog.info("Eviction Complete");
+    		//clientLog.info("Eviction Complete");
     		
     	}
     	
@@ -347,16 +349,15 @@ public class Client extends Thread{
     	
     	DataBlock [] stash_log_comb;
     	stash_log_comb = new DataBlock[grs.drs.getHead() + gbp.stash.num_of_elements];
-    	
-    	for (int i = 0;i<grs.drs.getHead();i++){ stash_log_comb[i] = grs.drs.getDataResultLog()[i];}
-    	
-    	for (int i = 0;i<gbp.stash.num_of_elements;i++) { stash_log_comb[i] = gbp.stash.getStash()[i];}
+    	int i;
+    	for (i = 0;i<grs.drs.getHead();i++){ stash_log_comb[i] = grs.drs.getDataResultLog()[i]; System.out.println(stash_log_comb[i].get_id());}
+    	for (int j = 0;j<gbp.stash.num_of_elements;j++) { stash_log_comb[i+j] = gbp.stash.getStash()[j];}
  
     	Stash new_stash;
     	new_stash = new Stash();
     	int stash_head = 0;
    
-    	for (int i = 0; i<stash_log_comb.length;i++){
+    	for (i = 0; i<stash_log_comb.length;i++){
     		int map = rn.nextInt(this.N);
     		int counter = 2;
     		int lca = LCA(map,leaf_id,path.length,this.N,counter);
@@ -379,9 +380,10 @@ public class Client extends Thread{
 	    		
 	    		if (!mapped)
 	    			new_stash.getStash()[stash_head++] = stash_log_comb[i];
-	    		else
-	    			this.pm.setMap((int) stash_log_comb[i].get_id(), map);
-	    			 		
+	    		else{
+	    			System.out.println(stash_log_comb[i].get_id());
+	    		 	this.pm.setMap((int) stash_log_comb[i].get_id(), map);
+	    		}
 	    	}
 		    	
 	    }

@@ -12,7 +12,7 @@ public class DataBlock implements Serializable {
 			this.payload = null;
 		}
 		
-		public DataBlock(long ID) {
+		public DataBlock(int ID) {
 			this.Id = ID;
 			payload = new char[4096];
 				

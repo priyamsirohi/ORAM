@@ -17,7 +17,7 @@ public static void main(String[] args) throws IOException, ClassNotFoundExceptio
 		final int eviction_freq = 4;
 		final int bucket_size = 32;
 		final int num_dummy_blocks = 16;
-		final int num_clients = 3;
+		final int num_clients = 8;
 		final Random rn;
 		rn = new Random();
 		rn.setSeed(12345678);

@@ -6,7 +6,7 @@ public class PositionMap {
 		
 
 	public PositionMap(int N){
-		map = new int[N];
+		map = new int[N+1];
 	}
 	
 	public int getMap(int index){
