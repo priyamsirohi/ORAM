@@ -37,9 +37,10 @@ public class ServerWorkerSerial implements Runnable{
 	int accessCounter;
 	int eviction_rate;
 	int path_counter;
+	ClientQueue queue;
 	
 	ServerWorkerSerial(ServerSocket ss, TreeORAM tree, Stash stash, DataResultLog drs, 
-			int accessCounter, int eviction_rate, int path_counter) 
+			int accessCounter, int eviction_rate, int path_counter, ClientQueue queue) 
 			throws IOException {
 		this.ss = ss;
 		this.stash = stash;
@@ -48,17 +49,17 @@ public class ServerWorkerSerial implements Runnable{
 		this.drs = drs;
 		this.path_counter = path_counter;
 		this.eviction_rate = eviction_rate;
-		
+		this.queue = queue;
 	}
 
 	
 	public void run(){
 		
-
 		
 		Socket server = null;
 		try {
 			server = ss.accept();
+			
 		} catch (IOException e3) {
 			// TODO Auto-generated catch block
 			e3.printStackTrace();
@@ -81,15 +82,34 @@ public class ServerWorkerSerial implements Runnable{
 		while(true){
 		Message ms = null;
 		
+		
 		try {
 			ms = (Message) is.readObject();
+			
 		} catch (ClassNotFoundException | IOException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 		
 		if (ms.getMessageType().compareTo(MessageType.Ping) == 0){
+				
+			synchronized(this.lock){ 
+				queue.push(ms.clientID);
+			}
+			
+			while (ms.clientID != queue.getTop()){
+				
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			}
+		
+			
 			Ping ping = new Ping(0,0);
+			
 			try {
 				os.writeObject(ping);
 			} catch (IOException e) {
@@ -102,9 +122,14 @@ public class ServerWorkerSerial implements Runnable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		
+		
 		}
+		
+		
 	
-		synchronized(this.lock){
+		
+		
 		
 		if (ms.getMessageType().compareTo(MessageType.GetMetadata)==0){
 			GetMetadata gm = (GetMetadata) ms;
@@ -138,6 +163,7 @@ public class ServerWorkerSerial implements Runnable{
 		
 		
 		if (ms.getMessageType().compareTo(MessageType.GetBlocksFromPath)==0){
+		
 			GetBlocksFromPath gbp = (GetBlocksFromPath) ms;
 			gbp.clientID = 0;
 			Node [] node = null;
@@ -236,9 +262,7 @@ public class ServerWorkerSerial implements Runnable{
 			this.stash = ws.stash;
 		}
 		
-		if (ms.getMessageType().compareTo(MessageType.ClearLogs)==0){
-			this.drs.clearDataResultLog();
-		}
+		
 		
 		if (ms.getMessageType().compareTo(MessageType.GetAccessCounter)==0){
 			GetAccessCounter gac = (GetAccessCounter) ms;
@@ -265,11 +289,15 @@ public class ServerWorkerSerial implements Runnable{
 			this.drs.clearDataResultLog();
 			accessCounter = 0;
 		}
-		}
 		
-	}
+		if (ms.getMessageType().compareTo(MessageType.AccessComplete)==0){
+			this.queue.pop();
+			}
+		
+					
+	
 	}	
-		
+	}	
 	}
 
 	

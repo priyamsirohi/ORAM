@@ -30,13 +30,12 @@ public class Client extends Thread{
     private int N;
    
     
-    public Client(int portnum, String host,int clientID, int N) throws UnknownHostException, IOException{
+    public Client(int portnum, String host,int clientID, int N, PositionMap pm) throws UnknownHostException, IOException{
         this.portNum=portnum;
         this.hostname=host;
-        pm = new PositionMap(N);
+        this.pm = pm; 
         this.messageID = 0;
         this.clientID = clientID;
-        
         String fname = "Logs/Client#" + clientID+ ".log";
         clientLog = Logger.getLogger(fname);
         fh = new FileHandler(fname);
@@ -47,82 +46,59 @@ public class Client extends Thread{
        
     }
 	
-    public void clientSetup(ObjectInputStream is, ObjectOutputStream os) throws IOException, ClassNotFoundException, InterruptedException{
-    	
+   
   
+    public void run(){
+    	
     	Random rn;
     	rn = new Random();
-    	rn.setSeed(12345678);
-    	for(int i = 0;i<N;i++)
-			try {
-				{
-					int map = rn.nextInt(N);				
-					pm.setMap(i, map); 			// Testing with linear mapping
-					GetPath gp = new GetPath(clientID,messageID++,i);
-					os.writeObject(gp);
-					os.flush();
-					DataBlock block;
-					block = new DataBlock(i);
-					Message ms = (Message) is.readObject();
-				    while (ms.getMessageType().compareTo(MessageType.GetPath) != 0){
-				    	Thread.sleep(5000); 	
-						}
-				    gp = (GetPath) ms;
-				
-				    
-				    
-				    for (int j = gp.path.length-1; j>=0;j--){
-				    	if (gp.path[j].getBucket().getMetaData().num_free == 0)
-				    		continue;
-				    	else{ 
-				    		int next_free = gp.path[j].getBucket().getMetaData().next_free_counter;
-				    		next_free = gp.path[j].getBucket().getMetaData().next_free[next_free];
-				    		gp.path[j].getBucket().setDataBlock(next_free,block);
-				    		gp.path[j].getBucket().getMetaData().log_bucket_pos_map[next_free] = i;
-				    		gp.path[j].getBucket().getMetaData().phy_bucket_pos_map[next_free] = map;
-				    		gp.path[j].getBucket().getMetaData().num_free--;
-				    		gp.path[j].getBucket().getMetaData().next_free_counter++;
-				    						    		
-				    	}
-				    }
-				    WritePath wp = new WritePath(clientID,messageID++,i,gp.path);
-				    os.writeObject(wp);
-			    	os.flush();
-				    
-				    
-					
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+    	ObjectOutputStream os = null;
+    	ObjectInputStream is = null;
+    	try {
+			clientListener = new Socket(hostname,portNum);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	try {
+			os = new ObjectOutputStream(clientListener.getOutputStream());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}		
+    	try {
+			is = new ObjectInputStream(clientListener.getInputStream());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	
+    	while(true){
+    		System.out.println("debug");
+    	try {
+			clientAccessRingORAM(rn.nextInt(N),os,is);
+		} catch (ClassNotFoundException | IOException
+				| InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
-  
+}
      
-    public void clientAccessRingORAM() throws UnknownHostException, IOException, InterruptedException, ClassNotFoundException{
-    	clientListener = new Socket(hostname,portNum);
-    	ObjectOutputStream os = new ObjectOutputStream(clientListener.getOutputStream());		
-    	ObjectInputStream is = new ObjectInputStream(clientListener.getInputStream());
+    public void clientAccessRingORAM(int blk_id, ObjectOutputStream os, ObjectInputStream is) throws UnknownHostException, IOException, InterruptedException, ClassNotFoundException{
     	
     	
-    	Random rn;
-    	rn = new Random();
-    	rn.setSeed(12345678);
-    	
-    	while (true){
-    	int blk_id = rn.nextInt(this.N);
-    	
-    	
+    	   	    	
     	
     	/* Testing Server Response */
-    	clientLog.info("Starting access for block ID"+blk_id);
+    	clientLog.info("Starting access for block ID-"+blk_id);
      	clientLog.info("Pinging Server");
     	ConnTest(is,os);
     	clientLog.info("Response from Server received");
     	
     	/* Client Setup ( if initialization) */
     	
-    	clientSetup(is,os);
+    	
     	
     	/* Getting PM entry */
     	clientLog.info("Get PM entry");
@@ -149,9 +125,12 @@ public class Client extends Thread{
     				req_index_in_path = i;
     			}
     		}
-    			if (req_index_in_path == -1)
+    			if (req_index_in_path == -1){
+    				if(md[i].bucket_access_counter >= md[i].dummy_pos.length)
+    					md[i].bucket_access_counter = 0;								// TODO: Implement Reshuffle
     				gbp.blk_num[i] = md[i].dummy_pos[md[i].bucket_access_counter++];
     		  		
+    			}
     	}
 
     	
@@ -224,8 +203,7 @@ public class Client extends Thread{
     
     	GetAccessCounter gac = new GetAccessCounter(clientID,messageID++);
     	gac = getAccessCounter(gac,is,os);
-    	System.out.println(gac.access_counter);
-    	System.out.println(gac.eviction_rate);
+    	
     	if(gac.access_counter == gac.eviction_rate){
     		/* EVICTION */
     		clientLog.info("Eviction round");
@@ -237,11 +215,16 @@ public class Client extends Thread{
     		
     	}
     	
+    	AccessComplete ac = new AccessComplete(clientID,messageID++);
+    	os.writeObject(ac);
+    	os.flush();
     	clientLog.info("Access Complete");   	
+    	messageID = 0;
     	
+    	return;
     } 	
     	
-    }    	
+  	
    
 
 	public int getPM(int blk_id){

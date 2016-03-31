@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 public abstract class Message implements Serializable {
 
-	public enum MessageType {Ping, GetMetadata, GetBlocksFromPath, GetPath, WriteBlock, WritePath, GetResultLogs, GetStash, WriteStash, ClearLogs, GetAccessCounter};
+	public enum MessageType {Ping, GetMetadata, GetBlocksFromPath, GetPath, WriteBlock, WritePath, GetResultLogs, GetStash, WriteStash, ClearLogs, GetAccessCounter, AccessComplete};
 	public int MessageID;
 	public int clientID;
 	
-	Message(int MessageID, int ClientID){
+	Message(int ClientID, int MessageID){
 		this.MessageID = MessageID;
 		this.clientID = ClientID;
 	}

@@ -49,7 +49,7 @@ public class bucket implements Serializable {
 	}
 	
 	
-
+	
 	
 	public DataBlock[] getDataBlocks(){return blocks;}
 	public void setDataBlock(int index, DataBlock block) {blocks[index] = block;}
@@ -57,6 +57,6 @@ public class bucket implements Serializable {
 	public MetaData getMetaData(){return this.md;}
 	
 	
-	//TODO: Implement Bucket Reshuffle
+	
 	
 }

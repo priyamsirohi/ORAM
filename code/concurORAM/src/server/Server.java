@@ -16,14 +16,13 @@ public class Server extends Thread{
 	protected Stash stash;
 	protected TreeORAM tree;
 	protected ServerSocket serverListener;
-	
+	protected int[] client_queue;
 	protected int portnum;
 	protected DataResultLog drs;
 	protected int accessCounter;
 	protected int eviction_rate;
 	protected int path_counter;
-	protected ObjectInputStream is;
-	protected ObjectOutputStream os;
+	
 	
 	public Server(int N, int bucket_size, int num_dummy_blocks, int portnum, int eviction_rate) throws UnknownHostException, IOException{
 		this.stash = new Stash();
@@ -41,17 +40,31 @@ public class Server extends Thread{
 	
 	
 	public void run(int num_clients) throws IOException, ClassNotFoundException, InterruptedException{
+			
 		
+			ServerSocket setup_socket = new ServerSocket(++portnum);
+			//Socket sock = new Socket();
+			//sock = setup_socket.accept();
+			//ObjectInputStream is = new ObjectInputStream(sock.getInputStream());
+			//ObjectOutputStream os = new ObjectOutputStream(sock.getOutputStream());
+			
+			ClientQueue queue = new ClientQueue(num_clients);
+			ServerWorkerSerial setup_worker = new ServerWorkerSerial(setup_socket, this.tree, this.stash,this.drs,
+					this.accessCounter, this.eviction_rate,this.path_counter, queue);
+			Thread setup_thread = new Thread(setup_worker);
+			setup_thread.start();
+		
+			
 			for(int i = 0;i<num_clients;i++){
 				ServerSocket ss = new ServerSocket(++portnum);
 				ServerWorkerSerial worker = new ServerWorkerSerial(ss, this.tree, this.stash,this.drs,
-						this.accessCounter, this.eviction_rate,this.path_counter);
+						this.accessCounter, this.eviction_rate,this.path_counter, queue);
 				Thread thread = new Thread(worker);
 				thread.start();
-				System.out.println("The server is up");
+				
 			}
 			
-			
+			System.out.println("The server is up");
 		}
 	
 			
