@@ -59,13 +59,13 @@ public class Server extends Thread{
 				ServerSocket ss = new ServerSocket(++portnum);
 				if(concurrent){
 				ServerWorkerConc worker = new ServerWorkerConc(ss, this.tree, this.stash,this.drs,
-						this.accessCounter, this.eviction_rate,this.path_counter, queue,this.qlog);
+						this.accessCounter, this.eviction_rate,this.path_counter, this.queue,this.qlog);
 						Thread thread = new Thread(worker);
 						thread.start();
 				}
 				else {
 					ServerWorkerSerial worker = new ServerWorkerSerial(ss, this.tree, this.stash,this.drs,
-							this.accessCounter, this.eviction_rate,this.path_counter, queue);
+							this.accessCounter, this.eviction_rate,this.path_counter, this.queue);
 						Thread thread = new Thread(worker);
 						thread.start();
 				}
@@ -74,6 +74,7 @@ public class Server extends Thread{
 			}
 			
 			System.out.println("The server is up");
+			this.queue.reset();
 		}
 	
 			

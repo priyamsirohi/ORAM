@@ -15,14 +15,17 @@ public class ClientQueue {
 	}
 	
 	public void push(int client_id){
-		
+		System.out.println("push"+head);
+		System.out.println("push"+tail);
 		q[head++] = client_id;
 		if (head == num_clients)
 			head =0;
 	}
 	
 	public int pop(){
-		
+		System.out.println("pop"+head);
+		System.out.println("pop"+tail);
+
 		
 		if (tail+1 == num_clients){
 			int temp = tail;
@@ -40,5 +43,10 @@ public class ClientQueue {
 	
 	public int[] getQ(){
 		return q;
+	}
+	
+	public void reset(){
+		head = 0;
+		tail = 0;
 	}
 }

@@ -91,7 +91,7 @@ public class Client extends Thread{
     	   	    	
     	
     	/* Testing Server Response */
-    	clientLog.info("Starting access for block ID-"+blk_id);
+    	//clientLog.info("Starting access for block ID-"+blk_id);
      	//clientLog.info("Pinging Server");
     	ConnTest(is,os);
     	//clientLog.info("Response from Server received");
@@ -160,12 +160,12 @@ public class Client extends Thread{
     	if (req_index_in_path != -1){
     		req_block = blocks[req_index_in_path];
     		unlikely = false;
-    		clientLog.info("Required item found in Path");
+    		//clientLog.info("Required item found in Path");
     	}
     	else if (req_index_in_stash!=-1){
     		req_block = gbp.stash.getStash()[req_index_in_stash];
     		unlikely = false;
-    		clientLog.info("Required item found in Stash");
+    		//clientLog.info("Required item found in Stash");
     	}
     	
     	    	
@@ -193,7 +193,7 @@ public class Client extends Thread{
     		for (int i = 0;i<grl.drs.getHead();i++){
     			if (grl.drs.getDataResultLog()[i].get_id() == blk_id){
     				req_block = grl.drs.getDataResultLog()[i];
-    				clientLog.info("Required item found in Data Result Log");
+    				//clientLog.info("Required item found in Data Result Log");
     			}
     		}
     		
@@ -207,7 +207,7 @@ public class Client extends Thread{
     	
     	if(gac.access_counter == gac.eviction_rate){
     		/* EVICTION */
-    		clientLog.info("Eviction round");
+    		//clientLog.info("Eviction round");
     		do_evict(getAccessCounter(gac,is,os).path_counter,grl,gbp,is,os);
     		ClearLogs cl = new ClearLogs(clientID,messageID++);
     		os.writeObject(cl);

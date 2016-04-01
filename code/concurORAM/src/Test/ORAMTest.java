@@ -12,7 +12,7 @@ public class ORAMTest{
 
 public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException{
 		
-		final int N = 8;
+		final int N = 32;
 		final int server_portnum = 20000;
 		final int eviction_freq = 4;
 		final int bucket_size = 32;

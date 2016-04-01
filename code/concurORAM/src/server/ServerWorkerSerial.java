@@ -48,7 +48,7 @@ public class ServerWorkerSerial implements Runnable{
 	private Logger ServerLog;
     private FileHandler fh;
     private SimpleFormatter formatter;
-    private PositionMap pm;
+   
 	
 	ServerWorkerSerial(ServerSocket ss, TreeORAM tree, Stash stash, DataResultLog drs, 
 			AtomicInteger accessCounter, int eviction_rate, AtomicInteger path_counter, ClientQueue queue) 
@@ -315,7 +315,7 @@ public class ServerWorkerSerial implements Runnable{
 		}
 		
 		if (ms.getMessageType().compareTo(MessageType.AccessComplete)==0){
-				
+			
 			synchronized(this.lock) {this.queue.pop();}
 			}
 		
