@@ -129,8 +129,9 @@ public class ServerWorkerSerial implements Runnable{
 					
 			}
 		
+			this.accessCounter.getAndIncrement();
 			
-			System.out.println("Serving client-"+ms.clientID);
+			
 			Ping ping = new Ping(0,0);
 			
 			try {
@@ -314,8 +315,7 @@ public class ServerWorkerSerial implements Runnable{
 		}
 		
 		if (ms.getMessageType().compareTo(MessageType.AccessComplete)==0){
-			
-			this.accessCounter.getAndIncrement();
+				
 			synchronized(this.lock) {this.queue.pop();}
 			}
 		

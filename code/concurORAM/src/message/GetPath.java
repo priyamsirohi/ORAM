@@ -10,7 +10,7 @@ public class GetPath extends Message{
 	public Node[] path;
 	
 	
-	public GetPath(int MessageID, int ClientID, int leaf_id) { super(MessageID,ClientID); this.leaf_id = leaf_id;} 
+	public GetPath(int ClientID, int MessageID, int leaf_id) { super(ClientID,MessageID); this.leaf_id = leaf_id;} 
 	
 	
 	@Override

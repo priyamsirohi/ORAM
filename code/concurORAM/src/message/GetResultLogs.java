@@ -7,7 +7,7 @@ public class GetResultLogs extends Message{
 	
 	public DataResultLog drs;
 		
-	public GetResultLogs(int MessageID, int ClientID) { super(MessageID,ClientID);} 
+	public GetResultLogs(int ClientID, int MessageID) { super(ClientID,MessageID);} 
 	
 	
 	public MessageType getMessageType(){return MessageType.GetResultLogs;}

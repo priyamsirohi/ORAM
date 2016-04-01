@@ -1,5 +1,6 @@
 package ringoram;
 
+import java.io.EOFException;
 import java.io.IOException;
 
 import Operations.*;
@@ -78,7 +79,11 @@ public class TreeORAM {
 				key = path_to_data+"Node#" + (2*(path[i-1].getNode_id())+1);
 		
 			rn = new ReadNode(key);
-			path[i] = rn.read_from_file();
+			try{
+				path[i] = rn.read_from_file();
+			} catch (EOFException e){
+				continue;
+			}
 			N = N/2;
 			leaf_id = (int) (leaf_id%(Math.pow(2,depth-i)+1));
 			

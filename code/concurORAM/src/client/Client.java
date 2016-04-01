@@ -174,8 +174,7 @@ public class Client extends Thread{
     	/* Write back item */
     //	clientLog.info("Writing back block");
     	if (req_block != null){
-    		System.out.println("Access for-"+blk_id);
-    		System.out.println("Writing back-"+req_block.get_id());
+    		
     		WriteBlock wb = new WriteBlock(clientID,messageID++,req_block);
     		WriteBackBlock(wb,os);
     	}
@@ -245,9 +244,7 @@ public class Client extends Thread{
     	os.flush();
     	
     	Message ms = (Message) is.readObject();
-        while (ms.getMessageType().compareTo(MessageType.GetMetadata) != 0){
-        	Thread.sleep(5000); 	
-			}
+        while (ms.getMessageType().compareTo(MessageType.GetMetadata) != 0);
         
         gm = (GetMetadata) ms;
         return gm.metadata;
@@ -260,9 +257,7 @@ public class Client extends Thread{
     	os.flush();
     	
     	Message ms = (Message) is.readObject();
-        while (ms.getMessageType().compareTo(MessageType.GetBlocksFromPath) != 0){
-        	Thread.sleep(5000); 	
-			}
+        while (ms.getMessageType().compareTo(MessageType.GetBlocksFromPath) != 0);
         
         gbp = (GetBlocksFromPath) ms;
         
@@ -288,9 +283,7 @@ public class Client extends Thread{
     	os.flush();
     	
     	 Message ms = (Message) is.readObject();
-         while (ms.getMessageType().compareTo(MessageType.Ping) != 0){
-         	Thread.sleep(5000); 	
-			}
+         while (ms.getMessageType().compareTo(MessageType.Ping) != 0);
          
          return;
     }
@@ -302,9 +295,7 @@ public class Client extends Thread{
     	os.flush();
     	
     	 Message ms = (Message) is.readObject();
-         while (ms.getMessageType().compareTo(MessageType.GetResultLogs) != 0){
-         	Thread.sleep(5000); 	
-			}
+         while (ms.getMessageType().compareTo(MessageType.GetResultLogs) != 0);
          
          grl = (GetResultLogs) ms;
          return grl;
@@ -317,9 +308,7 @@ public class Client extends Thread{
     	
 
    	 Message ms = (Message) is.readObject();
-        while (ms.getMessageType().compareTo(MessageType.GetAccessCounter) != 0){
-        	Thread.sleep(5000); 	
-			}
+        while (ms.getMessageType().compareTo(MessageType.GetAccessCounter) != 0);
         
         gac = (GetAccessCounter) ms;
         return gac;
@@ -337,9 +326,7 @@ public class Client extends Thread{
     	os.flush();
     	
     	Message ms = (Message) is.readObject();
-	    while (ms.getMessageType().compareTo(MessageType.GetPath) != 0){
-	    	Thread.sleep(5000); 	
-			}
+	    while (ms.getMessageType().compareTo(MessageType.GetPath) != 0);
 	    gp = (GetPath) ms;
     	
 	    path = gp.path;
@@ -350,7 +337,7 @@ public class Client extends Thread{
     	DataBlock [] stash_log_comb;
     	stash_log_comb = new DataBlock[grs.drs.getHead() + gbp.stash.num_of_elements];
     	int i;
-    	for (i = 0;i<grs.drs.getHead();i++){ stash_log_comb[i] = grs.drs.getDataResultLog()[i]; System.out.println(stash_log_comb[i].get_id());}
+    	for (i = 0;i<grs.drs.getHead();i++){ stash_log_comb[i] = grs.drs.getDataResultLog()[i]; }
     	for (int j = 0;j<gbp.stash.num_of_elements;j++) { stash_log_comb[i+j] = gbp.stash.getStash()[j];}
  
     	Stash new_stash;
@@ -381,7 +368,7 @@ public class Client extends Thread{
 	    		if (!mapped)
 	    			new_stash.getStash()[stash_head++] = stash_log_comb[i];
 	    		else{
-	    			System.out.println(stash_log_comb[i].get_id());
+	    			
 	    		 	this.pm.setMap((int) stash_log_comb[i].get_id(), map);
 	    		}
 	    	}

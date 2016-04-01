@@ -7,7 +7,7 @@ public class GetStash extends Message {
 
 	public Stash stash;
 	
-	GetStash(int MessageID, int ClientID) { super(MessageID,ClientID);} 
+	GetStash(int ClientID, int MessageID) { super(ClientID,MessageID);} 
 	
 	
 	public MessageType getMessageType(){return MessageType.GetStash;}

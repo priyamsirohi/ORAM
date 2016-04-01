@@ -9,7 +9,7 @@ public class GetMetadata extends Message{
 	public MetaData[] metadata;
 	
 	
-	public GetMetadata(int MessageID, int ClientID, int leaf_id) { super(MessageID,ClientID); this.leaf_id = leaf_id;} 
+	public GetMetadata(int ClientID, int MessageID, int leaf_id) { super(ClientID,MessageID); this.leaf_id = leaf_id;} 
 
 	
 	@Override

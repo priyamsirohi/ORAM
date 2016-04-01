@@ -24,8 +24,10 @@ public class Server extends Thread{
 	protected int eviction_rate;
 	protected AtomicInteger path_counter;
 	protected ClientQueue queue;
+	protected QueryLog qlog;
+	protected boolean concurrent;
 	
-	public Server(int N, int bucket_size, int num_dummy_blocks, int portnum, int eviction_rate) throws UnknownHostException, IOException{
+	public Server(int N, int bucket_size, int num_dummy_blocks, int portnum, int eviction_rate, boolean concurrent) throws UnknownHostException, IOException{
 		this.stash = new Stash();
 		this.tree = new TreeORAM(N,bucket_size,num_dummy_blocks);
 		this.portnum = portnum;
@@ -34,6 +36,7 @@ public class Server extends Thread{
 		this.eviction_rate = eviction_rate;
 		accessCounter = new AtomicInteger(0);
 		path_counter = new AtomicInteger(0);
+		this.concurrent = concurrent;
 	}
 	
 	
@@ -41,24 +44,33 @@ public class Server extends Thread{
 	
 	public void run(int num_clients) throws IOException, ClassNotFoundException, InterruptedException{
 			
-		
+			
 			ServerSocket setup_socket = new ServerSocket(++portnum);
 			queue = new ClientQueue(num_clients);
-			
+			qlog = new QueryLog(num_clients);
 			
 			ServerWorkerSerial setup_worker = new ServerWorkerSerial(setup_socket, this.tree, this.stash,this.drs,
 					this.accessCounter, this.eviction_rate,this.path_counter, this.queue);
 			Thread setup_thread = new Thread(setup_worker);
 			setup_thread.start();
-		
+					
 			
 			for(int i = 0;i<num_clients;i++){
 				ServerSocket ss = new ServerSocket(++portnum);
-				ServerWorkerSerial worker = new ServerWorkerSerial(ss, this.tree, this.stash,this.drs,
-						this.accessCounter, this.eviction_rate,this.path_counter, queue);
-				Thread thread = new Thread(worker);
-				thread.start();
+				if(concurrent){
+				ServerWorkerConc worker = new ServerWorkerConc(ss, this.tree, this.stash,this.drs,
+						this.accessCounter, this.eviction_rate,this.path_counter, queue,this.qlog);
+						Thread thread = new Thread(worker);
+						thread.start();
+				}
+				else {
+					ServerWorkerSerial worker = new ServerWorkerSerial(ss, this.tree, this.stash,this.drs,
+							this.accessCounter, this.eviction_rate,this.path_counter, queue);
+						Thread thread = new Thread(worker);
+						thread.start();
+				}
 				
+								
 			}
 			
 			System.out.println("The server is up");

@@ -12,6 +12,7 @@ import message.GetPath;
 import message.Message;
 import message.Ping;
 import message.WritePath;
+import message.ClearLogs;
 import message.Message.MessageType;
 import ringoram.DataBlock;
 import ringoram.PositionMap;
@@ -96,6 +97,7 @@ public class SuperClient extends Thread {
 				    	os.flush();
 					  
 					    
+					    
 						
 					
 				} catch (Exception e) {
@@ -109,19 +111,31 @@ public class SuperClient extends Thread {
 	    		
 	    	}
 	    	System.out.println("Client Setup complete");
-	    	AccessComplete ac = new AccessComplete(clientID,messageID++);
-	    	os.writeObject(ac);
-    		os.flush();
+	    	ClearLogs cl = new ClearLogs(clientID,messageID++);
+		    os.writeObject(cl);
+		    os.flush();
+    		
 	 }
 	 
-	public void start_clients(int num_clients) throws UnknownHostException, IOException{
+	public void start_clients(int num_clients,boolean concurrent) throws UnknownHostException, IOException{
 	
+		if(concurrent){
+		for (int i = 0;i<num_clients;i++){
+			ConClient client= new ConClient(++server_portnum,"127.0.0.1",this.clientID+1+i,this.N,this.pm);
+			Thread thread = new Thread(client);
+			thread.start();
+			
+		}
+	}	else {
+		
 		for (int i = 0;i<num_clients;i++){
 			Client client= new Client(++server_portnum,"127.0.0.1",this.clientID+1+i,this.N,this.pm);
 			Thread thread = new Thread(client);
 			thread.start();
 			
 		}
+	}
+		
 		System.out.println("All client threads started");
 		
 	}

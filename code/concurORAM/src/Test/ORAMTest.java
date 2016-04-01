@@ -17,17 +17,18 @@ public static void main(String[] args) throws IOException, ClassNotFoundExceptio
 		final int eviction_freq = 4;
 		final int bucket_size = 32;
 		final int num_dummy_blocks = 16;
-		final int num_clients = 8;
+		final int num_clients = 4;
 		final Random rn;
+		final boolean concurrent = false;
 		rn = new Random();
 		rn.setSeed(12345678);
 		
-		Server server = new Server(N,bucket_size,num_dummy_blocks,server_portnum,eviction_freq);
+		Server server = new Server(N,bucket_size,num_dummy_blocks,server_portnum,eviction_freq,concurrent);
 		server.run(num_clients);
 		
 		SuperClient sup_client = new SuperClient(N,server_portnum);
 		sup_client.clientSetup();
-		sup_client.start_clients(num_clients);
+		sup_client.start_clients(num_clients,concurrent);
 		
 
 		System.out.println("Successful");

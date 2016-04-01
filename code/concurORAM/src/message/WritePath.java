@@ -7,7 +7,7 @@ public class WritePath extends Message{
 	private int leaf_id;
 	private Node[] nodes;
 	
-	public WritePath(int MessageID, int ClientID, int leaf_id, Node[] nodes) { super(MessageID,ClientID); this.leaf_id = leaf_id; this.nodes = nodes;} 
+	public WritePath(int ClientID, int MessageID, int leaf_id, Node[] nodes) { super(ClientID,MessageID); this.leaf_id = leaf_id; this.nodes = nodes;} 
 	
 	
 	@Override

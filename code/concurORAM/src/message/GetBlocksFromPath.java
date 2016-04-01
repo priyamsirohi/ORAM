@@ -10,7 +10,7 @@ public int[] blk_num;
 public DataBlock[] blocks; 	//Return message from Server
 public Stash stash;
 
-	public GetBlocksFromPath(int MessageID, int ClientID, int leaf_id, int depth) { super(MessageID,ClientID); 
+	public GetBlocksFromPath(int ClientID, int MessageID, int leaf_id, int depth) { super(ClientID,MessageID); 
 	this.leaf_id = leaf_id; this.blk_num = new int[depth];stash = new Stash();} 
 	
 	

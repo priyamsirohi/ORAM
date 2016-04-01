@@ -1,0 +1,40 @@
+Mar 31, 2016 10:30:58 PM client.Client clientAccessRingORAM
+INFO: Starting access for block ID-8
+Mar 31, 2016 10:30:59 PM client.Client clientAccessRingORAM
+INFO: Required item found in Path
+Mar 31, 2016 10:30:59 PM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 31, 2016 10:30:59 PM client.Client clientAccessRingORAM
+INFO: Starting access for block ID-5
+Mar 31, 2016 10:30:59 PM client.Client clientAccessRingORAM
+INFO: Required item found in Path
+Mar 31, 2016 10:31:00 PM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 31, 2016 10:31:00 PM client.Client clientAccessRingORAM
+INFO: Starting access for block ID-3
+Mar 31, 2016 10:31:00 PM client.Client clientAccessRingORAM
+INFO: Required item found in Path
+Mar 31, 2016 10:31:01 PM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 31, 2016 10:31:01 PM client.Client clientAccessRingORAM
+INFO: Starting access for block ID-5
+Mar 31, 2016 10:31:01 PM client.Client clientAccessRingORAM
+INFO: Required item found in Path
+Mar 31, 2016 10:31:02 PM client.Client clientAccessRingORAM
+INFO: Eviction round
+Mar 31, 2016 10:31:02 PM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 31, 2016 10:31:02 PM client.Client clientAccessRingORAM
+INFO: Starting access for block ID-8
+Mar 31, 2016 10:31:02 PM client.Client clientAccessRingORAM
+INFO: Required item found in Path
+Mar 31, 2016 10:31:03 PM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 31, 2016 10:31:03 PM client.Client clientAccessRingORAM
+INFO: Starting access for block ID-4
+Mar 31, 2016 10:31:03 PM client.Client clientAccessRingORAM
+INFO: Required item found in Path
+Mar 31, 2016 10:31:04 PM client.Client clientAccessRingORAM
+INFO: Access Complete
+Mar 31, 2016 10:31:04 PM client.Client clientAccessRingORAM
+INFO: Starting access for block ID-2

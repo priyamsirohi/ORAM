@@ -6,7 +6,7 @@ public class GetAccessCounter extends Message{
 	public int path_counter;
 	public int eviction_rate;
 	
-	public GetAccessCounter(int MessageID, int ClientID) { super(MessageID,ClientID);} 
+	public GetAccessCounter(int ClientID, int MessageID) { super(ClientID,MessageID);} 
 		
 	
 	public MessageType getMessageType(){return MessageType.GetAccessCounter;}
