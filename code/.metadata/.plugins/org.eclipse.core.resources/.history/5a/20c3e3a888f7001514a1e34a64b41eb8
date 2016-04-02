@@ -1,0 +1,16 @@
+package message;
+import server.QueryLog;
+
+public class Ping extends Message {
+
+	
+	QueryLog[] qlog;
+	
+	public Ping(int MessageID, int ClientID) { super(MessageID,ClientID);} 
+	public Ping(int messageID,int ClientID,int num_clients) {super(messageID,clientID); qlog = new qlog(num_clients);}
+	
+	@Override
+	public MessageType getMessageType(){return MessageType.Ping;}
+	public int getMessageID (){ return super.MessageID;}
+	public int getClientID() {return super.clientID;}
+}

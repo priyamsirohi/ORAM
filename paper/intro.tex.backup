@@ -1,2 +1,100 @@
-\Section{Introduction}
+\section{Introduction}
+\label{oram.intro}
 
+With an increasing amount of confidential data being stored on outsourced 
+storage, 
+the privacy of this data is of critical importance. As demonstrated in previous 
+work \cite{accesspatternleak}, 
+simply encrypting the data is not enough. Even on encrypted data, the sequence 
+of locations read and written to 
+the storage can leak information regarding the user's {\em access pattern} and 
+the data stored. 
+
+Oblivious RAM (ORAM) is a cryptographic primitive that allows a client to hide 
+its data access patterns from 
+an untrusted storage hosting the data. Informally, the ORAM adversarial model 
+prevents an adversary from distinguishing 
+between multiple equal length sequence of queries made by the client to the 
+server.
+
+Since the original ORAM construction by Goldreich and Ostroevsky 
+\cite{goldreich}, a large volume 
+of previous literature 
+\cite{oram_cuckoohashing,bforam,privatefs,binarytreeoram,pathoram,ringoram} has 
+been dedicated to developing 
+more efficient ORAM constructions. PathORAM \cite{pathoram}, based on the 
+original binary tree ORAM construction by 
+Shi {\em et al.} \cite{binarytreeoram} is widely accepted to be asymptotically 
+the most {\em bandwidth efficient} ORAM. RingORAM \cite{ringoram} 
+further improves on the practical overhead of PathORAM \cite{pathoram} by 
+optimizing the constants. Even for ORAMs that divide the data into 
+multiple sub-ORAMs such as ObliviStore \cite{oblivistore} and CURIOUS 
+\cite{curious}, \cite{curious} shows that PathORAM \cite{pathoram} is the most 
+suitable ORAM for sub-ORAM design in terms of cost and bandwidth.
+
+Although, recent tree based ORAM designs have achieved near-optimal {\em bandwidth} 
+for single client scenarios, 
+one critical challenge, yet to be addresses, is to make
+these ORAMs compatible for concurrent non-overlapping access (access for different data items)
+for multi-client scenarios, while maintaining security gaurantees. 
+As a motivating example, consider an enterprise that offloads confidential 
+data to a remote storage that deploys an ORAM, and provides access
+to a group of employees (users). 
+These users should be able to perform non-overlapping queries 
+without a significant performance overhead compared to a scenario where there is 
+only one user accessing the ORAM.
+
+Note that it is trivial to deploy a standard tree based ORAM without 
+concurrency to support multiple clients by sharing the key to the ORAM 
+and storing all related datastructures (the stash and the position map) on the 
+storage server to ensure consistency of state. 
+In this case, only {\em one} client can access the position map, the stash 
+and the tree at one time while the other concurrent clients 
+must wait for this client to finish. This reduces the overall throughput and increases the 
+query response time by a factor of the number of concurrent clients. A client (in the worst case) 
+might need to wait for {\em all} other clients to finish before retrieving the required data item. 
+Since, ORAMs have high latency of access (due to the retrieval of multiple items for one access), 
+this implies that a client would need to wait a significant amount of time before being able to proceed 
+with the query. 
+
+In this paper, we propose \sysname~, a mechanism to support multi-client concurrency for tree-based ORAMs 
+without sacrificing security. Our work is based on the concurrency scheme proposed by 
+Williams {\em et al.} \cite{privatefs}. However, there are significant challenges to directly 
+adapting the techniques proposed in \cite{privatefs} for tree based ORAMs. In the following, we discuss 
+these challenges.
+
+{\bf Concurrency for position map.~}
+%
+First, tree based ORAMs use a position map to store mappings from the logical IDs of data items to the leaf IDs in the tree they 
+are mapped to. Specifically, a data item mapped to leaf ID $l$ can reside in any of the nodes along the 
+path to leaf $l$ from the root. In a single client scenario, the position map can be stored at the client side. For a 
+multi-client scenario the position map must be stored on the server to ensure consistency among the clients. 
+As introduced in \cite{binarytreeoram}, the position map can also be stored at the server (to reduce client side storage) 
+in recursively smaller ORAMs. In this case, the position map is divided into fixed size blocks. 
+Thus, an access in this case, requires reading the position map from the smaller ORAMs to obtain 
+the leaf ID for the required data item and then reading the corresponding path to retrieve the data item. 
+Since, the position map is 
+stored recursively, an ORAM storing the position map also has a position map. To ensure that each successive position map is smaller 
+(to ensure that the recursion terminates with an ORAM that has a 
+a constant size position map), each block in the ORAMs must store multiple position map entries. However, using this in a 
+multi-client scenario allows the server to correlate two client accesses if they access the same position map block. 
+Note that two concurrent clients may access the same position map block even if they are not accessing the same data item.
+
+As one of the main insights, \sysname~ stores the entries of the position map in a pyramid 
+ORAM (\cite{goldreich,privatefs}) with multiple levels and uses a hash function to map position map 
+entries to buckets in a level. 
+Note that since the location of an entry is randomized 
+(due to the uniform hash function used), concurrent clients 
+accessing the same bucket, does not leak any correlation between the items queried by the clients. Specifically, \sysname~ use the concurrent 
+version of PD-ORAM as used in PrivateFS \cite{privatefs} to ensure concurrency for queries.
+
+{\bf Decoupling fetching and eviction.~}
+Tree based ORAMs divide accesses into two parts -- fetching data (reading a root to leaf path) and eviction (writing back 
+the read data to a root to leaf path). To ensure consistency in multi-client scenarios, the fetching and eviction cannot proceed concurrently. 
+Thus, the 
+fetching and eviction must be decoupled. Fortunately, RingORAM \cite{ringoram} provides a 
+mechanism to evict data after a fixed number of fetches. 
+\sysname~ uses RingORAM and support a fixed number of concurrent queries followed
+by an eviction by a single client. 
+
+\sysname~ uses the above mentioned ORAMs a   

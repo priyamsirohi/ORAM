@@ -1,9 +1,29 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{curious}
+{\sc Bindschaedler, V., Naveed, M., Pan, X., Wang, X., and Huang, Y.}
+\newblock Practicing oblivious access on cloud storage: The gap, the fallacy,
+  and the new way forward.
+\newblock In {\em Proceedings of the 22Nd ACM SIGSAC Conference on Computer and
+  Communications Security\/} (New York, NY, USA, 2015), CCS '15, ACM,
+  pp.~837--849.
 
 \bibitem{goldreich}
 {\sc Goldreich, O., and Ostrovsky, R.}
 \newblock Software protection and simulation on oblivious rams.
 \newblock {\em Journal of the ACM 43\/} (1996), 431--473.
+
+\bibitem{oram_cuckoohashing}
+{\sc Goodrich, M.~T., and Mitzenmacher, M.}
+\newblock Mapreduce parallel cuckoo hashing and oblivious {RAM} simulations.
+\newblock {\em CoRR abs/1007.1259\/} (2010).
+
+\bibitem{accesspatternleak}
+{\sc Islam, M.~S., Kuzu, M., and Kantarcioglu, M.}
+\newblock Access pattern disclosure on searchable encryption: Ramification,
+  attack and mitigation.
+\newblock In {\em in Network and Distributed System Security Symposium (NDSS\/}
+  (2012).
 
 \bibitem{ringoram}
 {\sc Ren, L., Fletcher, C., Kwon, A., Stefanov, E., Shi, E., van Dijk, M., and
@@ -17,6 +37,13 @@
 \newblock Oblivious ram with o((logn)3) worst-case cost.
 \newblock In {\em ASIACRYPT\/} (2011).
 
+\bibitem{oblivistore}
+{\sc Stefanov, E., and Shi, E.}
+\newblock Oblivistore: High performance oblivious cloud storage.
+\newblock In {\em Proceedings of the 2013 IEEE Symposium on Security and
+  Privacy\/} (Washington, DC, USA, 2013), SP '13, IEEE Computer Society,
+  pp.~253--267.
+
 \bibitem{pathoram}
 {\sc Stefanov, E., van Dijk, M., Shi, E., Fletcher, C., Ren, L., Yu, X., and
   Devadas, S.}
@@ -24,6 +51,14 @@
 \newblock In {\em Proceedings of the 2013 ACM SIGSAC Conference on Computer
   \&\#38; Communications Security\/} (New York, NY, USA, 2013), CCS '13, ACM,
   pp.~299--310.
+
+\bibitem{bforam}
+{\sc Williams, P., Sion, R., and Carbunar, B.}
+\newblock Building castles out of mud: Practical access pattern privacy and
+  correctness on untrusted storage.
+\newblock In {\em Proceedings of the 15th ACM Conference on Computer and
+  Communications Security\/} (New York, NY, USA, 2008), CCS '08, ACM,
+  pp.~139--148.
 
 \bibitem{privatefs}
 {\sc Williams, P., Sion, R., and Tomescu, A.}

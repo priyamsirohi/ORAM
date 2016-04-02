@@ -1,0 +1,21 @@
+package server;
+
+public class QueryLog {
+
+	private int[] qlog;
+	
+	QueryLog(int num_client){
+		qlog = new int[num_client];
+	}
+	
+	public int[] getQLog(){
+		return qlog;
+	}
+	
+	public setEntry(int index,int value){
+		qlog[index] = value;
+	}
+	
+}
+
+

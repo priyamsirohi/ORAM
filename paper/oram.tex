@@ -1,25 +1,15 @@
 \documentclass{acm}
 \usepackage{citesort}
+\usepackage{color}
+
+\newcommand{\todo}[1]{{\bf\textcolor{red}{ [TODO: #1]}}}
+\newcommand{\sysname}{ConcurORAM}
 
 \title{Towards practical}
 \begin{document}
 
 \begin{abstract}
- Data storage in remote servers has become popular in recent years with an increasing 
- number of enterprises using services such as Amazon EC2 and github for storing 
- valuable (and potentially private) data. Privacy of this data is 
- essential. One such tool for ensuring complete privacy of server-hosted data is by deploying 
- an Oblivious RAM (ORAM) for accessing data. An ORAM effectively ``hides'' the data 
- access patterns of a user by making all access patterns computationally indistinguishable.
- 
- ORAM technology has advanced rapidly in recent years \cite{privatefs,binarytreeoram,pathoram,ringoram} with 
- PathORAM \cite{pathoram} achieving the near-optimal bandwidth lower bound established in \cite{goldreich}. 
- Inspite of these promising developments, ORAMs are yet to become feasible for deployment on commercial clouds. 
- 
- In this paper, we attempt to make PathORAM \cite{pathoram} more practical by reducing the average latency of 
- concurrent client queries. This is achieved by using multiple parallel threads for 
- fetching and eviction of data. We implement a protoype of our system and show an
- improvement in query response time proportional to the number of concurrent threads.  
+ Oblivious RAM (ORAM) technology has 
  
 \end{abstract}
 

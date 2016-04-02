@@ -1,0 +1,19 @@
+package message;
+
+import server.QueryLog;
+
+public class GetQLog extends Message{
+	
+	QueryLog qlog;
+	int access_counter;
+	int eviction_rate;
+	int path_counter;
+	
+	public GetQLog(int ClientID,int MessageID,QueryLog qlog) {super(ClientID,MessageID);this.qlog = new QueryLog(qlog.getQLog().length);}
+	
+	public MessageType getMessageType(){return MessageType.GetQLog;}
+	public int getMessageID (){ return super.MessageID;}
+	public int getClientID() {return super.clientID;}
+	public QueryLog getQLog() {return qlog;}
+
+}
