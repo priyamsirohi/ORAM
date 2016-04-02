@@ -1,0 +1,23 @@
+\section{Model}
+\label{model}
+
+{\bf Deployment.~} \sysname~ considers a deployment model with two parties: the ORAM clients (with limited 
+local storage) and the ORAM server (a remote storage that hosts the clients' data).
+The server stores data in terms of fixed sized``blocks''. \sysname~ considers $N$ 
+blocks of outsourced data on the server. Clients can also access data in terms of 
+blocks with each block being denoted by a logical block ID denoted by $id$. 
+
+
+The parties engage in an interactive query-response based protocol established 
+by \sysoram~. 
+
+Further, Clients access data in terms of fixed size blocks 
+as stored on the server. 
+
+{\bf Clients.~} Clients are considered honest in the \sysoram~ model and 
+do not interact with each other. Further, the clients share the key to the ORAMs and 
+the secret hash functions used for PD-ORAM, which are stored encrypted on the server.
+Clients engage the server using different read and write 
+
+{\bf Server.~} \sysname~ considers an untrusted server that is honest but curious.
+The server follows the \sysname~ protocol and 
