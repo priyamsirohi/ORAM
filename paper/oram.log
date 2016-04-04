@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=latex 2016.1.25)  2 APR 2016 19:23
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=latex 2014.11.19)  4 APR 2016 02:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **oram.tex
 (./oram.tex
 LaTeX2e <2011/06/27>
-Babel <3.9h> and hyphenation patterns for 78 languages loaded.
+Babel <3.9f> and hyphenation patterns for 78 languages loaded.
 (./acm.cls (/usr/share/texlive/texmf-dist/tex/latex/graphics/epsfig.sty
 Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
 
@@ -247,16 +247,25 @@ sy/m/n/9 O[] \OT1/cmr/m/n/9 = \OMS/cmsy/m/n/9 f\OML/cmm/m/it/9 x[]; x[]; [] ; x
 []\OMS/cmsy/m/n/9 g$
  []
 
-) (./oram.bbl [2]) [3
+) (./overview.tex [2]
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-] (./oram.aux) ) 
+File: Figures/Query_overview.eps Graphic file (type eps)
+
+<Figures/Query_overview.eps>
+Overfull \hbox (3.85059pt too wide) in paragraph at lines 81--82
+[]\T1/aer/m/n/9 Figure 1[] shows the query pro-to-col for Con-curO-RAM . Querie
+s
+ []
+
+[3]) (./oram.bbl) [4] (./oram.aux) ) 
 Here is how much of TeX's memory you used:
- 2030 strings out of 493305
- 23309 string characters out of 6139897
- 82996 words of memory out of 5000000
+ 2039 strings out of 493308
+ 23421 string characters out of 6139930
+ 82740 words of memory out of 5000000
  5465 multiletter control sequences out of 15000+600000
  41475 words of font info for 52 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 39i,9n,30p,243b,216s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 39i,9n,30p,301b,264s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on oram.dvi (3 pages, 19872 bytes).
+Output written on oram.dvi (4 pages, 28524 bytes).
