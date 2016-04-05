@@ -2,19 +2,21 @@
 \label{oram:related}
 
 ORAMs have been well-researched since the seminal work by Goldreich and Ostroevsky \cite{goldreich}. 
-The construction provided by Goldreich and Ostroevsky requires only logarithmic storage at the client 
-side and has an amortized communication complexity of $\order{log^{3}N}$. ORAM constructions can be 
-broadly classified into two categories: pyramid based construction and tree based constructions. 
-Below we briefly discuss these constructions.
+ORAM constructions in literature can be 
+broadly classified into two categories: pyramid based constructions and tree based constructions. 
 
 
 \subsection{Pyramid based ORAM}
 \label{oram:related:pyramid}
 %
-The first pyramid based construction was provided by Goldreich and 
-Ostroevsky \cite{goldreich}. A pyramid based construction organized the data in $logN$ levels. 
+A pyramid based construction organized the data in $logN$ levels. 
 Level $i$ consists of $4^{i}$ data blocks assigned to one of $4^{i}$ buckets as determined by a secure 
 hash function. Due to hash collisions, each bucket can contain up to $\order{ln N}$ blocks.
+
+The first pyramid based construction was provided by Goldreich and 
+Ostroevsky \cite{goldreich} which achieves an amortized communication complexity of $\order{log^{3}N}$ and 
+requires only logarithmic storage at the client 
+side. 
 
 {\bf Read.~}
 %
@@ -36,7 +38,7 @@ the server cannot learn the purpose (read or write) of an access.
 
 {\bf Overflow.~}
 %
-The top level overflows after a fixed number of accesses since accessed blocks are always placed there. In this case, the top level 
+The top level overflows after a fixed number of accesses since queried blocks are invariably placed there. On an overflow, the top level 
 is merged with the second level and reshuffled using a new secure hash function. The reshuffling is done obliviously using a sorting 
 network \cite{goldreich,bforam,randomizedshellsort}. Each level overflows once after the level above has overflown twice. To ensure invariant 
 (i), all buckets contain the same number of blocks (either real or dummy) after a reshuffle.
@@ -48,7 +50,7 @@ complexity under $\order{\sqrt{N}}$ client storage using an oblivious merge sort
 build an ORAM with $\order{logN}$ access complexity and $\order{log^{2}N}$ overall communication complexity by storing an encrypted bloom 
 filter on the server and retrieving one block from a level. 
 
-Pinkas {\em et al.} \cite{Pinkasoram} use {\em cuckoo hashing} and randomized shell sort {\em randomizedshellsort} 
+Pinkas {\em et al.} \cite{Pinkasoram} use {\em cuckoo hashing} and randomized shell sort \cite{randomizedshellsort} 
 over the original Goldreich and Ostroevsky solution \cite{goldreich} and achieve an amortized communication 
 complexity of $\order{log^{2}N}$ with constant client side storage. However, Goodrich {\em et al.} \cite{goodrichoram} 
 highlight a leak in the construction in \cite{Pinkasoram} and provide an alternate construction thats achieves an amortized 
@@ -75,7 +77,7 @@ In contrast to de-amortized ORAM constructions, tree-based ORAMs are naturally u
 A tree based ORAM organizes the data as a binary (or ternary) tree. Each node of the tree is a bucket which can contain multiple blocks. 
 A block is randomly mapped to a leaf in the tree. The ORAM maintains the following invariant: a block resides in any one of the buckets on the 
 path from the root to the leaf to which the block is mapped. The position map which maps blocks to leaves is either stored on the client ($\order{N}$ 
-storage required) or recursively on the server for $\order(1)$ client side storage at the cost of $\order{log^{2}N}$ increase in communication 
+storage required) or recursively on the server for $\order{1}$ client side storage at the cost of $\order{log^{2}N}$ increase in communication 
 complexity.
 
 To access a particular block, the client downloads all the buckets (or one element from each bucket) along the path from 
@@ -93,13 +95,14 @@ sized blocks in the presence of a logarithmic-sized client side {\em stash} to h
 
 {\bf RingORAM:} RingORAM decouples fetching a path during an access and eviction, by evicting along a deterministically chosen path after a fixed number of fetches. 
 Similar to \cite{GentryORAM}, the path is chosen in the reverse-lexicographical order for better eviction. Further, RingORAM uses larger buckets but reads 
-only one block per bucket during a query as determined by a per-bucket metadata.
+only one block per bucket during a query as determined by a per-bucket metadata. The required block is read from the bucket that contains it while dummy 
+blocks are read from the rest of the buckets on the path.
 
 \subsection{Recent Developments}
 \label{oram:related:recent}
 %
 Recent work \cite{curious} has shown that for practical deployment on clouds, ORAMs such as ObliviStore \cite{oblivistore} and CURIOUS \cite{curious} that 
-divide the data into constant sized sub-ORAMs perform better than both pyramid ORAMs or tree based ORAMs. CURIOUS uses PathORAM as the primitive for the 
+divide the data into constant sized sub-ORAMs perform better than both pyramid ORAMs and tree based ORAMs. CURIOUS uses PathORAM as the primitive for the 
 sub-ORAM construction. 
 Alternative ORAM constructions \cite{onionoram,comporam} achieve $\order{1}$ communication complexity at the cost of server side computation using 
 homomorphic encryption. However, due to expensive homomorphic computations, these ORAMs are not yet practical for deployment.

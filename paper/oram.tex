@@ -2,7 +2,7 @@
 \usepackage{citesort}
 \usepackage{color}
 
-\newcommand{\todo}[1]{{\bf\textcolor{red}{ [TODO: #1]}}}
+\newcommand{\todo}[1]{{\bf\textcolor{red}{ [Anrin: #1]}}}
 \newcommand{\sysname}{ConcurORAM}
 \newcommand{\order}[1]{O(#1)}
 
@@ -13,21 +13,23 @@
 \begin{abstract}
  Oblivious RAM (ORAM) technology has advanced rapidly in recent years as 
  an increasing amount of data is outsourced to remote storage. Although 
- tree based ORAMs such as PathORAM and RingORAM have achieved nearly-optimal 
- bandwidth blowup for {\em single client} scenarios, the low overall 
+ tree based ORAMs such as PathORAM \cite{pathoram} and RingORAM \cite{ringoram} 
+ have achieved near-optimal 
+ bandwidth blowup for {\em single client} scenarios, their low overall 
  throughput due to high latency of access 
- makes them prohibitive in multi-client scenarios.
+ makes them prohibitive in multi-client scenarios. 
  
- In this paper, we propose ConcurORAM, a multi-client concurrent variant 
+  In this paper, we propose ConcurORAM, a multi-client concurrent variant 
  of RingORAM that reduces waiting for concurrent client accesses and 
- increases overall throughput by a factor of the number of clients.
- Our concurrency mechanism is based on the concurrency mechanism 
- proposed in \cite{privatefs}. 
+ increases overall throughput. ConcurORAM leverages the asynchronous nature of RingORAM queries to 
+ support concurrent client accesses until the next round of eviction. Further to 
+ support concurrent accesses, the position map for RingORAM is stored in a pyramid ORAM 
+ using the PD-ORAM deamortization abstraction detailed in \cite{privatefs}. 
  
- We leverage the asynchronous nature of RingORAM queries to 
- support concurrent client accesses up-to an eviction. Further, we 
- use a pyramid ORAM using the PD-ORAM abstraction detailed in \cite{privatefs} 
- for concurrent accesses to the position map.
+ ConcurORAM has been implemented and tested. It shows an overall increase 
+ in throughput by a factor of \todo{to be filled} and a reduction in query execution time by a factor of \todo {to be filled} 
+ over a standard implementation 
+ of RingORAM for a multi-client scenario.
  
 \end{abstract}
 

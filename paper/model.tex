@@ -1,9 +1,9 @@
 \section{Model}
 \label{model}
-
+\medskip
 {\bf Deployment.~} \sysname~ considers a deployment model with two parties: the ORAM clients (with limited 
 local storage) and the ORAM server (a remote storage that hosts the clients' data).
-The server stores data in terms of fixed sized``blocks''. \sysname~ considers $N$ 
+The server stores data as fixed sized ``blocks''. \sysname~ considers $N$ 
 blocks of outsourced data on the server. Clients also access data in blocks 
 addressed by a logical block ID denoted by $id$. 
 The logical address space for all blocks is shared by the clients.
@@ -21,7 +21,7 @@ Any locking mechanism (as required by the protocol) is imposed by the server.
 {\bf Server.~} \sysname~ considers an untrusted server that is honest but curious and 
 does not deviate from the \sysname~ protocol. The server can observe  
 all requests and try to correlate them by saving and comparing snapshots (state of the 
-server after each query). It stores the ORAM keys, hash functions and other access counters as 
+ORAMs after each query). It stores the ORAM keys, hash functions and other access counters as 
 required by the \sysname~ protocol. Further, the server maintains and duly increments the counters. 
 \sysname~ does not consider a malicious server than can mount replay attacks and ``fork'' client views.
 
@@ -30,11 +30,11 @@ required by the \sysname~ protocol. Further, the server maintains and duly incre
 
 \begin{itemize}
  \item Correlation between data items concurrently accessed in a single round.
- \item Correlation between data items accessed in successive rounds of one or more conccurent accesses.
+ \item Correlation between data items accessed in successive rounds of one or more concurrent accesses.
 \end{itemize}
 
 In the above context, we define multi-client concurrent access security for ORAMs as a security game, where the challenger is 
-a fixed set of clients, $\mathcal{C} = \{ c_1, c_2, \ldots c_n\}$, the adversary, $\mathcal{A}$ is the remote server that hosts a database 
+a fixed set of clients, $\mathcal{C} = \{ c_1, c_2, \ldots c_n\}$, and the adversary, $\mathcal{A}$ is the remote server that hosts a database 
 uploaded by $\mathcal{C}$. All items in the database are indexed and can be accessed concurrently by the clients. 
 
 
@@ -42,7 +42,7 @@ uploaded by $\mathcal{C}$. All items in the database are indexed and can be acce
 \item $\mathcal{A}$ and $\mathcal{C}$ engage in polynomial rounds of the following query-response based protocol
 \begin{enumerate}
   \item $\mathcal{A}$ selects two sets of item indices $\mathcal{O}_{1} = \{x_1,x_2, \ldots,x_n\}$ and $\mathcal{O}_{2} = \{y_1,y_2, \ldots,y_n\}$ such that 
- $x_i \neq x_j \forall i,j \in [1,n]$ and $y_i \neq y_j \forall i,j \in [1,n]$. 
+ $x_i \neq x_j$ and $y_i \neq y_j \forall i,j \in [1,n]$. 
  $\mathcal{A}$ sends $\mathcal{O}_{1}(i)$ and $\mathcal{O}_{2}(i)$ to $c_{i}$ where $\mathcal{O}_{j}(i)$ is the $i^{th}$ item in $\mathcal{O}_{j}$. 
  \item On the basis of a fairly selected bit $b$, the clients query for the items in $\mathcal{O}_{b}$.
  \item Observing the queries in Step 2, $\mathcal{A}$ outputs bit $b^{'}$
@@ -52,11 +52,16 @@ uploaded by $\mathcal{C}$. All items in the database are indexed and can be acce
  over an implementation specific security parameter.
  \end{enumerate}
 
-The above security game straightforwardly ensures that $\mathcal{A}$ can win a round with non-negligible advantage over guessing if she can 
+A mechansim that satisfies the above security game ensures that it protects against the two aforementioned leaks. To see why consider the following: 
+
+{\bf Correlation between data items accessed in a single round.~}
+%
+The security game straightforwardly ensures that $\mathcal{A}$ can win a round with non-negligible advantage over guessing if she can 
 distinguish between two sequence of concurrent accesses. Therefore, a mechanism that satifies the game ensures that an adversary cannot correlate 
 items concurrently accessed in the same round. 
- 
-Further, consider three randomly chosen sets of item $\mathcal{O}_{1}$, $\mathcal{O}_{2}$ and $\mathcal{O}_{1}$. In three successive rounds, $\mathcal{A}$ provides the following 
+
+{\bf Correlation between data items accessed in successive rounds.~}
+Consider two randomly chosen sets of item $\mathcal{O}_{1}$, $\mathcal{O}_{2}$ and $\mathcal{O}_{1}$. In two successive rounds, $\mathcal{A}$ provides the following 
 sets of items to $\mathcal{C}$:
 
 \begin{itemize}
@@ -65,6 +70,8 @@ sets of items to $\mathcal{C}$:
  \end{itemize}
 
 In this case, if $\mathcal{C}$ queries for $\mathcal{O}_{1}$ both in round 1 and 2, and $\mathcal{A}$ could correlate accesses in the current round 
-with previous rounds, $\mathcal{A}$ can win round 2 with non-negligible advantage. Therefore, a mechanism that satisfies the game also ensures that 
+with previous rounds, $\mathcal{A}$ can win round 2 with non-negligible advantage. Therefore, a mechanism that satisfies the security game also ensures that 
 an adversary cannot correlate accesses in successive rounds.
 
+\sysname~ gaurantees multi-client concurrent access security in context of the security game by ensuring access pattern privacy of concurrent accesses 
+in each round using PD-ORAM and RingORAM as described in Section \ref{oram:overview}.
