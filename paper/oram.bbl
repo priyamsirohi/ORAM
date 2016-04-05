@@ -1,5 +1,10 @@
 \begin{thebibliography}{10}
 
+\bibitem{usablepir}
+{\em Proceedings of the Network and Distributed System Security Symposium,
+  {NDSS} 2008, San Diego, California, USA, 10th February - 13th February
+  2008\/} (2008), The Internet Society.
+
 \bibitem{curious}
 {\sc Bindschaedler, V., Naveed, M., Pan, X., Wang, X., and Huang, Y.}
 \newblock Practicing oblivious access on cloud storage: The gap, the fallacy,
@@ -8,15 +13,56 @@
   Communications Security\/} (New York, NY, USA, 2015), CCS '15, ACM,
   pp.~837--849.
 
+\bibitem{clporam}
+{\sc Chung, K., Liu, Z., and Pass, R.}
+\newblock Statistically-secure {ORAM} with
+  {\textdollar}{\textbackslash}tilde\{O\}({\textbackslash}log{\^{}}2
+  n){\textdollar} overhead.
+\newblock {\em CoRR abs/1307.3699\/} (2013).
+
+\bibitem{onionoram}
+{\sc Devadas, S., Dijk, M., Fletcher, C.~W., Ren, L., Shi, E., and Wichs, D.}
+\newblock {\em Theory of Cryptography: 13th International Conference, TCC
+  2016-A, Tel Aviv, Israel, January 10-13, 2016, Proceedings, Part II}.
+\newblock Springer Berlin Heidelberg, Berlin, Heidelberg, 2016, ch.~Onion ORAM:
+  A Constant Bandwidth Blowup Oblivious RAM, pp.~145--174.
+
+\bibitem{GentryORAM}
+{\sc Gentry, C., Goldman, K.~A., Halevi, S., Julta, C., Raykova, M., and Wichs,
+  D.}
+\newblock {\em Privacy Enhancing Technologies: 13th International Symposium,
+  PETS 2013, Bloomington, IN, USA, July 10-12, 2013. Proceedings}.
+\newblock Springer Berlin Heidelberg, Berlin, Heidelberg, 2013, ch.~Optimizing
+  ORAM and Using It Efficiently for Secure Computation, pp.~1--18.
+
 \bibitem{goldreich}
 {\sc Goldreich, O., and Ostrovsky, R.}
 \newblock Software protection and simulation on oblivious rams.
 \newblock {\em Journal of the ACM 43\/} (1996), 431--473.
 
+\bibitem{randomizedshellsort}
+{\sc Goodrich, M.~T.}
+\newblock Randomized shellsort: A simple data-oblivious sorting algorithm.
+\newblock {\em J. ACM 58}, 6 (Dec. 2011), 27:1--27:26.
+
 \bibitem{oram_cuckoohashing}
 {\sc Goodrich, M.~T., and Mitzenmacher, M.}
 \newblock Mapreduce parallel cuckoo hashing and oblivious {RAM} simulations.
 \newblock {\em CoRR abs/1007.1259\/} (2010).
+
+\bibitem{goodrichoram}
+{\sc Goodrich, M.~T., and Mitzenmacher, M.}
+\newblock Privacy-preserving access of outsourced data via oblivious ram
+  simulation.
+\newblock In {\em Proceedings of the 38th International Conference on Automata,
+  Languages and Programming - Volume Part II\/} (Berlin, Heidelberg, 2011),
+  ICALP'11, Springer-Verlag, pp.~576--587.
+
+\bibitem{goodrich_deamortized}
+{\sc Goodrich, M.~T., Mitzenmacher, M., Ohrimenko, O., and Tamassia, R.}
+\newblock Oblivious ram simulation with efficient worst-case access overhead.
+\newblock In {\em Proceedings of the 3rd ACM Workshop on Cloud Computing
+  Security Workshop\/} (New York, NY, USA, 2011), CCSW '11, ACM, pp.~95--100.
 
 \bibitem{accesspatternleak}
 {\sc Islam, M.~S., Kuzu, M., and Kantarcioglu, M.}
@@ -24,6 +70,27 @@
   attack and mitigation.
 \newblock In {\em in Network and Distributed System Security Symposium (NDSS\/}
   (2012).
+
+\bibitem{kushilevitzoram}
+{\sc Kushilevitz, E., Lu, S., and Ostrovsky, R.}
+\newblock On the (in) security of hash-based oblivious ram and a new balancing
+  scheme.
+\newblock In {\em Proceedings of the twenty-third annual ACM-SIAM symposium on
+  Discrete Algorithms\/} (2012), SIAM, pp.~143--156.
+
+\bibitem{comporam}
+{\sc Moataz, T., Mayberry, T., and Blass, E.-O.}
+\newblock Constant communication oram with small blocksize.
+\newblock In {\em Proceedings of the 22Nd ACM SIGSAC Conference on Computer and
+  Communications Security\/} (New York, NY, USA, 2015), CCS '15, ACM,
+  pp.~862--873.
+
+\bibitem{Pinkasoram}
+{\sc Pinkas, B., and Reinman, T.}
+\newblock Oblivious ram revisited.
+\newblock In {\em Proceedings of the 30th Annual Conference on Advances in
+  Cryptology\/} (Berlin, Heidelberg, 2010), CRYPTO'10, Springer-Verlag,
+  pp.~502--519.
 
 \bibitem{ringoram}
 {\sc Ren, L., Fletcher, C., Kwon, A., Stefanov, E., Shi, E., van Dijk, M., and
@@ -51,6 +118,13 @@
 \newblock In {\em Proceedings of the 2013 ACM SIGSAC Conference on Computer
   \&\#38; Communications Security\/} (New York, NY, USA, 2013), CCS '13, ACM,
   pp.~299--310.
+
+\bibitem{circuitoram}
+{\sc Wang, X., Chan, H., and Shi, E.}
+\newblock Circuit oram: On tightness of the goldreich-ostrovsky lower bound.
+\newblock In {\em Proceedings of the 22Nd ACM SIGSAC Conference on Computer and
+  Communications Security\/} (New York, NY, USA, 2015), CCS '15, ACM,
+  pp.~850--861.
 
 \bibitem{bforam}
 {\sc Williams, P., Sion, R., and Carbunar, B.}

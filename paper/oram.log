@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=latex 2014.11.19)  4 APR 2016 02:44
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=latex 2016.1.25)  4 APR 2016 21:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **oram.tex
 (./oram.tex
 LaTeX2e <2011/06/27>
-Babel <3.9f> and hyphenation patterns for 78 languages loaded.
+Babel <3.9h> and hyphenation patterns for 78 languages loaded.
 (./acm.cls (/usr/share/texlive/texmf-dist/tex/latex/graphics/epsfig.sty
 Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
 
@@ -197,29 +197,29 @@ File: dvipsnam.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
 )) (./oram.aux)
 \openout1 = `oram.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Try loading font information for U+msa on input line 11.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Try loading font information for U+msa on input line 12.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 11.
+LaTeX Font Info:    Try loading font information for U+msb on input line 12.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+lasy on input line 11.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 12.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
@@ -240,32 +240,51 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 ])
-(./model.tex
+(./related.tex
+Underfull \vbox (badness 2698) has occurred while \output is active []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [2])
+(./model.tex [3]
 Overfull \hbox (18.81532pt too wide) in paragraph at lines 44--47
 []$\OMS/cmsy/m/n/9 A$ \T1/aer/m/n/9 se-lects two sets of item in-dices $\OMS/cm
 sy/m/n/9 O[] \OT1/cmr/m/n/9 = \OMS/cmsy/m/n/9 f\OML/cmm/m/it/9 x[]; x[]; [] ; x
 []\OMS/cmsy/m/n/9 g$
  []
 
-) (./overview.tex [2]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
+) (./overview.tex
 File: Figures/Query_overview.eps Graphic file (type eps)
-
-<Figures/Query_overview.eps>
-Overfull \hbox (3.85059pt too wide) in paragraph at lines 81--82
+ <Figures/Query_overview.eps>
+Overfull \hbox (3.85059pt too wide) in paragraph at lines 64--65
 []\T1/aer/m/n/9 Figure 1[] shows the query pro-to-col for Con-curO-RAM . Querie
 s
  []
 
-[3]) (./oram.bbl) [4] (./oram.aux) ) 
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [4]
+File: Figures/eviction.eps Graphic file (type eps)
+
+<Figures/eviction.eps>
+Underfull \hbox (badness 10000) in paragraph at lines 84--86
+[][]
+ []
+
+) (./oram.bbl [5]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+) [6]
+(./oram.aux) ) 
 Here is how much of TeX's memory you used:
- 2039 strings out of 493308
- 23421 string characters out of 6139930
- 82740 words of memory out of 5000000
- 5465 multiletter control sequences out of 15000+600000
+ 2063 strings out of 493305
+ 23759 string characters out of 6139897
+ 83996 words of memory out of 5000000
+ 5488 multiletter control sequences out of 15000+600000
  41475 words of font info for 52 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  39i,9n,30p,301b,264s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on oram.dvi (4 pages, 28524 bytes).
+Output written on oram.dvi (6 pages, 45676 bytes).
