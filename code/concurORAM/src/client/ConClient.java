@@ -8,8 +8,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import message.*;
 import message.Message.MessageType;
+import message.*;
+
 
 import java.util.Random;
 import java.util.logging.FileHandler;

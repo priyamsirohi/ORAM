@@ -49,4 +49,11 @@ public class ClientQueue {
 		head = 0;
 		tail = 0;
 	}
+	
+	public int getNumOfElements(){
+		if (head >= tail)
+			return (head - tail);
+		else 
+			return (head + num_clients - tail);
+	}
 }

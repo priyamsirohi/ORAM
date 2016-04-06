@@ -2,9 +2,10 @@ package message;
 
 import java.io.Serializable;
 
+
 public abstract class Message implements Serializable {
 
-	public enum MessageType {Ping, GetMetadata, GetBlocksFromPath, GetPath, WriteBlock, WritePath, GetResultLogs, GetStash, WriteStash, ClearLogs, GetAccessCounter, AccessComplete, GetQLog};
+	public enum MessageType{Ping, GetMetadata, GetBlocksFromPath, GetPath, WriteBlock, WritePath, GetResultLogs, GetStash, WriteStash, ClearLogs, GetAccessCounter, AccessComplete, GetQLog};
 	public int MessageID;
 	public int clientID;
 	

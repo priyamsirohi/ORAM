@@ -207,7 +207,7 @@ public class Client extends Thread{
     	
     	if(gac.access_counter == gac.eviction_rate){
     		/* EVICTION */
-    		//clientLog.info("Eviction round");
+    		clientLog.info("Eviction round");
     		do_evict(getAccessCounter(gac,is,os).path_counter,grl,gbp,is,os);
     		ClearLogs cl = new ClearLogs(clientID,messageID++);
     		os.writeObject(cl);
@@ -219,9 +219,13 @@ public class Client extends Thread{
     	AccessComplete ac = new AccessComplete(clientID,messageID++);
     	os.writeObject(ac);
     	os.flush();
+    	
+    	Message ms = (Message) is.readObject();
+    	while (ms.getMessageType().compareTo(MessageType.AccessComplete)!=0);
     	clientLog.info("Access Complete");   	
     	messageID = 0;
     	
+    	//Thread.sleep(1000);
     	return;
     } 	
     	

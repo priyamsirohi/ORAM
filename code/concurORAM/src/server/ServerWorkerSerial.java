@@ -18,6 +18,7 @@ import ringoram.PositionMap;
 import ringoram.Stash;
 import ringoram.TreeORAM;
 
+import message.AccessComplete;
 import message.GetAccessCounter;
 import message.GetBlocksFromPath;
 import message.GetMetadata;
@@ -111,24 +112,13 @@ public class ServerWorkerSerial implements Runnable{
 		}
 		
 		if (ms.getMessageType().compareTo(MessageType.Ping) == 0){
-				
+			
+			while (queue.getNumOfElements() >= queue.getQ().length);
 			synchronized(this.lock){ 
 				queue.push(ms.clientID);
 			}
 			
-			while (ms.clientID != queue.getTop()){
-			
-				//ServerLog.info("Waiting for-" + queue.getTop());
-				
-				try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-			}
-		
+			while (ms.clientID != queue.getTop()); 
 			this.accessCounter.getAndIncrement();
 			
 			
@@ -315,6 +305,20 @@ public class ServerWorkerSerial implements Runnable{
 		}
 		
 		if (ms.getMessageType().compareTo(MessageType.AccessComplete)==0){
+			
+			AccessComplete ac = (AccessComplete) ms;
+			try {
+				os.writeObject(ac);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try {
+				os.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			synchronized(this.lock) {this.queue.pop();}
 			}
