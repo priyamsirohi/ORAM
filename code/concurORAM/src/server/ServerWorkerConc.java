@@ -35,7 +35,7 @@ import message.GetQLog;
 
 public class ServerWorkerConc implements Runnable{
 
-	private static final LockObject lock = new LockObject();
+	private static LockObject lock = LockObject.getInstance();
 	ServerSocket ss;
 	ObjectInputStream is;
 	ObjectOutputStream os;
@@ -114,18 +114,45 @@ public class ServerWorkerConc implements Runnable{
 		}
 		
 		
-		/* SYNCHRONIZED BLOCK */
+		
 	
 		if (ms.getMessageType().compareTo(MessageType.Ping) == 0){
-			
-			GetQLog gql;
-			synchronized(this.lock){
-				
-				queue.push(ms.clientID);
-				
+			Ping ping = new Ping(0,0);
+			try {
+				os.writeObject(ping);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				os.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
+		}
 		
+		
+		
+		if (ms.getMessageType().compareTo(MessageType.GetQLog) == 0){
+			
+			GetQLog gql;
+			gql = (GetQLog) ms;
+			while(accessCounter.get()>= eviction_rate);
+			synchronized(this.lock){
+				qlog.setEntry(gql.blk_id);
+				queue.push(ms.clientID);
+				this.accessCounter.getAndIncrement();
+				gql = new GetQLog(0,0,qlog);
+				gql.getQLog().setQLog(this.qlog.getQLog());
+				gql.access_counter = accessCounter.get();
+				gql.path_counter = path_counter.get();
+				gql.eviction_rate = eviction_rate;
+				gql.your_access = qlog.getHead()-1;
+			}
+			
+		/*
 			while (ms.clientID != queue.getTop() || accessCounter.get() >= eviction_rate){								// ALL clients in a busy wait
 			
 				//ServerLog.info("Waiting for-" + queue.getTop());
@@ -140,13 +167,10 @@ public class ServerWorkerConc implements Runnable{
 			}
 			
 			
+			*/
 			
-				this.accessCounter.getAndIncrement();
-				gql = new GetQLog(0,0,qlog);
-				gql.getQLog().setQLog(this.qlog.getQLog());
-				gql.access_counter = accessCounter.get();
-				gql.path_counter = path_counter.get();
-				gql.eviction_rate = eviction_rate;
+				
+				
 			
 						
 						
@@ -165,6 +189,7 @@ public class ServerWorkerConc implements Runnable{
 		
 			
 			
+			/*
 			try {
 				ms = (Message) is.readObject();
 			} catch (ClassNotFoundException | IOException e) {
@@ -177,9 +202,12 @@ public class ServerWorkerConc implements Runnable{
 			 gql = (GetQLog) ms;
 			 qlog.setQLog(gql.getQLog().getQLog());
 		     			
-			synchronized(this.lock) {queue.pop();}
+			//synchronized(this.lock) {queue.pop();}
 			
-			}
+			*/
+			
+		}
+			
 				
 	
 		
@@ -254,6 +282,7 @@ public class ServerWorkerConc implements Runnable{
 			WriteBlock wb = (WriteBlock) ms;
 			synchronized (this.lock){
 			drs.setandincDataResultLog(wb.getBlk());
+			qlog.setComplete(ms.clientID);
 			}
 			
 		}
@@ -295,6 +324,7 @@ public class ServerWorkerConc implements Runnable{
 		
 		if (ms.getMessageType().compareTo(MessageType.GetResultLogs)==0){
 			GetResultLogs grl = (GetResultLogs) ms;
+			while (!(qlog.isComplete(qlog.getIndex(ms.clientID))));
 			grl.clientID = 0;
 			grl.drs = this.drs;
 			try {

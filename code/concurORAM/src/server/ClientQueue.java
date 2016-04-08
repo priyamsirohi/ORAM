@@ -2,12 +2,22 @@ package server;
 
 public class ClientQueue {
 
+	private static ClientQueue queue;
+	
 	private int head;
 	private int tail;
 	private int[] q;
 	private int num_clients;
 	
-	ClientQueue(int num_clients){
+	
+	public static ClientQueue getInstance(int num_clients){
+		if (queue == null){
+			queue = new ClientQueue(num_clients);
+		}
+		return queue;
+	}
+	
+	private ClientQueue(int num_clients){
 		q = new int[num_clients];
 		head = 0;
 		tail = 0;
@@ -15,26 +25,23 @@ public class ClientQueue {
 	}
 	
 	public void push(int client_id){
-		System.out.println("push"+head);
-		System.out.println("push"+tail);
-		q[head++] = client_id;
-		if (head == num_clients)
-			head =0;
+		q[head] = client_id;
+		head = (head + 1) % this.num_clients;
+		//if (head == num_clients)
+			//head =0;
+			
 	}
 	
-	public int pop(){
-		System.out.println("pop"+head);
-		System.out.println("pop"+tail);
-
+	public void pop(){
 		
-		if (tail+1 == num_clients){
-			int temp = tail;
-			tail = 0;
-			return q[temp];
-		}
-		else
 		
-			return q[tail++];
+	//	if (tail+1 == num_clients)
+			
+		//	tail = 0;
+			
+	//	else
+				
+			tail = (tail+1) % this.num_clients;
 	}
 	
 	public int getTop(){
@@ -50,10 +57,10 @@ public class ClientQueue {
 		tail = 0;
 	}
 	
-	public int getNumOfElements(){
-		if (head >= tail)
-			return (head - tail);
-		else 
-			return (head + num_clients - tail);
+	public boolean isFull(){
+		if (head== num_clients)
+			return true;
+		return false;
+		
 	}
 }

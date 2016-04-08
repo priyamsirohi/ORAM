@@ -6,6 +6,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Random;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import message.AccessComplete;
 import message.GetPath;
@@ -24,12 +27,20 @@ public class SuperClient extends Thread {
 	int messageID = 0;
 	int server_portnum;
 	int N;
+	private static Logger clientLog;
+	private FileHandler fh;
+	private SimpleFormatter formatter;
 	
-	
-	public SuperClient(int N, int portnum){
+	public SuperClient(int N, int portnum) throws SecurityException, IOException{
 		this.N = N;
 		this.server_portnum = portnum;
 		this.pm = new PositionMap(N);
+		String fname = "Logs/Client.log";
+	    clientLog = Logger.getLogger(fname);
+	    fh = new FileHandler(fname);
+	    clientLog.addHandler(fh);
+	    formatter = new SimpleFormatter();
+	    fh.setFormatter(formatter);
 	}
 	
 	 public void clientSetup() throws IOException, ClassNotFoundException, InterruptedException{
@@ -115,13 +126,16 @@ public class SuperClient extends Thread {
 		    os.writeObject(cl);
 		    os.flush();
     		
+		    AccessComplete ac = new AccessComplete(clientID,messageID++);
+		    os.writeObject(ac);
+		    os.flush();
 	 }
 	 
 	public void start_clients(int num_clients,boolean concurrent) throws UnknownHostException, IOException{
 	
 		if(concurrent){
 		for (int i = 0;i<num_clients;i++){
-			ConClient client= new ConClient(++server_portnum,"127.0.0.1",this.clientID+1+i,this.N,this.pm);
+			ConClient client= new ConClient(++server_portnum,"127.0.0.1",this.clientID+1+i,this.N,this.pm, this.clientLog);
 			Thread thread = new Thread(client);
 			thread.start();
 			
@@ -129,7 +143,7 @@ public class SuperClient extends Thread {
 	}	else {
 		
 		for (int i = 0;i<num_clients;i++){
-			Client client= new Client(++server_portnum,"127.0.0.1",this.clientID+1+i,this.N,this.pm);
+			Client client= new Client(++server_portnum,"127.0.0.1",this.clientID+1+i,this.N,this.pm,this.clientLog);
 			Thread thread = new Thread(client);
 			thread.start();
 			

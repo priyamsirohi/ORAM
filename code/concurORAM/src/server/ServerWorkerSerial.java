@@ -35,7 +35,7 @@ import message.Message.MessageType;
 
 public class ServerWorkerSerial implements Runnable{
 
-	private static final LockObject lock = new LockObject();
+	private static LockObject lock = LockObject.getInstance();
 	ServerSocket ss;
 	ObjectInputStream is;
 	ObjectOutputStream os;
@@ -113,14 +113,23 @@ public class ServerWorkerSerial implements Runnable{
 		
 		if (ms.getMessageType().compareTo(MessageType.Ping) == 0){
 			
-			while (queue.getNumOfElements() >= queue.getQ().length);
+		
+			
 			synchronized(this.lock){ 
-				queue.push(ms.clientID);
+				this.queue.push(ms.clientID);
+				
 			}
 			
-			while (ms.clientID != queue.getTop()); 
-			this.accessCounter.getAndIncrement();
 			
+			
+			while (ms.clientID != queue.getTop() || this.accessCounter.get() >= eviction_rate){
+				
+				Thread.yield();
+			}
+			
+			
+			
+			this.accessCounter.getAndIncrement();
 			
 			Ping ping = new Ping(0,0);
 			
@@ -319,8 +328,16 @@ public class ServerWorkerSerial implements Runnable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(queue.getTop());
+			synchronized(this.lock){this.queue.pop();}
+			System.out.println(this.queue.getTop());
 			
-			synchronized(this.lock) {this.queue.pop();}
 			}
 		
 					

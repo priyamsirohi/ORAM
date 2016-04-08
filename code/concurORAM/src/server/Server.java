@@ -23,7 +23,7 @@ public class Server extends Thread{
 	protected AtomicInteger accessCounter;
 	protected int eviction_rate;
 	protected AtomicInteger path_counter;
-	protected ClientQueue queue;
+	protected static ClientQueue queue;
 	protected QueryLog qlog;
 	protected boolean concurrent;
 	
@@ -46,7 +46,7 @@ public class Server extends Thread{
 			
 			
 			ServerSocket setup_socket = new ServerSocket(++portnum);
-			queue = new ClientQueue(num_clients);
+			queue = ClientQueue.getInstance(num_clients);
 			qlog = new QueryLog(num_clients);
 			
 			ServerWorkerSerial setup_worker = new ServerWorkerSerial(setup_socket, this.tree, this.stash,this.drs,

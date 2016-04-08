@@ -23,25 +23,30 @@ public class Client extends Thread{
     private int messageID;
      private int portNum;
     private String hostname;
-     private Logger clientLog;
-     private FileHandler fh;
+    private Logger clientLog;
+   
+    private FileHandler fh;
      private SimpleFormatter formatter;
+   
     private PositionMap pm;
     private int N;
    
     
-    public Client(int portnum, String host,int clientID, int N, PositionMap pm) throws UnknownHostException, IOException{
+    public Client(int portnum, String host,int clientID, int N, PositionMap pm,Logger clientLog) throws UnknownHostException, IOException{
         this.portNum=portnum;
         this.hostname=host;
         this.pm = pm; 
         this.messageID = 0;
         this.clientID = clientID;
+        this.clientLog = clientLog;
+      /*  
         String fname = "Logs/Client#" + clientID+ ".log";
-        clientLog = Logger.getLogger(fname);
+        this.clientLog = Logger.getLogger(fname);
         fh = new FileHandler(fname);
         clientLog.addHandler(fh);
         formatter = new SimpleFormatter();
         fh.setFormatter(formatter);
+        */
         this.N = N;
        
     }
@@ -72,11 +77,12 @@ public class Client extends Thread{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-    	
-    	while(true){
-    	
+    	int counter = 0;
+    	while(counter < 50){
+  
     	try {
 			clientAccessRingORAM(rn.nextInt(N)+1,os,is);
+			counter++;
 		} catch (ClassNotFoundException | IOException
 				| InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -91,11 +97,11 @@ public class Client extends Thread{
     	   	    	
     	
     	/* Testing Server Response */
-    	//clientLog.info("Starting access for block ID-"+blk_id);
+    
      	//clientLog.info("Pinging Server");
     	ConnTest(is,os);
     	//clientLog.info("Response from Server received");
-    	
+    	//clientLog.info(clientID+"Starting access for block ID-"+blk_id);
     	/* Client Setup ( if initialization) */
     	
     	
@@ -168,23 +174,11 @@ public class Client extends Thread{
     		//clientLog.info("Required item found in Stash");
     	}
     	
-    	    	
-    	Thread.sleep(500);
     	
-    	/* Write back item */
-    //	clientLog.info("Writing back block");
-    	if (req_block != null){
-    		
-    		WriteBlock wb = new WriteBlock(clientID,messageID++,req_block);
-    		WriteBackBlock(wb,os);
-    	}
     	
-    	/* Retrieve ResultLog */
-    	
-    //	clientLog.info("Get Result Log");
+    	 //	clientLog.info("Get Result Log");
     	GetResultLogs grl = new GetResultLogs(clientID,messageID++);
-        	
-    	grl = getResultLog(grl,is,os);
+        grl = getResultLog(grl,is,os);
     //	clientLog.info("Result Log Retrieved");
     	
     
@@ -200,6 +194,19 @@ public class Client extends Thread{
     	}
     	
     	
+    	   	
+    	/* Write back item */
+    //	clientLog.info("Writing back block");
+    	if (req_block != null){
+    		
+    		WriteBlock wb = new WriteBlock(clientID,messageID++,req_block);
+    		WriteBackBlock(wb,os);
+    	}
+    	
+    	/* Retrieve ResultLog */
+    	
+   
+    	
     	
     
     	GetAccessCounter gac = new GetAccessCounter(clientID,messageID++);
@@ -207,7 +214,7 @@ public class Client extends Thread{
     	
     	if(gac.access_counter == gac.eviction_rate){
     		/* EVICTION */
-    		clientLog.info("Eviction round");
+    		//clientLog.info("Eviction round");
     		do_evict(getAccessCounter(gac,is,os).path_counter,grl,gbp,is,os);
     		ClearLogs cl = new ClearLogs(clientID,messageID++);
     		os.writeObject(cl);
@@ -215,7 +222,7 @@ public class Client extends Thread{
     		//clientLog.info("Eviction Complete");
     		
     	}
-    	
+    
     	AccessComplete ac = new AccessComplete(clientID,messageID++);
     	os.writeObject(ac);
     	os.flush();
@@ -225,8 +232,10 @@ public class Client extends Thread{
     	clientLog.info("Access Complete");   	
     	messageID = 0;
     	
-    	//Thread.sleep(1000);
+
+    	
     	return;
+    	
     } 	
     	
   	
@@ -338,17 +347,36 @@ public class Client extends Thread{
     	rn = new Random();
     	rn.setSeed(12345678);
     	
-    	DataBlock [] stash_log_comb;
-    	stash_log_comb = new DataBlock[grs.drs.getHead() + gbp.stash.num_of_elements];
-    	int i;
-    	for (i = 0;i<grs.drs.getHead();i++){ stash_log_comb[i] = grs.drs.getDataResultLog()[i]; }
-    	for (int j = 0;j<gbp.stash.num_of_elements;j++) { stash_log_comb[i+j] = gbp.stash.getStash()[j];}
- 
+    	DataBlock [] stash_log_comb_temp;
+    	stash_log_comb_temp = new DataBlock[grs.drs.getHead() + gbp.stash.num_of_elements];
+    	
+    	int drs_size = 0;
+      	
+    	for (int i = 0; i<grs.drs.getHead();i++){
+    		int flag = 0;
+    		for (int j = i;j<grs.drs.getHead();j++){
+    			if (grs.drs.getDataResultLog()[i] == grs.drs.getDataResultLog()[j])
+    				flag = 1;
+    		}
+    		if (flag == 0)
+    			stash_log_comb_temp[drs_size++] = grs.drs.getDataResultLog()[i];
+    	}
+    	
+    	int k;
+       	for (k = 0;k<gbp.stash.num_of_elements;k++) { stash_log_comb_temp[drs_size+k] = gbp.stash.getStash()[k];}
+
+       
+       	DataBlock [] stash_log_comb;
+       	stash_log_comb = new DataBlock[drs_size+k];
+       	
+       	for (int l = 0; l<drs_size+k;l++)
+       		stash_log_comb[l] = stash_log_comb_temp[l];
+       	
     	Stash new_stash;
     	new_stash = new Stash();
     	int stash_head = 0;
    
-    	for (i = 0; i<stash_log_comb.length;i++){
+    	for (int i = 0; i<stash_log_comb.length;i++){
     		int map = rn.nextInt(this.N);
     		int counter = 2;
     		int lca = LCA(map,leaf_id,path.length,this.N,counter);
