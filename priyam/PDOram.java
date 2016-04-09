@@ -6,6 +6,7 @@
 package pdoram;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 /**
@@ -19,8 +20,18 @@ public class PDOram {
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
-        PDOramFunctionality oram = new PDOramFunctionality(5);
-       oram.PDOramRead(4);
+        PDOramFunctionality oram = new PDOramFunctionality(5,5);
+        ArrayList build_argument = new ArrayList();
+        
+        for(int i=1;i<6;i++){
+            ArrayList<Integer> temp = new ArrayList<Integer>();
+            temp.add(i);
+            temp.add(i+5);
+            build_argument.add(temp);
+        }
+        //size of this arraylist is assumed to be same as N.
+        oram.build(build_argument);
+        
     }
    
 }
