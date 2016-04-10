@@ -96,7 +96,7 @@ public class PDOramFunctionality {
         for(int i=0; i<list.size();i++){
          int writeOffset = 0;
          RandomAccessFile in = new RandomAccessFile(PDoramDB, "rw");
-         in.skipBytes((int)(Math.pow(2,levels-1)-1)*M*4); //now I am at the starting of the last level
+         in.skipBytes((int)(Math.pow(2,levels-1)-1)*M*8); //now I am at the starting of the last level
          
          
          ArrayList<Integer> list1 = (ArrayList<Integer>) list.get(i);
