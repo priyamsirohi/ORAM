@@ -141,57 +141,40 @@ public class PDOramFunctionality {
         out.write(data);
          out.close();
         }
-        FileInputStream in = new FileInputStream(PDoramDB);
+        
+    }
     
-    for(int j=0;j<PDoramDBSize;j++){
-        temp=0;
-         for (int i = 0; i < 4; i++) {
-            int shift = (4 - 1 - i) * 8;
-            temp += (in.read() & 0x000000FF) << shift;
-        }
-         System.out.print(temp +" ");
-    }
-    in.close();
+    int PDOramRead(int id) throws FileNotFoundException, IOException{
         
-    }
-    /*
-    ArrayList<Integer> PDOramRead(int id) throws FileNotFoundException, IOException{
-        
-    ArrayList<Integer> ret = new ArrayList<Integer>();
-    FileInputStream inHash = new FileInputStream(PDHashFunctions);
-    FileInputStream inDB = new FileInputStream(PDoramDB);
-    int a, b, skipBefore, skipAfter, hash, value;
+    int val =-1;
+    RandomAccessFile PDHash = new RandomAccessFile(PDHashFunctions, "rw");
+    RandomAccessFile PDDB = new RandomAccessFile(PDoramDB, "rw");
+    
+    int a, b, skipBefore, skipAfter, hash;
     
     for(int i=0; i< levels; i++){
-       a = 0;
-       b = 0;
-       for (int k = 0; k < 4; k++) {
-            int shift = (4 - 1 - k) * 8;
-            a += (inHash.read() & 0x000000FF) << shift;
-        }
-       for (int k = 0; k < 4; k++) {
-            int shift = (4 - 1 - k) * 8;
-            b += (inHash.read() & 0x000000FF) << shift;
-        }
-       
+       a = PDHash.readInt();
+       b = PDHash.readInt();
+      
        hash = Math.abs((a*id + b)%(1<<i));
-       skipBefore = 4*hash;
-       skipAfter = 4*((1<<i) -(hash+1));
-       inDB.skip(skipBefore);
-       value = 0;
+       skipBefore = 8*hash*M;
+       skipAfter = 8*M*((1<<i) -(hash+1));
+       PDDB.skipBytes(skipBefore);
        
-       for (int k = 0; k < 4; k++) {
-            int shift = (4 - 1 - k) * 8;
-            value += (inDB.read() & 0x000000FF) << shift;
-        }
        
-       ret.add(value);
-       inDB.skip(skipAfter);
+      for(int j =0;j<M;j++){
+          if( PDDB.readInt()==id){
+              return PDDB.readInt();
+          }
+          else PDDB.skipBytes(4);
+      }
+
+       PDDB.skipBytes(skipAfter);
     }
     
-    inHash.close();
-    inDB.close();
+    PDHash.close();
+    PDDB.close();
     
-    return ret;
-    }*/
+    return val;
+    }
 }

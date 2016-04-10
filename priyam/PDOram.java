@@ -31,7 +31,7 @@ public class PDOram {
         }
         //size of this arraylist is assumed to be same as N.
         oram.build(build_argument);
-        
+        System.out.println("\n"+oram.PDOramRead(3));
     }
    
 }
