@@ -1,0 +1,39 @@
+package pdoram;
+
+import java.util.ArrayList;
+
+public class PDOrambucket {
+	
+	int[] maps;
+	ArrayList<Integer> list;
+	
+	public PDOrambucket(int bucket_size) {list = new ArrayList<Integer>(bucket_size); maps = new int[bucket_size];}
+	
+
+	public ArrayList<Integer> getBucket(){
+		return this.list;
+	}
+	
+	public void setBucket(ArrayList<Integer> list){
+		this.list = list;
+	}
+	
+	public int[] getMap(){
+		return this.maps;
+	}
+		
+	public void setMap(int[] maps){
+		this.maps = maps;
+	}
+	
+	
+	public void setMapIndex (int index, int val){
+		maps[index] = val;
+	}
+	
+	public void setBucketIndex(int index, int val){
+		list.set(index, val);
+	}
+}
+	
+

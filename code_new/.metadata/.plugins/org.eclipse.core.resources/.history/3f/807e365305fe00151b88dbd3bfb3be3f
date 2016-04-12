@@ -1,0 +1,439 @@
+package client;
+
+import ringoram.*;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+import message.*;
+import message.Message.MessageType;
+
+import java.util.Random;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
+public class Client extends Thread{
+
+	private Socket clientListener;
+    private int clientID;
+    private int messageID;
+     private int portNum;
+    private String hostname;
+    private Logger clientLog;
+   
+    private FileHandler fh;
+     private SimpleFormatter formatter;
+   
+    private PositionMap pm;
+    private int N;
+   
+    
+    public Client(int portnum, String host,int clientID, int N, PositionMap pm,Logger clientLog) throws UnknownHostException, IOException{
+        this.portNum=portnum;
+        this.hostname=host;
+        this.pm = pm; 
+        this.messageID = 0;
+        this.clientID = clientID;
+        this.clientLog = clientLog;
+      /*  
+        String fname = "Logs/Client#" + clientID+ ".log";
+        this.clientLog = Logger.getLogger(fname);
+        fh = new FileHandler(fname);
+        clientLog.addHandler(fh);
+        formatter = new SimpleFormatter();
+        fh.setFormatter(formatter);
+        */
+        this.N = N;
+       
+    }
+	
+   
+  
+    public void run(){
+    	
+    	Random rn;
+    	rn = new Random();
+    	ObjectOutputStream os = null;
+    	ObjectInputStream is = null;
+    	try {
+			clientListener = new Socket(hostname,portNum);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	try {
+			os = new ObjectOutputStream(clientListener.getOutputStream());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}		
+    	try {
+			is = new ObjectInputStream(clientListener.getInputStream());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	int counter = 0;
+    	while(counter < 50){
+  
+    	try {
+			clientAccessRingORAM(rn.nextInt(N)+1,os,is);
+			counter++;
+		} catch (ClassNotFoundException | IOException
+				| InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+}
+     
+    public void clientAccessRingORAM(int blk_id, ObjectOutputStream os, ObjectInputStream is) throws UnknownHostException, IOException, InterruptedException, ClassNotFoundException{
+    	
+    	
+    	   	    	
+    	
+    	ConnTest(is,os);
+    	
+    	
+    	
+    	int leaf_id = getPM(blk_id);
+   
+    	MetaData[] md = getMetadata(leaf_id,is,os);
+    	GetBlocksFromPath gbp = new GetBlocksFromPath(clientID,messageID++,leaf_id,md.length);
+   
+    	int req_index_in_path = -1;
+    	int req_index_in_stash = -1;
+    	boolean unlikely = true;
+    	
+    	for (int i = 0 ;i<md.length;i++){
+    		for(int j = 0;j<md[i].log_bucket_pos_map.length;j++){
+    			if (md[i].log_bucket_pos_map[j] == blk_id){
+    				gbp.blk_num[i] = j; 	
+    				req_index_in_path = i;
+    			}
+    		}
+    			if (req_index_in_path == -1){
+    				if(md[i].bucket_access_counter >= md[i].dummy_pos.length)
+    					md[i].bucket_access_counter = 0;								// TODO: Implement Reshuffle
+    				gbp.blk_num[i] = md[i].dummy_pos[md[i].bucket_access_counter++];
+    		  		
+    			}
+    	}
+
+    	
+    	
+    	
+    	DataBlock[] blocks;
+    	blocks = getBlocks(gbp,is,os);
+    
+    	
+     	
+  
+    	
+    	for (int i=0;i<gbp.stash.num_of_elements;i++){
+    		if (gbp.stash.getStash()[i].get_id() == blk_id){
+    			req_index_in_stash = i;
+    		}
+    			
+    	}
+    	
+    	
+    	
+    	DataBlock req_block = null;
+    	    	
+    	
+    	if (req_index_in_path != -1){
+    		req_block = blocks[req_index_in_path];
+    		unlikely = false;
+    		//clientLog.info("Required item found in Path");
+    	}
+    	else if (req_index_in_stash!=-1){
+    		req_block = gbp.stash.getStash()[req_index_in_stash];
+    		unlikely = false;
+    		//clientLog.info("Required item found in Stash");
+    	}
+    	
+    	
+    	
+    	 //	clientLog.info("Get Result Log");
+    	GetResultLogs grl = new GetResultLogs(clientID,messageID++);
+        grl = getResultLog(grl,is,os);
+    //	clientLog.info("Result Log Retrieved");
+    	
+    
+    	
+    	if (unlikely){
+    		for (int i = 0;i<grl.drs.getHead();i++){
+    			if (grl.drs.getDataResultLog()[i].get_id() == blk_id){
+    				req_block = grl.drs.getDataResultLog()[i];
+    				//clientLog.info("Required item found in Data Result Log");
+    			}
+    		}
+    		
+    	}
+    	
+    	WriteBlock wb = null;
+    	   	
+    	/* Write back item */
+    //	clientLog.info("Writing back block");
+    	if (req_block != null){
+    		
+    		wb = new WriteBlock(clientID,messageID++,req_block);
+    		WriteBackBlock(wb,os);
+    	}
+    	
+    	/* Retrieve ResultLog */
+    	
+   
+    	
+    	
+    
+    	GetAccessCounter gac = new GetAccessCounter(clientID,messageID++);
+    	gac = getAccessCounter(gac,is,os);
+    	
+    	if(gac.access_counter == gac.eviction_rate){
+    		/* EVICTION */
+    		//clientLog.info("Eviction round");
+    		do_evict(getAccessCounter(gac,is,os).path_counter,grl,gbp,is,os);
+    		ClearLogs cl = new ClearLogs(clientID,messageID++);
+    		os.writeUnshared(cl);
+    		os.flush();
+    		//clientLog.info("Eviction Complete");
+    		
+    	}
+    
+    	AccessComplete ac = new AccessComplete(clientID,messageID++);
+    	os.writeUnshared(ac);
+    	os.flush();
+    	
+    	Message ms = (Message) is.readUnshared();
+    	while (ms.getMessageType().compareTo(MessageType.AccessComplete)!=0);
+    	clientLog.info("Access Complete");   	
+    	messageID = 0;
+    	
+    	ac = null;
+    	gac = null;
+    	wb = null;
+    	grl = null;
+    	gbp = null;
+    	
+    	os.reset();
+    	return;
+    	
+    } 	
+    	
+  	
+   
+
+	public int getPM(int blk_id){
+    	
+    	return pm.getMap(blk_id);
+    }
+    
+	
+    public MetaData[] getMetadata(int leaf_id,ObjectInputStream is, ObjectOutputStream os) throws IOException, ClassNotFoundException, InterruptedException{
+    	
+    	//TODO: check for message authenticity
+    
+    	GetMetadata gm = new GetMetadata(clientID,messageID++,leaf_id);
+    	
+    	os.writeUnshared(gm);
+    	os.flush();
+    	
+    	Message ms = (Message) is.readUnshared();
+        while (ms.getMessageType().compareTo(MessageType.GetMetadata) != 0);
+        
+        gm = (GetMetadata) ms;
+        MetaData[] md = gm.metadata;
+        gm = null;
+        return md;
+        
+     }	
+    
+    public DataBlock[] getBlocks(GetBlocksFromPath gbp, ObjectInputStream is, ObjectOutputStream os) throws IOException, ClassNotFoundException, InterruptedException{
+    	
+    	os.writeUnshared(gbp);
+    	os.flush();
+    	
+    	Message ms = (Message) is.readUnshared();
+        while (ms.getMessageType().compareTo(MessageType.GetBlocksFromPath) != 0);
+        
+        gbp = (GetBlocksFromPath) ms;
+        
+        return gbp.blocks;
+    	
+    }
+    
+  
+    public void WriteBackBlock(WriteBlock wb, ObjectOutputStream os) throws IOException{
+    	
+    	os.writeUnshared(wb);
+    	os.flush();
+    	return;
+    	
+    }
+    	
+    	
+    public void ConnTest(ObjectInputStream is,ObjectOutputStream os) throws IOException, ClassNotFoundException, InterruptedException{
+
+    	Ping ping = new Ping(clientID, messageID++);
+    	
+    	os.writeUnshared(ping);
+    	os.flush();
+    	
+    	 Message ms = (Message) is.readUnshared();
+         while (ms.getMessageType().compareTo(MessageType.Ping) != 0);
+         
+         ping = null;
+         return;
+    }
+    
+    
+    public GetResultLogs getResultLog(GetResultLogs grl, ObjectInputStream is, ObjectOutputStream os) throws IOException, ClassNotFoundException, InterruptedException{
+    	
+    	os.writeUnshared(grl);
+    	os.flush();
+    	
+    	 Message ms = (Message) is.readUnshared();
+         while (ms.getMessageType().compareTo(MessageType.GetResultLogs) != 0);
+         
+         grl = (GetResultLogs) ms;
+         return grl;
+    }
+    
+    public GetAccessCounter getAccessCounter(GetAccessCounter gac, ObjectInputStream is, ObjectOutputStream os) throws IOException, ClassNotFoundException, InterruptedException{
+    
+    	os.writeUnshared(gac);
+    	os.flush();
+    	
+
+   	 Message ms = (Message) is.readUnshared();
+        while (ms.getMessageType().compareTo(MessageType.GetAccessCounter) != 0);
+        
+        gac = (GetAccessCounter) ms;
+        return gac;
+    	
+    	
+    }
+    
+    
+       
+    public void do_evict(int leaf_id, GetResultLogs grs, GetBlocksFromPath gbp, ObjectInputStream is, ObjectOutputStream os) throws IOException, ClassNotFoundException, InterruptedException{
+    	
+    	Node[] path;
+    	GetPath gp = new GetPath(clientID,messageID++,leaf_id);
+    	os.writeUnshared(gp);
+    	os.flush();
+    	
+    	Message ms = (Message) is.readUnshared();
+	    while (ms.getMessageType().compareTo(MessageType.GetPath) != 0);
+	    gp = (GetPath) ms;
+    	
+	    path = gp.path;
+    	Random rn;
+    	rn = new Random();
+    	rn.setSeed(12345678);
+    	
+    	DataBlock [] stash_log_comb_temp;
+    	stash_log_comb_temp = new DataBlock[grs.drs.getHead() + gbp.stash.num_of_elements];
+    	
+    	int drs_size = 0;
+      	
+    	for (int i = 0; i<grs.drs.getHead();i++){
+    		int flag = 0;
+    		for (int j = i;j<grs.drs.getHead();j++){
+    			if (grs.drs.getDataResultLog()[i] == grs.drs.getDataResultLog()[j])
+    				flag = 1;
+    		}
+    		if (flag == 0)
+    			stash_log_comb_temp[drs_size++] = grs.drs.getDataResultLog()[i];
+    	}
+    	
+    	int k;
+       	for (k = 0;k<gbp.stash.num_of_elements;k++) { stash_log_comb_temp[drs_size+k] = gbp.stash.getStash()[k];}
+
+       
+       	DataBlock [] stash_log_comb;
+       	stash_log_comb = new DataBlock[drs_size+k];
+       	
+       	for (int l = 0; l<drs_size+k;l++)
+       		stash_log_comb[l] = stash_log_comb_temp[l];
+       	
+    	Stash new_stash;
+    	new_stash = new Stash();
+    	int stash_head = 0;
+   
+    	for (int i = 0; i<stash_log_comb.length;i++){
+    		int map = rn.nextInt(this.N);
+    		int counter = 2;
+    		int lca = LCA(map,leaf_id,path.length,this.N,counter);
+    		boolean mapped = false;
+	    	for (int j = path.length-1; j>=0;j--){
+	    		if (lca <= j){
+	    			
+	    			if (path[j].getBucket().getMetaData().num_free == 0)
+			    		continue;
+			    	else{ 
+			    		int next_free = path[j].getBucket().getMetaData().next_free_counter;
+			    		next_free = path[j].getBucket().getMetaData().next_free[next_free];
+			    		path[j].getBucket().setDataBlock(next_free,stash_log_comb[i]);
+			    		path[j].getBucket().getMetaData().log_bucket_pos_map[next_free] = i;
+			    		path[j].getBucket().getMetaData().phy_bucket_pos_map[next_free] = map;
+			    		path[j].getBucket().getMetaData().num_free--;
+			    		path[j].getBucket().getMetaData().next_free_counter++;
+			    		mapped = true;
+			    	}	
+	    		
+	    		if (!mapped)
+	    			new_stash.getStash()[stash_head++] = stash_log_comb[i];
+	    		else{
+	    			
+	    		 	this.pm.setMap((int) stash_log_comb[i].get_id(), map);
+	    		}
+	    	}
+		    	
+	    }
+	         	
+    	}
+    	
+    	WritePath wp = new WritePath(clientID,messageID++,leaf_id,path);
+	    WriteStash ws = new WriteStash(clientID,messageID++,new_stash);
+	   
+	    os.writeUnshared(wp);
+    	os.flush();
+    	
+    	os.writeUnshared(ws);
+    	os.flush();
+    	
+    	wp = null;
+    	ws = null;
+    }
+    	
+    	
+    	public int LCA(int map,int leaf_id,int depth,int N,int counter){
+    		int val = leaf_id - map;
+    		try{
+    		
+    		if (Math.abs(val) > N/counter)
+    			return depth;
+       		
+    		else{
+    			counter = counter*2;
+    			return LCA(map,leaf_id,depth-1,N,counter);
+    		}
+    		}
+    	
+    	catch(Exception e){
+    		System.out.println("Division error");
+    		return 0;
+    	}
+    	}
+
+
+
+
+}

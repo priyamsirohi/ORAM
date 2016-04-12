@@ -10,6 +10,8 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import pdoram.PDOrambucket;
+
 import ringoram.DataBlock;
 import ringoram.DataResultLog;
 import ringoram.MetaData;
@@ -25,6 +27,8 @@ import message.GetMetadata;
 import message.GetPath;
 import message.GetResultLogs;
 import message.Message;
+import message.PDOram_WriteBucket;
+import message.PDoram_getBucket;
 import message.Ping;
 import message.WriteBlock;
 import message.WritePath;
@@ -49,10 +53,10 @@ public class ServerWorkerSerial implements Runnable{
 	private Logger ServerLog;
     private FileHandler fh;
     private SimpleFormatter formatter;
-   
+    private PDOramServer pdserver;
 	
 	ServerWorkerSerial(ServerSocket ss, TreeORAM tree, Stash stash, DataResultLog drs, 
-			AtomicInteger accessCounter, int eviction_rate, AtomicInteger path_counter, ClientQueue queue) 
+			AtomicInteger accessCounter, int eviction_rate, AtomicInteger path_counter, ClientQueue queue, PDOramServer pdserver) 
 			throws IOException {
 		this.ss = ss;
 		this.stash = stash;
@@ -62,6 +66,7 @@ public class ServerWorkerSerial implements Runnable{
 		this.path_counter = path_counter;
 		this.eviction_rate = eviction_rate;
 		this.queue = queue;
+		this.pdserver = pdserver;
 		
 		 String fname = "Logs/Worker#" + ss.getLocalPort() + ".log";
 	        ServerLog = Logger.getLogger(fname);
@@ -151,6 +156,44 @@ public class ServerWorkerSerial implements Runnable{
 		
 		
 	
+		if (ms.getMessageType().compareTo(MessageType.PDoram_GetBucket)==0){
+			PDoram_getBucket pdgb = (PDoram_getBucket) ms;
+			PDOrambucket bucket = null;
+			try {
+				bucket = pdserver.PDoramRead(pdgb.getLevel_num(), pdgb.getBucket_num());
+				pdgb.setBucket(bucket);
+			} catch (ClassNotFoundException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			try {
+				os.writeObject(pdgb);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				os.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+		}
+		
+		if (ms.getMessageType().compareTo(MessageType.PDoram_WriteBucket)==0){
+			PDOram_WriteBucket pdwb = (PDOram_WriteBucket) ms;
+			System.out.println("I am here");
+			try {
+				pdserver.PDOramWriteBucket(pdwb.getBucket(), pdwb.getLevel_Num(), pdwb.getLevel_Num());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+						
+		}
 		
 		
 		

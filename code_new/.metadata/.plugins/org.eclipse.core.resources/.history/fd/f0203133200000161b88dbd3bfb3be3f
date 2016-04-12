@@ -1,0 +1,22 @@
+package pdoram;
+
+import java.util.ArrayList;
+
+public class PDOrambucket {
+	
+	ArrayList<Integer> list;
+	
+	public PDOrambucket(int bucket_size) {list = new ArrayList<Integer>(bucket_size);}
+	
+
+	public ArrayList<Integer> getBucket(){
+		return this.list;
+	}
+	
+	public void setBucket(ArrayList<Integer> list){
+		this.list = list;
+	}
+		
+}
+	
+

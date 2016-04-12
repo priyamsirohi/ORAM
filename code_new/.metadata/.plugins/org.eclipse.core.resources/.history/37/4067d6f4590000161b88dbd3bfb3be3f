@@ -1,0 +1,64 @@
+package server;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
+import pdoram.*;
+
+public class PDOramServer {
+
+	 String PDoramDB = "/home/nsac/anrin/ORAM/priyam/PDoramDB";
+	 int levels;
+	 int PDoramDBSize;
+	 int M;
+	 
+	File f = new File(PDoramDB);
+    FileInputStream fis = new FileInputStream(f);
+    ObjectInputStream in = new ObjectInputStream(fis);
+    	
+	 
+	 public PDOramServer(int N, int m) throws FileNotFoundException, IOException{
+	      levels = (int)(Math.log(N) / Math.log(2));
+	      PDoramDBSize = N*m*2; 
+	       M=m;
+	 }
+	 
+	 public int getBucketOffset(int level_num, int bucket_num){
+		   
+		   int offset = 0;
+		   for (int i = 0; i< level_num-1;i++){
+			   offset += Math.pow(2, level_num)*M*8;
+		   }
+		   
+		   return (offset+bucket_num*M*8);
+		   
+	   }
+	    
+	  
+	    
+	    public int getBucketNum(int level_num, int bucket_num){
+	    	int offset = 0;
+	    	for (int i = 0; i < level_num; i++){
+	    		offset += Math.pow(2,i);
+	    	}
+	    	
+	    	offset += bucket_num;
+	    	
+	    	return offset;
+	    }
+	    
+	    public PDOrambucket PDoramRead(int level_num, int bucket_id) throws IOException, ClassNotFoundException{
+	    	int offset = getBucketOffset(level_num,bucket_id);
+	    	
+	    
+	    	fis.getChannel().position(getBucketOffset(level_num,bucket_id));
+	    	
+	    	PDOrambucket ret_bucket = (PDOrambucket) in.readObject();
+	    	in.reset();
+	    	return ret_bucket;
+	    }
+	 
+}

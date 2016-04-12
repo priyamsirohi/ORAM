@@ -1,0 +1,7 @@
+package server;
+
+public class LockObject {
+
+	private static LockObject lock = new LockObject();
+	private LockObject(){}
+}

@@ -9,7 +9,7 @@ public class DataBlock implements Serializable {
 		
 		public DataBlock(){
 			this.Id = 0;
-			this.payload = null;
+			this.payload = new char[4096];
 		}
 		
 		public DataBlock(int ID) {
@@ -17,6 +17,8 @@ public class DataBlock implements Serializable {
 			payload = new char[4096];
 				
 		}
+		
+		
 		
 		public long get_id(){
 			return this.Id;

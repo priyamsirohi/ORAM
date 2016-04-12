@@ -1,0 +1,28 @@
+package Operations;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
+import ringoram.Node;
+import Operations.Operations.OperationType;
+
+public class WritePDBucket extends Operations {
+
+	
+	public WritePDBucket(String k){ super(k);}
+	
+	@Override
+	public OperationType getType() { return OperationType.WritePDBucket; }
+	
+	public void write_to_file(PDOrambucket bucket) throws IOException{
+		
+		
+		File f = new File(super.key);
+		FileOutputStream fs = new FileOutputStream(f);
+		ObjectOutputStream os = new ObjectOutputStream(fs);
+		os.writeObject(bucket);
+	}
+	
+}

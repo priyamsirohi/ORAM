@@ -1,0 +1,140 @@
+Thread 0x74de151d0
+
+  locals:
+
+Thread 0x74de152a8
+  at java.lang.Object.wait(J)V (Native Method)
+  at java.lang.ref.ReferenceQueue.remove(J)Ljava/lang/ref/Reference; (ReferenceQueue.java:135)
+  at java.lang.ref.ReferenceQueue.remove()Ljava/lang/ref/Reference; (ReferenceQueue.java:151)
+  at java.lang.ref.Finalizer$FinalizerThread.run()V (Finalizer.java:209)
+
+  locals:
+    objecId=0x74de5e880, line=1
+    objecId=0x74de5e8a0, line=1
+    objecId=0x74de5e880, line=2
+    objecId=0x74de152a8, line=3
+    objecId=0x74de160b8, line=3
+
+Thread 0x74de15410
+  at java.lang.Object.wait(J)V (Native Method)
+  at java.lang.Object.wait()V (Object.java:503)
+  at java.lang.ref.Reference$ReferenceHandler.run()V (Reference.java:133)
+
+  locals:
+    objecId=0x74de5e608, line=1
+    objecId=0x74de15410, line=2
+    objecId=0x74de5e608, line=2
+
+Thread 0x74de15558
+  at java.lang.OutOfMemoryError.<init>()V (OutOfMemoryError.java:48)
+  at java.lang.reflect.Array.newInstance(Ljava/lang/Class;I)Ljava/lang/Object; (Array.java:70)
+  at java.io.ObjectInputStream.readArray(Z)Ljava/lang/Object; (ObjectInputStream.java:1670)
+  at java.io.ObjectInputStream.readObject0(Z)Ljava/lang/Object; (ObjectInputStream.java:1344)
+  at java.io.ObjectInputStream.defaultReadFields(Ljava/lang/Object;Ljava/io/ObjectStreamClass;)V (ObjectInputStream.java:1997)
+  at java.io.ObjectInputStream.readSerialData(Ljava/lang/Object;Ljava/io/ObjectStreamClass;)V (ObjectInputStream.java:1921)
+  at java.io.ObjectInputStream.readOrdinaryObject(Z)Ljava/lang/Object; (ObjectInputStream.java:1798)
+  at java.io.ObjectInputStream.readObject0(Z)Ljava/lang/Object; (ObjectInputStream.java:1350)
+  at java.io.ObjectInputStream.readArray(Z)Ljava/lang/Object; (ObjectInputStream.java:1706)
+  at java.io.ObjectInputStream.readObject0(Z)Ljava/lang/Object; (ObjectInputStream.java:1344)
+  at java.io.ObjectInputStream.defaultReadFields(Ljava/lang/Object;Ljava/io/ObjectStreamClass;)V (ObjectInputStream.java:1997)
+  at java.io.ObjectInputStream.readSerialData(Ljava/lang/Object;Ljava/io/ObjectStreamClass;)V (ObjectInputStream.java:1921)
+  at java.io.ObjectInputStream.readOrdinaryObject(Z)Ljava/lang/Object; (ObjectInputStream.java:1798)
+  at java.io.ObjectInputStream.readObject0(Z)Ljava/lang/Object; (ObjectInputStream.java:1350)
+  at java.io.ObjectInputStream.defaultReadFields(Ljava/lang/Object;Ljava/io/ObjectStreamClass;)V (ObjectInputStream.java:1997)
+  at java.io.ObjectInputStream.readSerialData(Ljava/lang/Object;Ljava/io/ObjectStreamClass;)V (ObjectInputStream.java:1921)
+  at java.io.ObjectInputStream.readOrdinaryObject(Z)Ljava/lang/Object; (ObjectInputStream.java:1798)
+  at java.io.ObjectInputStream.readObject0(Z)Ljava/lang/Object; (ObjectInputStream.java:1350)
+  at java.io.ObjectInputStream.readArray(Z)Ljava/lang/Object; (ObjectInputStream.java:1706)
+  at java.io.ObjectInputStream.readObject0(Z)Ljava/lang/Object; (ObjectInputStream.java:1344)
+  at java.io.ObjectInputStream.defaultReadFields(Ljava/lang/Object;Ljava/io/ObjectStreamClass;)V (ObjectInputStream.java:1997)
+  at java.io.ObjectInputStream.readSerialData(Ljava/lang/Object;Ljava/io/ObjectStreamClass;)V (ObjectInputStream.java:1921)
+  at java.io.ObjectInputStream.readOrdinaryObject(Z)Ljava/lang/Object; (ObjectInputStream.java:1798)
+  at java.io.ObjectInputStream.readObject0(Z)Ljava/lang/Object; (ObjectInputStream.java:1350)
+  at java.io.ObjectInputStream.readUnshared()Ljava/lang/Object; (ObjectInputStream.java:460)
+  at client.SuperClient.clientSetup()V (SuperClient.java:86)
+  at Test.ORAMTest.main([Ljava/lang/String;)V (ORAMTest.java:32)
+
+  locals:
+    objecId=0x74de16130, line=2
+    objecId=0x74de160c8, line=2
+    objecId=0x74de1f1b8, line=2
+    objecId=0x74de16130, line=3
+    objecId=0x74de16130, line=4
+    objecId=0x7d74ff878, line=4
+    objecId=0x74de161d0, line=4
+    objecId=0x74de50948, line=4
+    objecId=0x7d74ff890, line=4
+    objecId=0x74de50960, line=4
+    objecId=0x74de16130, line=5
+    objecId=0x7d74ff878, line=5
+    objecId=0x74de16250, line=5
+    objecId=0x74de161d0, line=5
+    objecId=0x74de16130, line=6
+    objecId=0x74de161d0, line=6
+    objecId=0x7d74ff878, line=6
+    objecId=0x74de16130, line=7
+    objecId=0x74de16130, line=8
+    objecId=0x7c2efdc28, line=8
+    objecId=0x7c2efdc28, line=8
+    objecId=0x74de16130, line=9
+    objecId=0x74de16130, line=10
+    objecId=0x7c2efdbe8, line=10
+    objecId=0x74de162f8, line=10
+    objecId=0x74de504f8, line=10
+    objecId=0x7c2efdc08, line=10
+    objecId=0x74de506a0, line=10
+    objecId=0x74de16130, line=11
+    objecId=0x7c2efdbe8, line=11
+    objecId=0x74de16380, line=11
+    objecId=0x74de162f8, line=11
+    objecId=0x74de16130, line=12
+    objecId=0x74de162f8, line=12
+    objecId=0x7c2efdbe8, line=12
+    objecId=0x74de16130, line=13
+    objecId=0x74de16130, line=14
+    objecId=0x7c2efdbb0, line=14
+    objecId=0x74de16398, line=14
+    objecId=0x74de50cd8, line=14
+    objecId=0x7c2efdbd0, line=14
+    objecId=0x74de50d00, line=14
+    objecId=0x74de16130, line=15
+    objecId=0x7c2efdbb0, line=15
+    objecId=0x74de16420, line=15
+    objecId=0x74de16398, line=15
+    objecId=0x74de16130, line=16
+    objecId=0x74de16398, line=16
+    objecId=0x7c2efdbb0, line=16
+    objecId=0x74de16130, line=17
+    objecId=0x74de16130, line=18
+    objecId=0x7d7382818, line=18
+    objecId=0x7d7382818, line=18
+    objecId=0x74de16130, line=19
+    objecId=0x74de16130, line=20
+    objecId=0x7d73827e0, line=20
+    objecId=0x74de16478, line=20
+    objecId=0x74de51268, line=20
+    objecId=0x7d7382800, line=20
+    objecId=0x74de51280, line=20
+    objecId=0x74de16130, line=21
+    objecId=0x7d73827e0, line=21
+    objecId=0x74de164e0, line=21
+    objecId=0x74de16478, line=21
+    objecId=0x74de16130, line=22
+    objecId=0x74de16478, line=22
+    objecId=0x7d73827e0, line=22
+    objecId=0x74de16130, line=23
+    objecId=0x74de16130, line=24
+    objecId=0x74de164f8, line=25
+    objecId=0x74de16580, line=25
+    objecId=0x74de165a0, line=25
+    objecId=0x74de16130, line=25
+    objecId=0x74de165d8, line=25
+    objecId=0x74de165f8, line=25
+    objecId=0x7d70fd350, line=25
+    objecId=0x74de18bd8, line=25
+    objecId=0x7d73827c0, line=25
+    objecId=0x74de16610, line=26
+    objecId=0x74de16620, line=26
+    objecId=0x74de16640, line=26
+    objecId=0x74de164f8, line=26
+

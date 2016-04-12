@@ -1,0 +1,24 @@
+package message;
+
+import message.Message.MessageType;
+import pdoram.*;
+
+public class PDoram_getBucket extends Message{
+
+	PDOrambucket bucket;
+	int level_num;
+	int bucket_num;
+	
+	PDoram_getBucket(int clientID, int messageID, int level_num, int bucket_num){super(clientID,messageID); this.level_num = level_num; this.bucket_num = bucket_num;}
+		
+	
+	public MessageType getMessageType(){return MessageType.GetBlocksFromPath;}
+	public int getMessageID (){ return super.MessageID;}
+	public int getClientID() {return super.clientID;}
+	
+	public void setBucket(PDOrambucket bucket){
+		this.bucket = bucket;
+	}
+
+	public PDOrambucket getBucket(){ return this.bucket;}
+}

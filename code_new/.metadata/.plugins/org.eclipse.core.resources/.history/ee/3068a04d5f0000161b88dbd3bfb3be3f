@@ -1,0 +1,19 @@
+package message;
+
+import pdoram.PDOrambucket;
+
+public class PDOram_writeBucket extends Message {
+
+	PDOrambucket bucket;
+	
+	PDOram_writeBucket(int ClientID, int MessageID, PDOrambucket bucket) {
+		super(ClientID, MessageID);
+		this.bucket = bucket;
+		
+	}
+
+	
+	
+	
+	
+}

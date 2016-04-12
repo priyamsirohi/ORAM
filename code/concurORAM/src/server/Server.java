@@ -26,6 +26,7 @@ public class Server extends Thread{
 	protected static ClientQueue queue;
 	protected QueryLog qlog;
 	protected boolean concurrent;
+	protected PDOramServer pdserver;
 	
 	public Server(int N, int bucket_size, int num_dummy_blocks, int portnum, int eviction_rate, boolean concurrent) throws UnknownHostException, IOException{
 		this.stash = new Stash();
@@ -37,6 +38,8 @@ public class Server extends Thread{
 		accessCounter = new AtomicInteger(0);
 		path_counter = new AtomicInteger(0);
 		this.concurrent = concurrent;
+		pdserver = new PDOramServer(N, (int) Math.log(N));
+		
 	}
 	
 	
@@ -50,7 +53,7 @@ public class Server extends Thread{
 			qlog = new QueryLog(num_clients);
 			
 			ServerWorkerSerial setup_worker = new ServerWorkerSerial(setup_socket, this.tree, this.stash,this.drs,
-					this.accessCounter, this.eviction_rate,this.path_counter, this.queue);
+					this.accessCounter, this.eviction_rate,this.path_counter, this.queue,this.pdserver);
 			Thread setup_thread = new Thread(setup_worker);
 			setup_thread.start();
 					
@@ -65,7 +68,7 @@ public class Server extends Thread{
 				}
 				else {
 					ServerWorkerSerial worker = new ServerWorkerSerial(ss, this.tree, this.stash,this.drs,
-							this.accessCounter, this.eviction_rate,this.path_counter, this.queue);
+							this.accessCounter, this.eviction_rate,this.path_counter, this.queue,this.pdserver);
 						Thread thread = new Thread(worker);
 						thread.start();
 				}

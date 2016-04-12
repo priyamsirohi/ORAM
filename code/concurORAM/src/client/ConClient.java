@@ -2,9 +2,11 @@ package client;
 
 import ringoram.*;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.RandomAccessFile;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -16,6 +18,7 @@ import java.util.Random;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import pdoram.*;
 
 public class ConClient extends Thread{
 
@@ -31,14 +34,16 @@ public class ConClient extends Thread{
      */
     private PositionMap pm;
     private int N;
-   
+    private int num_runs;
+    PDOramClient pdoram;
     
-    public ConClient(int portnum, String host,int clientID, int N, PositionMap pm, Logger clientLog) throws UnknownHostException, IOException{
+    public ConClient(int portnum, String host,int clientID, int N, PDOramClient pdoram, PositionMap pm, Logger clientLog, int num_runs) throws UnknownHostException, IOException{
         this.portNum=portnum;
         this.hostname=host;
         this.pm = pm; 
         this.messageID = 0;
         this.clientID = clientID;
+        this.num_runs = num_runs;
         /*
         String fname = "Logs/Client#" + clientID+ ".log";
         clientLog = Logger.getLogger(fname);
@@ -47,6 +52,7 @@ public class ConClient extends Thread{
         formatter = new SimpleFormatter();
         fh.setFormatter(formatter);
         */
+        this.pdoram = pdoram;
         this.clientLog = clientLog;
         this.N = N;
    }
@@ -58,9 +64,12 @@ public class ConClient extends Thread{
 	 */
     
 
-	public int getPM(int blk_id){
+	public int getPM(int blk_id,ObjectInputStream is, ObjectOutputStream os) throws FileNotFoundException, IOException, ClassNotFoundException{
+		if (pm.getMap(blk_id)!= PDOramRead(blk_id,is,os))
+    	   	return pm.getMap(blk_id);
     	
-    	return pm.getMap(blk_id);
+    	return PDOramRead(blk_id,is,os);
+    	
     }
     
 	
@@ -307,9 +316,10 @@ public class ConClient extends Thread{
 			e1.printStackTrace();
 		}
     	int counter = 0;
-    	while(counter < 50){
+    	while(counter < this.num_runs){
     	
     	try {
+    		Thread.sleep(rn.nextInt(1000));
 			clientAccessRingORAM(rn.nextInt(N)+1,os,is);
 			counter++;
 		} catch (ClassNotFoundException | IOException
@@ -373,7 +383,7 @@ public class ConClient extends Thread{
    	
     	
     	else{
-    		int leaf_id = getPM(blk_id);
+    		int leaf_id = getPM(blk_id,is,os);
 	    
     	MetaData[] md = getMetadata(leaf_id,is,os);
       	  	    			
@@ -469,6 +479,79 @@ public class ConClient extends Thread{
     	
     	return;
     } 	
+    
+
+	public  int PDOramRead(int id,ObjectInputStream is, ObjectOutputStream os) throws FileNotFoundException, IOException, ClassNotFoundException{
+        
+	    int val =-1;
+	    RandomAccessFile PDHash = new RandomAccessFile(this.pdoram.getHashFunc(), "rw");
+	       	    
+	    int a, b, skipBefore, skipAfter, hash;
+	    Random rn;
+	    rn = new Random();
+	    
+	    
+	    boolean found = false;
+	    for(int i=0; i< this.pdoram.getLevels(); i++){
+	    	if(!found){
+	    		a = PDHash.readInt();
+	    		b = PDHash.readInt();
+	      
+	    		hash = Math.abs((a*id + b)%(1<<i));
+	       
+	    		PDoram_getBucket pdgb = new PDoram_getBucket(clientID,messageID,i,hash);
+	       
+	    		os.writeObject(pdgb);
+	    		os.flush();
+	    		os.reset();
+	    		Message ms = (Message) is.readObject();
+	       
+	       
+	    		while(ms.getMessageType().compareTo(MessageType.PDoram_GetBucket)!= 0){
+	    			Thread.yield();
+	    		}
+	       
+	    		PDoram_getBucket new_pgdb = (PDoram_getBucket) ms;    	   
+	    	   
+	        	    	
+	        
+		      for(int j =0;j<this.pdoram.getBucketSize();j++){
+		    	  if(new_pgdb.getBucket().getMap()[j] == id){
+		    		  found = true;
+		    		 val = new_pgdb.getBucket().getBucket().get(j);
+		    		 break;
+		    	  }
+		    		  
+		      }
+	    	}  
+		      else
+		      {
+		    	  PDoram_getBucket pdgb = new PDoram_getBucket(clientID,messageID++,i,rn.nextInt((int) (Math.pow(2,i))));
+		    	  
+		    	  	os.writeObject(pdgb);
+		    		os.flush();
+		    		os.reset();
+		    		Message ms = (Message) is.readObject();
+		       
+		       
+		    		while(ms.getMessageType().compareTo(MessageType.PDoram_GetBucket)!= 0){
+		    			Thread.yield();
+		    		}
+		      continue;
+		    		
+		      }
+	    } 
+	    	  
+	    	  
+	    	  
+	  if (!found){
+		  System.out.println("COULD NOT FIND MAP, THE WHOLE WORLD IS FINISHED :(");
+		  System.exit(1);
+	  }
+	return val;
+	    }
+
+    
 }
     	
   

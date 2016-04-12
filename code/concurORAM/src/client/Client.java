@@ -2,9 +2,11 @@ package client;
 
 import ringoram.*;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.RandomAccessFile;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -15,7 +17,7 @@ import java.util.Random;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-
+import pdoram.*;
 public class Client extends Thread{
 
 	private Socket clientListener;
@@ -28,17 +30,21 @@ public class Client extends Thread{
     private FileHandler fh;
      private SimpleFormatter formatter;
    
-    private PositionMap pm;
+   private PositionMap pm;
+    PDOramClient pdoram;
     private int N;
+    private int num_runs;
    
     
-    public Client(int portnum, String host,int clientID, int N, PositionMap pm,Logger clientLog) throws UnknownHostException, IOException{
+    public Client(int portnum, String host,int clientID, int N, PDOramClient pdoram, PositionMap pm,Logger clientLog, int num_runs) throws UnknownHostException, IOException{
         this.portNum=portnum;
         this.hostname=host;
-        this.pm = pm; 
+        this.pdoram = pdoram; 
+        this.pm = pm;
         this.messageID = 0;
         this.clientID = clientID;
         this.clientLog = clientLog;
+        this.num_runs = num_runs;
       /*  
         String fname = "Logs/Client#" + clientID+ ".log";
         this.clientLog = Logger.getLogger(fname);
@@ -78,7 +84,7 @@ public class Client extends Thread{
 			e1.printStackTrace();
 		}
     	int counter = 0;
-    	while(counter < 50){
+    	while(counter < this.num_runs){
   
     	try {
 			clientAccessRingORAM(rn.nextInt(N)+1,os,is);
@@ -96,31 +102,16 @@ public class Client extends Thread{
     	
     	   	    	
     	
-    	/* Testing Server Response */
-    
-     	//clientLog.info("Pinging Server");
     	ConnTest(is,os);
-    	//clientLog.info("Response from Server received");
-    	//clientLog.info(clientID+"Starting access for block ID-"+blk_id);
-    	/* Client Setup ( if initialization) */
     	
     	
     	
-    	/* Getting PM entry */
-    //	clientLog.info("Get PM entry");
-    	int leaf_id = getPM(blk_id);
-   // 	clientLog.info("Retrieved PM entry"); 
-    
-    	/* Getting MetaData */
-    //	clientLog.info("Get MetaData");
+    	int leaf_id = getPM(blk_id,is,os);
+   
     	MetaData[] md = getMetadata(leaf_id,is,os);
-   // 	clientLog.info("Retrieved MetaData");
-      	  	    			
-    	/* Getting Path and Stash */
-    	
     	GetBlocksFromPath gbp = new GetBlocksFromPath(clientID,messageID++,leaf_id,md.length);
-    //	clientLog.info("Get Blocks and stash");
-       	int req_index_in_path = -1;
+   
+    	int req_index_in_path = -1;
     	int req_index_in_stash = -1;
     	boolean unlikely = true;
     	
@@ -144,9 +135,7 @@ public class Client extends Thread{
     	
     	DataBlock[] blocks;
     	blocks = getBlocks(gbp,is,os);
-    	
-     //	clientLog.info("Blocks and stash Retrieved");
-    	
+    
     	
      	
   
@@ -193,13 +182,13 @@ public class Client extends Thread{
     		
     	}
     	
-    	
+    	WriteBlock wb = null;
     	   	
     	/* Write back item */
     //	clientLog.info("Writing back block");
     	if (req_block != null){
     		
-    		WriteBlock wb = new WriteBlock(clientID,messageID++,req_block);
+    		wb = new WriteBlock(clientID,messageID++,req_block);
     		WriteBackBlock(wb,os);
     	}
     	
@@ -217,23 +206,28 @@ public class Client extends Thread{
     		//clientLog.info("Eviction round");
     		do_evict(getAccessCounter(gac,is,os).path_counter,grl,gbp,is,os);
     		ClearLogs cl = new ClearLogs(clientID,messageID++);
-    		os.writeObject(cl);
+    		os.writeUnshared(cl);
     		os.flush();
     		//clientLog.info("Eviction Complete");
     		
     	}
     
     	AccessComplete ac = new AccessComplete(clientID,messageID++);
-    	os.writeObject(ac);
+    	os.writeUnshared(ac);
     	os.flush();
     	
-    	Message ms = (Message) is.readObject();
+    	Message ms = (Message) is.readUnshared();
     	while (ms.getMessageType().compareTo(MessageType.AccessComplete)!=0);
     	clientLog.info("Access Complete");   	
     	messageID = 0;
     	
-
+    	ac = null;
+    	gac = null;
+    	wb = null;
+    	grl = null;
+    	gbp = null;
     	
+    	os.reset();
     	return;
     	
     } 	
@@ -241,9 +235,12 @@ public class Client extends Thread{
   	
    
 
-	public int getPM(int blk_id){
+	public int getPM(int blk_id,ObjectInputStream is, ObjectOutputStream os) throws FileNotFoundException, IOException, ClassNotFoundException{
+    	if (pm.getMap(blk_id)!= PDOramRead(blk_id,is,os))
+    	   	return pm.getMap(blk_id);
     	
-    	return pm.getMap(blk_id);
+    	return PDOramRead(blk_id,is,os);
+		
     }
     
 	
@@ -253,23 +250,25 @@ public class Client extends Thread{
     
     	GetMetadata gm = new GetMetadata(clientID,messageID++,leaf_id);
     	
-    	os.writeObject(gm);
+    	os.writeUnshared(gm);
     	os.flush();
     	
-    	Message ms = (Message) is.readObject();
+    	Message ms = (Message) is.readUnshared();
         while (ms.getMessageType().compareTo(MessageType.GetMetadata) != 0);
         
         gm = (GetMetadata) ms;
-        return gm.metadata;
+        MetaData[] md = gm.metadata;
+        gm = null;
+        return md;
         
      }	
     
     public DataBlock[] getBlocks(GetBlocksFromPath gbp, ObjectInputStream is, ObjectOutputStream os) throws IOException, ClassNotFoundException, InterruptedException{
     	
-    	os.writeObject(gbp);
+    	os.writeUnshared(gbp);
     	os.flush();
     	
-    	Message ms = (Message) is.readObject();
+    	Message ms = (Message) is.readUnshared();
         while (ms.getMessageType().compareTo(MessageType.GetBlocksFromPath) != 0);
         
         gbp = (GetBlocksFromPath) ms;
@@ -281,7 +280,7 @@ public class Client extends Thread{
   
     public void WriteBackBlock(WriteBlock wb, ObjectOutputStream os) throws IOException{
     	
-    	os.writeObject(wb);
+    	os.writeUnshared(wb);
     	os.flush();
     	return;
     	
@@ -292,22 +291,23 @@ public class Client extends Thread{
 
     	Ping ping = new Ping(clientID, messageID++);
     	
-    	os.writeObject(ping);
+    	os.writeUnshared(ping);
     	os.flush();
     	
-    	 Message ms = (Message) is.readObject();
+    	 Message ms = (Message) is.readUnshared();
          while (ms.getMessageType().compareTo(MessageType.Ping) != 0);
          
+         ping = null;
          return;
     }
     
     
     public GetResultLogs getResultLog(GetResultLogs grl, ObjectInputStream is, ObjectOutputStream os) throws IOException, ClassNotFoundException, InterruptedException{
     	
-    	os.writeObject(grl);
+    	os.writeUnshared(grl);
     	os.flush();
     	
-    	 Message ms = (Message) is.readObject();
+    	 Message ms = (Message) is.readUnshared();
          while (ms.getMessageType().compareTo(MessageType.GetResultLogs) != 0);
          
          grl = (GetResultLogs) ms;
@@ -316,11 +316,11 @@ public class Client extends Thread{
     
     public GetAccessCounter getAccessCounter(GetAccessCounter gac, ObjectInputStream is, ObjectOutputStream os) throws IOException, ClassNotFoundException, InterruptedException{
     
-    	os.writeObject(gac);
+    	os.writeUnshared(gac);
     	os.flush();
     	
 
-   	 Message ms = (Message) is.readObject();
+   	 Message ms = (Message) is.readUnshared();
         while (ms.getMessageType().compareTo(MessageType.GetAccessCounter) != 0);
         
         gac = (GetAccessCounter) ms;
@@ -335,10 +335,10 @@ public class Client extends Thread{
     	
     	Node[] path;
     	GetPath gp = new GetPath(clientID,messageID++,leaf_id);
-    	os.writeObject(gp);
+    	os.writeUnshared(gp);
     	os.flush();
     	
-    	Message ms = (Message) is.readObject();
+    	Message ms = (Message) is.readUnshared();
 	    while (ms.getMessageType().compareTo(MessageType.GetPath) != 0);
 	    gp = (GetPath) ms;
     	
@@ -412,11 +412,14 @@ public class Client extends Thread{
     	WritePath wp = new WritePath(clientID,messageID++,leaf_id,path);
 	    WriteStash ws = new WriteStash(clientID,messageID++,new_stash);
 	   
-	    os.writeObject(wp);
+	    os.writeUnshared(wp);
     	os.flush();
     	
-    	os.writeObject(ws);
+    	os.writeUnshared(ws);
     	os.flush();
+    	
+    	wp = null;
+    	ws = null;
     }
     	
     	
@@ -440,6 +443,75 @@ public class Client extends Thread{
     	}
 
 
+    	public  int PDOramRead(int id,ObjectInputStream is, ObjectOutputStream os) throws FileNotFoundException, IOException, ClassNotFoundException{
+	        
+    	    int val =-1;
+    	    RandomAccessFile PDHash = new RandomAccessFile(this.pdoram.getHashFunc(), "rw");
+    	       	    
+    	    int a, b, skipBefore, skipAfter, hash;
+    	    Random rn;
+    	    rn = new Random();
+    	    
+    	    
+    	    boolean found = false;
+    	    for(int i=0; i< this.pdoram.getLevels(); i++){
+    	    	if(!found){
+    	    		a = PDHash.readInt();
+    	    		b = PDHash.readInt();
+    	      
+    	    		hash = Math.abs((a*id + b)%(1<<i));
+    	       
+    	    		PDoram_getBucket pdgb = new PDoram_getBucket(clientID,messageID,i,hash);
+    	       
+    	    		os.writeObject(pdgb);
+    	    		os.flush();
+    	    		os.reset();
+    	    		Message ms = (Message) is.readObject();
+    	       
+    	       
+    	    		while(ms.getMessageType().compareTo(MessageType.PDoram_GetBucket)!= 0){
+    	    			Thread.yield();
+    	    		}
+    	       
+    	    		PDoram_getBucket new_pgdb = (PDoram_getBucket) ms;    	   
+    	    	   
+    	        	    	
+    	        
+    		      for(int j =0;j<this.pdoram.getBucketSize();j++){
+    		    	  if(new_pgdb.getBucket().getMap()[j] == id){
+    		    		  found = true;
+    		    		 val = new_pgdb.getBucket().getBucket().get(j);
+    		    		 break;
+    		    	  }
+    		    		  
+    		      }
+    	    	}  
+    		      else
+    		      {
+    		    	  PDoram_getBucket pdgb = new PDoram_getBucket(clientID,messageID++,i,rn.nextInt((int) (Math.pow(2,i))));
+    		    	  
+    		    	  	os.writeObject(pdgb);
+    		    		os.flush();
+    		    		os.reset();
+    		    		Message ms = (Message) is.readObject();
+    		       
+    		       
+    		    		while(ms.getMessageType().compareTo(MessageType.PDoram_GetBucket)!= 0){
+    		    			Thread.yield();
+    		    		}
+    		      continue;
+    		    		
+    		      }
+    	    } 
+    	    	  
+    	    	  
+    	    	  
+    	  if (!found){
+    		  System.out.println("COULD NOT FIND MAP, THE WHOLE WORLD IS FINISHED :(");
+    		  System.exit(1);
+    	  }
+    	return val;
+    	    }
 
 
 }

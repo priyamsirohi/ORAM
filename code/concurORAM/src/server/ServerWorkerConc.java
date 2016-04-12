@@ -139,7 +139,11 @@ public class ServerWorkerConc implements Runnable{
 			
 			GetQLog gql;
 			gql = (GetQLog) ms;
-			while(accessCounter.get()>= eviction_rate);
+			while (accessCounter.get() >= eviction_rate){								// ALL clients in a busy wait
+				
+				Thread.yield();
+			}
+			
 			synchronized(this.lock){
 				qlog.setEntry(gql.blk_id);
 				queue.push(ms.clientID);
@@ -152,22 +156,10 @@ public class ServerWorkerConc implements Runnable{
 				gql.your_access = qlog.getHead()-1;
 			}
 			
-		/*
-			while (ms.clientID != queue.getTop() || accessCounter.get() >= eviction_rate){								// ALL clients in a busy wait
-			
-				//ServerLog.info("Waiting for-" + queue.getTop());
-				
-				try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-			}
+		
+		
 			
 			
-			*/
 			
 				
 				
