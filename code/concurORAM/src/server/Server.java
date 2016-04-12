@@ -38,7 +38,7 @@ public class Server extends Thread{
 		accessCounter = new AtomicInteger(0);
 		path_counter = new AtomicInteger(0);
 		this.concurrent = concurrent;
-		pdserver = new PDOramServer(N, (int) Math.log(N));
+		pdserver = new PDOramServer(N, 32);//(int) Math.log(N));
 		
 	}
 	

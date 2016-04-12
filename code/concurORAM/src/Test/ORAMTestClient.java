@@ -14,10 +14,10 @@ public static void main(String[] args) throws IOException, ClassNotFoundExceptio
 		
 		final int N = 32;
 		final int server_portnum = 20000;
-		final int eviction_freq = 1;
+		final int eviction_freq = 8;
 		final int bucket_size = 32;
 		final int num_dummy_blocks = 16;
-		final int num_clients = 1;
+		final int num_clients = 8;
 		final Random rn;
 		final String serverID = "127.0.0.1";
 		final boolean concurrent = false;

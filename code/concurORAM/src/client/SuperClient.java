@@ -40,7 +40,7 @@ public class SuperClient extends Thread {
 		this.serverID = serverID;
 		this.server_portnum = portnum;
 		this.pm = new PositionMap(N);
-		int  bucket_size =  ((int) Math.log(N)/ (int) Math.ceil(Math.log(2)));
+		int  bucket_size = 32; //((int) Math.log(N));
 		this.pdoram = new PDOramClient(N,bucket_size);
 		String fname = "Logs/Client.log";
 	    clientLog = Logger.getLogger(fname);

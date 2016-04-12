@@ -454,13 +454,14 @@ public class Client extends Thread{
     	    
     	    
     	    boolean found = false;
-    	    for(int i=0; i< this.pdoram.getLevels(); i++){
+    	    for(int i=0; i< (this.pdoram.getLevels())-1; i++){
     	    	if(!found){
     	    		a = PDHash.readInt();
     	    		b = PDHash.readInt();
     	      
     	    		hash = Math.abs((a*id + b)%(1<<i));
-    	       
+    	    		//hash = Math.abs((a*id + b)%((int)Math.pow(2,i)));
+    	    		
     	    		PDoram_getBucket pdgb = new PDoram_getBucket(clientID,messageID,i,hash);
     	       
     	    		os.writeObject(pdgb);
@@ -478,6 +479,7 @@ public class Client extends Thread{
     	        	    	
     	        
     		      for(int j =0;j<this.pdoram.getBucketSize();j++){
+    		    	  System.out.println("test="+new_pgdb.getBucket().getMap()[j]);
     		    	  if(new_pgdb.getBucket().getMap()[j] == id){
     		    		  found = true;
     		    		 val = new_pgdb.getBucket().getBucket().get(j);
@@ -499,7 +501,7 @@ public class Client extends Thread{
     		    		while(ms.getMessageType().compareTo(MessageType.PDoram_GetBucket)!= 0){
     		    			Thread.yield();
     		    		}
-    		      continue;
+    		      
     		    		
     		      }
     	    } 
@@ -508,7 +510,7 @@ public class Client extends Thread{
     	    	  
     	  if (!found){
     		  System.out.println("COULD NOT FIND MAP, THE WHOLE WORLD IS FINISHED :(");
-    		  System.exit(1);
+    		  //System.exit(1);
     	  }
     	return val;
     	    }

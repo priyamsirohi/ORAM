@@ -23,8 +23,8 @@ public class PDOramClient  {
 
 
 	
-	    String PDHashFunctions = "/home/nsac/anrin/ORAM/priyam/PDHashFunctions";
-	    String PDoramDB = "/home/nsac/anrin/ORAM/priyam/PDoramDB/";    
+	    String PDHashFunctions = "/home/anrin/ORAM/priyam/PDHashFunctions";
+	   // String PDoramDB = "/home/nsac/anrin/ORAM/priyam/PDoramDB/";    
 	    int levels, PDoramDBSize, M;
 	    ObjectInputStream is;
 	    ObjectOutputStream os;
@@ -41,45 +41,25 @@ public class PDOramClient  {
 	  
 	    public PDOramClient(int N, int m) throws FileNotFoundException, IOException{
 
-	      levels = (int)(Math.log(N) / Math.log(2));
+	      levels = (int)Math.ceil(Math.log(N) / Math.log(2));
 	      PDoramDBSize = N*m*2; 
 	      M=m;
 	      int temp;
 	      buckets = new PDOrambucket[N];  
 	      
-	      
 	      Random randomGenerator = new Random();
 	      FileOutputStream out = new FileOutputStream(PDHashFunctions);
-	      FileOutputStream out1 = new FileOutputStream(PDoramDB);
 	      byte data[] =  new byte[4];
-	      
-	      temp = -1;
-	      
-	     
-	      
-	     for(int i=0;i<PDoramDBSize;i++){
-	            
-	        data[0] = (byte) (temp >> 24);
-	        data[1] = (byte) (temp >> 16);
-	        data[2] = (byte) (temp >> 8);
-	        data[3] = (byte) (temp);
+	      for(int i=0;i<2*levels;i++){
+	          temp=Math.abs(randomGenerator.nextInt());
 
-	        out1.write(data);
+	              data[0] = (byte) (temp >> 24);
+	              data[1] = (byte) (temp >> 16);
+	              data[2] = (byte) (temp >> 8);
+	              data[3] = (byte) (temp);
+	       
+	          out.write(data);
 	        }
-	     out1.close();
-	        
-	  
-	    for(int i=0;i<2*levels;i++){
-	        temp=Math.abs(randomGenerator.nextInt());
-
-	            data[0] = (byte) (temp >> 24);
-	            data[1] = (byte) (temp >> 16);
-	            data[2] = (byte) (temp >> 8);
-	            data[3] = (byte) (temp);
-	     
-	        out.write(data);
-	      }
-	    
 	    
 	}
 	    /************
@@ -120,15 +100,16 @@ public class PDOramClient  {
 	        int a=-1,b=-1, temp;
 	        byte data[] =  new byte[4];
 	        
-	        FileInputStream inhash = new FileInputStream(PDHashFunctions);
+	        
 	       
 	        
 	        
 	        int entry_counter = 1;
-		         
-	        
+		        
+	        System.out.println("levels =" + this.levels);
 	        for (int i = 0; i<levels-1;i++){
-	        	inhash.skip(8*(levels-1));
+	        	FileInputStream inhash = new FileInputStream(PDHashFunctions);
+	        	inhash.skip(8*(i));
 	 	        for(int j=0;j<2;j++){
 	 	            temp=0;
 	 	             for (int k = 0; k < 4; k++) {
@@ -138,9 +119,12 @@ public class PDOramClient  {
 	 	            if(a==-1) a = temp;
 	 	            else b = temp;
 	 	        }
-	        	        	
+	        	       
+	 	        
 	        	for (int j = 0; j< Math.pow(2, i);j++){
-	        		int hash = (a*entry_counter + b)%((int)Math.pow(2,i));
+	        		//int hash = Math.abs((a*entry_counter + b)%((int)Math.pow(2,i)));
+	        		//System.out.println(hash);
+	        		int hash = entry_counter % ((int)Math.pow(2,i));
 	        		int val = (int) list.get(entry_counter);
 	        		PDoram_getBucket pdgb = new PDoram_getBucket(0,0,i,hash);
 	        		os.writeObject(pdgb);
@@ -156,14 +140,16 @@ public class PDOramClient  {
     	    		
     	    	   	for (int k = 0; k < M; k++){
 	        			if (bucket.getMap()[k] == -1){
-	        				bucket.setMapIndex(j, entry_counter++);
-	        				bucket.setBucketIndex(j, val);
+	        				bucket.setMapIndex(k, entry_counter++);
+	        				bucket.setBucketIndex(k, val);
+	        				break;
 	        			}
     	    	   	}
 	        			PDOram_WriteBucket pdwb = new PDOram_WriteBucket(0,0, bucket,i,hash);
 	        			os.writeObject(pdwb);
 	        			os.flush();
 	        	}
+	        	inhash.close();
 	        }
 	             	
 	   }       	

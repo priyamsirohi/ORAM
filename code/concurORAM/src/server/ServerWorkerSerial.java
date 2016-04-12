@@ -187,7 +187,7 @@ public class ServerWorkerSerial implements Runnable{
 			PDOram_WriteBucket pdwb = (PDOram_WriteBucket) ms;
 			System.out.println("I am here");
 			try {
-				pdserver.PDOramWriteBucket(pdwb.getBucket(), pdwb.getLevel_Num(), pdwb.getLevel_Num());
+				pdserver.PDOramWriteBucket(pdwb.getBucket(), pdwb.getLevel_Num(), pdwb.getBucket_Num());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

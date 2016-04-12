@@ -13,7 +13,7 @@ import pdoram.*;
 
 public class PDOramServer {
 
-	 String PDoramDB = "PDoramDB/";
+	 String PDoramDB = "/home/anrin/ORAM/code/concurORAM/PDoramDb/";
 	 int levels;
 	 int PDoramDBSize;
 	 int bucket_size;
@@ -37,7 +37,7 @@ public class PDOramServer {
 	    	
 	    	for (int i = 0; i<this.levels-1;i++){
 	        	for (int j = 0; j< Math.pow(2, i);j++){
-	        	key = PDoramDB + i+"-" + j;	
+	        	key = PDoramDB + "bucket#" + i+ "_" + j;	
 	        	WritePDBucket write_bucket = new WritePDBucket(key);
 	        	PDOrambucket bucket = new PDOrambucket(this.bucket_size);
 	        	bucket.setMap(arr);
@@ -49,7 +49,7 @@ public class PDOramServer {
 	    
 	    
 	    public PDOrambucket PDoramRead(int level_num, int bucket_num) throws IOException, ClassNotFoundException{
-	    	String key = PDoramDB + level_num+"-" + bucket_num;
+	    	String key = PDoramDB + "bucket#" + level_num+"_"+ bucket_num;
 	    	ReadPDBucket read_bucket = new ReadPDBucket(key);
 	    	
 	    	
@@ -60,8 +60,8 @@ public class PDOramServer {
 	    
 	   public void PDOramWriteBucket(PDOrambucket bucket, int level_num, int bucket_num) throws IOException{
 		   
-		   String key = PDoramDB + level_num+"-" + bucket_num;	
-		   WritePDBucket write_bucket = new WritePDBucket(key);
+		   String key = PDoramDB +"bucket#" + level_num+ "_" + bucket_num;	
+		   WritePDBucket write_bucket = new WritePDBucket(key.trim());
 		   write_bucket.write_to_file(bucket);
 	   }
 }
