@@ -1,4 +1,4 @@
-package server;
+package pdoram;
 
 import java.io.File;
 import Operations.*;
@@ -13,13 +13,13 @@ import pdoram.*;
 
 public class PDOramServer {
 
-	 String PDoramDB = "/home/anrin/ORAM/code/concurORAM/PDoramDb/";
+	 String PDoramDB = "/home/nsac/anrin/ORAM/code/concurORAM/PDoramDb/";
 	 int levels;
 	 int PDoramDBSize;
 	 int bucket_size;
 	  
 	 public PDOramServer(int N, int m) throws FileNotFoundException, IOException{
-	      levels = (int)(Math.log(N) / Math.log(2));
+	      levels = (int)(Math.log(N) / Math.log(2))+1;
 	      PDoramDBSize = N*m*2; 
 	      bucket_size = m;
 	      PDOram_init();
@@ -35,7 +35,7 @@ public class PDOramServer {
 	    	for (int i = 0; i < this.bucket_size; i++)
 	    		arr[i] = -1;
 	    	
-	    	for (int i = 0; i<this.levels-1;i++){
+	    	for (int i = 0; i<this.levels;i++){
 	        	for (int j = 0; j< Math.pow(2, i);j++){
 	        	key = PDoramDB + "bucket#" + i+ "_" + j;	
 	        	WritePDBucket write_bucket = new WritePDBucket(key);
@@ -63,5 +63,9 @@ public class PDOramServer {
 		   String key = PDoramDB +"bucket#" + level_num+ "_" + bucket_num;	
 		   WritePDBucket write_bucket = new WritePDBucket(key.trim());
 		   write_bucket.write_to_file(bucket);
+	   }
+	   
+	   public int getLevels(){
+		   return this.levels;
 	   }
 }

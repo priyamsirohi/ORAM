@@ -2,6 +2,7 @@ package client;
 
 import ringoram.*;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -481,24 +482,29 @@ public class ConClient extends Thread{
     } 	
     
 
+
 	public  int PDOramRead(int id,ObjectInputStream is, ObjectOutputStream os) throws FileNotFoundException, IOException, ClassNotFoundException{
         
 	    int val =-1;
-	    RandomAccessFile PDHash = new RandomAccessFile(this.pdoram.getHashFunc(), "rw");
+	    FileInputStream fis = new FileInputStream(this.pdoram.getHashFunc());
+	    ObjectInputStream ois = new ObjectInputStream(fis);
+	    Hash hash_arr = (Hash) ois.readObject();
+	    
+	  //  RandomAccessFile PDHash = new RandomAccessFile(this.pdoram.getHashFunc(), "rw");
 	       	    
 	    int a, b, skipBefore, skipAfter, hash;
 	    Random rn;
 	    rn = new Random();
 	    
-	    
 	    boolean found = false;
-	    for(int i=0; i< this.pdoram.getLevels(); i++){
+	    for(int i=1; i< (this.pdoram.getLevels()); i++){
 	    	if(!found){
-	    		a = PDHash.readInt();
-	    		b = PDHash.readInt();
+	    		a = hash_arr.getHash(i).getHash_a();
+	    		b = hash_arr.getHash(i).getHash_b();
 	      
-	    		hash = Math.abs((a*id + b)%(1<<i));
-	       
+	    		//hash = Math.abs((a*id + b)%(1<<i));
+	    		hash = Math.abs((a*id + b)%((int)Math.pow(2,i)));
+	    		
 	    		PDoram_getBucket pdgb = new PDoram_getBucket(clientID,messageID,i,hash);
 	       
 	    		os.writeObject(pdgb);
@@ -537,7 +543,7 @@ public class ConClient extends Thread{
 		    		while(ms.getMessageType().compareTo(MessageType.PDoram_GetBucket)!= 0){
 		    			Thread.yield();
 		    		}
-		      continue;
+		      
 		    		
 		      }
 	    } 
@@ -548,8 +554,11 @@ public class ConClient extends Thread{
 		  System.out.println("COULD NOT FIND MAP, THE WHOLE WORLD IS FINISHED :(");
 		  System.exit(1);
 	  }
+	  ois.close();
+	  fis.close();
 	return val;
 	    }
+
 
     
 }

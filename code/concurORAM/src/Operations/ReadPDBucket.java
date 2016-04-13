@@ -20,7 +20,7 @@ public ReadPDBucket(String k){ super(k);}
 	
 	public PDOrambucket read_from_file() throws IOException, ClassNotFoundException{
 		
-		System.out.println(super.key);
+		
 		File f = new File(super.key);
 		FileInputStream fs = new FileInputStream(f);
 		ObjectInputStream is = new ObjectInputStream(fs);

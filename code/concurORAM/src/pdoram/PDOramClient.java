@@ -23,12 +23,13 @@ public class PDOramClient  {
 
 
 	
-	    String PDHashFunctions = "/home/anrin/ORAM/priyam/PDHashFunctions";
+	    String PDHashFunctions = "/home/nsac/anrin/ORAM/priyam/PDHashFunctions";
 	   // String PDoramDB = "/home/nsac/anrin/ORAM/priyam/PDoramDB/";    
 	    int levels, PDoramDBSize, M;
 	    ObjectInputStream is;
 	    ObjectOutputStream os;
 	    PDOrambucket[] buckets;
+	    int N;
 	    
 	    /********
 	     * @param N, m
@@ -41,27 +42,30 @@ public class PDOramClient  {
 	  
 	    public PDOramClient(int N, int m) throws FileNotFoundException, IOException{
 
-	      levels = (int)Math.ceil(Math.log(N) / Math.log(2));
+	      levels = (int)Math.ceil(Math.log(N) / Math.log(2)) + 1;
 	      PDoramDBSize = N*m*2; 
 	      M=m;
 	      int temp;
 	      buckets = new PDOrambucket[N];  
-	      
+	      this.N = N;
 	      Random randomGenerator = new Random();
-	      FileOutputStream out = new FileOutputStream(PDHashFunctions);
-	      byte data[] =  new byte[4];
-	      for(int i=0;i<2*levels;i++){
-	          temp=Math.abs(randomGenerator.nextInt());
-
-	              data[0] = (byte) (temp >> 24);
-	              data[1] = (byte) (temp >> 16);
-	              data[2] = (byte) (temp >> 8);
-	              data[3] = (byte) (temp);
-	       
-	          out.write(data);
-	        }
+	      File f = new File(PDHashFunctions);
+	      FileOutputStream out = new FileOutputStream(f);
+	      ObjectOutputStream oos = new ObjectOutputStream(out);	      
+	      
+	      Hash hash = new Hash(levels);
+	      
 	    
-	}
+	      for(int i=0;i<levels;i++){
+	    	  HashFunctions function = new HashFunctions(i, Math.abs(randomGenerator.nextInt()), Math.abs(randomGenerator.nextInt()));
+	          hash.setHash(function, i);
+	      }
+	      oos.writeObject(hash);	
+	      oos.close();
+	      out.close();
+	     }
+	    
+	
 	    /************
 	     * build(ArrayList list)
 	     * All the data is populated in the last level for efficiency.
@@ -69,62 +73,26 @@ public class PDOramClient  {
 	    ************/
 	    
 	    
-	    
-	   public int getBucketOffset(int level_num, int bucket_num){
-		   
-		   int offset = 0;
-		   for (int i = 0; i< level_num-1;i++){
-			   offset += Math.pow(2, level_num)*M*8;
-		   }
-		   
-		   return (offset+(bucket_num*M*8));
-		   
-	   }
-	    
 	  
 	    
-	    public int getBucketNum(int level_num, int bucket_num){
-	    	int offset = 0;
-	    	for (int i = 0; i < level_num; i++){
-	    		offset += Math.pow(2,i);
-	    	}
-	    	
-	    	offset += bucket_num;
-	    	
-	    	return offset;
-	    }
-	    
-	    
-	    
 	   public void build(ArrayList list, ObjectInputStream is, ObjectOutputStream os) throws FileNotFoundException, IOException, ClassNotFoundException{
-	        int a=-1,b=-1, temp;
-	        byte data[] =  new byte[4];
-	        
-	        
 	       
-	        
-	        
+	       
+ 	        File f = new File(PDHashFunctions);
+ 	        FileInputStream inhash = new FileInputStream(f);
+	        ObjectInputStream ois = new ObjectInputStream(inhash);
+ 	       
+	        Hash hash_arr = (Hash) ois.readObject();
+	       
 	        int entry_counter = 1;
 		        
-	        System.out.println("levels =" + this.levels);
-	        for (int i = 0; i<levels-1;i++){
-	        	FileInputStream inhash = new FileInputStream(PDHashFunctions);
-	        	inhash.skip(8*(i));
-	 	        for(int j=0;j<2;j++){
-	 	            temp=0;
-	 	             for (int k = 0; k < 4; k++) {
-	 	                int shift = (4 - 1 - k) * 8;
-	 	                temp += (inhash.read() & 0x000000FF) << shift;
-	 	            }
-	 	            if(a==-1) a = temp;
-	 	            else b = temp;
-	 	        }
-	        	       
-	 	        
+	        
+	        for (int i = 1; i<levels;i++){
+	        	int hash_a = hash_arr.getHash(i).hash_a;
+	        	int hash_b = hash_arr.getHash(i).hash_b;
+	 	       while(entry_counter < N){
 	        	for (int j = 0; j< Math.pow(2, i);j++){
-	        		//int hash = Math.abs((a*entry_counter + b)%((int)Math.pow(2,i)));
-	        		//System.out.println(hash);
-	        		int hash = entry_counter % ((int)Math.pow(2,i));
+	        		int hash = Math.abs(((hash_a * entry_counter) + hash_b)%((int)Math.pow(2,i)));
 	        		int val = (int) list.get(entry_counter);
 	        		PDoram_getBucket pdgb = new PDoram_getBucket(0,0,i,hash);
 	        		os.writeObject(pdgb);
@@ -138,20 +106,26 @@ public class PDOramClient  {
     	    		PDoram_getBucket new_pgdb = (PDoram_getBucket) ms;    	   
     	    	   	PDOrambucket bucket = new_pgdb.getBucket();
     	    		
+    	    	   	
     	    	   	for (int k = 0; k < M; k++){
+    	    	   			   		
 	        			if (bucket.getMap()[k] == -1){
+	        				
 	        				bucket.setMapIndex(k, entry_counter++);
 	        				bucket.setBucketIndex(k, val);
 	        				break;
 	        			}
+	        			
     	    	   	}
 	        			PDOram_WriteBucket pdwb = new PDOram_WriteBucket(0,0, bucket,i,hash);
 	        			os.writeObject(pdwb);
 	        			os.flush();
 	        	}
-	        	inhash.close();
+	        	
 	        }
-	             	
+	        }  
+	        ois.close();
+	        inhash.close();
 	   }       	
 	        	
 	        		        

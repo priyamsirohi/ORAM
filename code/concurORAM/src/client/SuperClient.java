@@ -169,7 +169,7 @@ public class SuperClient extends Thread {
 	}	else {
 		
 		for (int i = 0;i<num_clients;i++){
-			Client client= new Client(++server_portnum,this.serverID,this.clientID+1+i,this.N,this.pdoram,this.pm,this.clientLog,1);
+			Client client= new Client(++server_portnum,this.serverID,this.clientID+1+i,this.N,this.pdoram,this.pm,this.clientLog,20);
 			Thread thread = new Thread(client);
 			thread.start();
 			

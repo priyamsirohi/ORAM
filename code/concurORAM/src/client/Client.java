@@ -2,6 +2,7 @@ package client;
 
 import ringoram.*;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -107,6 +108,11 @@ public class Client extends Thread{
     	
     	
     	int leaf_id = getPM(blk_id,is,os);
+    	
+    	SetPMLog spml = new SetPMLog(clientID,messageID,blk_id,leaf_id);
+    	
+    	os.writeObject(spml);
+    	os.flush();
    
     	MetaData[] md = getMetadata(leaf_id,is,os);
     	GetBlocksFromPath gbp = new GetBlocksFromPath(clientID,messageID++,leaf_id,md.length);
@@ -442,25 +448,29 @@ public class Client extends Thread{
     	}
     	}
 
+    	/* This is the logN round trip version */
 
     	public  int PDOramRead(int id,ObjectInputStream is, ObjectOutputStream os) throws FileNotFoundException, IOException, ClassNotFoundException{
 	        
     	    int val =-1;
-    	    RandomAccessFile PDHash = new RandomAccessFile(this.pdoram.getHashFunc(), "rw");
+    	    FileInputStream fis = new FileInputStream(this.pdoram.getHashFunc());
+    	    ObjectInputStream ois = new ObjectInputStream(fis);
+    	    Hash hash_arr = (Hash) ois.readObject();
+    	    
+    	  //  RandomAccessFile PDHash = new RandomAccessFile(this.pdoram.getHashFunc(), "rw");
     	       	    
     	    int a, b, skipBefore, skipAfter, hash;
     	    Random rn;
     	    rn = new Random();
     	    
-    	    
     	    boolean found = false;
-    	    for(int i=0; i< (this.pdoram.getLevels())-1; i++){
+    	    for(int i=1; i< (this.pdoram.getLevels()); i++){
     	    	if(!found){
-    	    		a = PDHash.readInt();
-    	    		b = PDHash.readInt();
+    	    		a = hash_arr.getHash(i).getHash_a();
+    	    		b = hash_arr.getHash(i).getHash_b();
     	      
-    	    		hash = Math.abs((a*id + b)%(1<<i));
-    	    		//hash = Math.abs((a*id + b)%((int)Math.pow(2,i)));
+    	    		//hash = Math.abs((a*id + b)%(1<<i));
+    	    		hash = Math.abs((a*id + b)%((int)Math.pow(2,i)));
     	    		
     	    		PDoram_getBucket pdgb = new PDoram_getBucket(clientID,messageID,i,hash);
     	       
@@ -479,7 +489,6 @@ public class Client extends Thread{
     	        	    	
     	        
     		      for(int j =0;j<this.pdoram.getBucketSize();j++){
-    		    	  System.out.println("test="+new_pgdb.getBucket().getMap()[j]);
     		    	  if(new_pgdb.getBucket().getMap()[j] == id){
     		    		  found = true;
     		    		 val = new_pgdb.getBucket().getBucket().get(j);
@@ -510,10 +519,12 @@ public class Client extends Thread{
     	    	  
     	  if (!found){
     		  System.out.println("COULD NOT FIND MAP, THE WHOLE WORLD IS FINISHED :(");
-    		  //System.exit(1);
+    		  System.exit(1);
     	  }
+    	  ois.close();
+    	  fis.close();
     	return val;
     	    }
 
-
+    
 }

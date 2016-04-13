@@ -10,7 +10,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import pdoram.PDOrambucket;
+import pdoram.*;
 
 import ringoram.DataBlock;
 import ringoram.DataResultLog;
@@ -30,6 +30,7 @@ import message.Message;
 import message.PDOram_WriteBucket;
 import message.PDoram_getBucket;
 import message.Ping;
+import message.SetPMLog;
 import message.WriteBlock;
 import message.WritePath;
 import message.WriteStash;
@@ -54,9 +55,10 @@ public class ServerWorkerSerial implements Runnable{
     private FileHandler fh;
     private SimpleFormatter formatter;
     private PDOramServer pdserver;
-	
+	private PMResultLog pmreslog;
+    
 	ServerWorkerSerial(ServerSocket ss, TreeORAM tree, Stash stash, DataResultLog drs, 
-			AtomicInteger accessCounter, int eviction_rate, AtomicInteger path_counter, ClientQueue queue, PDOramServer pdserver) 
+			AtomicInteger accessCounter, int eviction_rate, AtomicInteger path_counter, ClientQueue queue, PDOramServer pdserver, PMResultLog pmreslog) 
 			throws IOException {
 		this.ss = ss;
 		this.stash = stash;
@@ -67,7 +69,7 @@ public class ServerWorkerSerial implements Runnable{
 		this.eviction_rate = eviction_rate;
 		this.queue = queue;
 		this.pdserver = pdserver;
-		
+		this.pmreslog = pmreslog;
 		 String fname = "Logs/Worker#" + ss.getLocalPort() + ".log";
 	        ServerLog = Logger.getLogger(fname);
 	        fh = new FileHandler(fname);
@@ -183,9 +185,12 @@ public class ServerWorkerSerial implements Runnable{
 			
 		}
 		
+		
+		
+
 		if (ms.getMessageType().compareTo(MessageType.PDoram_WriteBucket)==0){
 			PDOram_WriteBucket pdwb = (PDOram_WriteBucket) ms;
-			System.out.println("I am here");
+			
 			try {
 				pdserver.PDOramWriteBucket(pdwb.getBucket(), pdwb.getLevel_Num(), pdwb.getBucket_Num());
 			} catch (IOException e) {
@@ -193,6 +198,14 @@ public class ServerWorkerSerial implements Runnable{
 				e.printStackTrace();
 			}
 						
+		}
+		
+		
+		if (ms.getMessageType().compareTo(MessageType.SetPMLog)==0){
+			SetPMLog spml = (SetPMLog) ms;
+			pmreslog.push(spml.getEntry(),spml.getVal());
+			
+			
 		}
 		
 		
@@ -353,6 +366,7 @@ public class ServerWorkerSerial implements Runnable{
 		
 		if (ms.getMessageType().compareTo(MessageType.ClearLogs)==0){
 			this.drs.clearDataResultLog();
+			this.pmreslog.clear();
 			accessCounter.set(0);
 		}
 		
@@ -377,9 +391,8 @@ public class ServerWorkerSerial implements Runnable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println(queue.getTop());
 			synchronized(this.lock){this.queue.pop();}
-			System.out.println(this.queue.getTop());
+			
 			
 			}
 		
