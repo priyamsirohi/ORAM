@@ -66,6 +66,7 @@ public class ConClient extends Thread{
     
 
 	public int getPM(int blk_id,ObjectInputStream is, ObjectOutputStream os) throws FileNotFoundException, IOException, ClassNotFoundException{
+		
 		if (pm.getMap(blk_id)!= PDOramRead(blk_id,is,os))
     	   	return pm.getMap(blk_id);
     	
@@ -354,17 +355,24 @@ public class ConClient extends Thread{
     	int access_counter = gql.access_counter;
     	
     	
+    	
     	for (int i = 0;i<gql.getQLog().getHead();i++){
     		if (qlog[i] == blk_id && i!=gql.your_access){
     			fake = true;
     	}
     	}
     	
+    
     	GetBlocksFromPath gbp = null;
     	DataBlock req_block = null;
     	if (fake){
-    		
-    		int leaf_id = rn.nextInt(N);
+    		getPM(-1,is,os);
+    		SetPMLog spml = new SetPMLog(clientID,messageID,-1,-1);
+        	
+        	os.writeObject(spml);
+        	os.flush();
+        	int leaf_id = rn.nextInt(N);
+        	
     		/* Fake access to PD-ORAM */
     		
     		MetaData[] md = getMetadata(leaf_id,is,os);
@@ -385,7 +393,10 @@ public class ConClient extends Thread{
     	
     	else{
     		int leaf_id = getPM(blk_id,is,os);
-	    
+    		SetPMLog spml = new SetPMLog(clientID,messageID,blk_id,leaf_id);
+        	
+        	os.writeObject(spml);
+        	os.flush();
     	MetaData[] md = getMetadata(leaf_id,is,os);
       	  	    			
     	
@@ -495,8 +506,13 @@ public class ConClient extends Thread{
 	    int a, b, skipBefore, skipAfter, hash;
 	    Random rn;
 	    rn = new Random();
+	   
+	  
 	    
 	    boolean found = false;
+	    if(id == -1)
+	    	found = true;									// HACK: Setting found to true always forces the loop to the else condition and selects random buckets
+	    
 	    for(int i=1; i< (this.pdoram.getLevels()); i++){
 	    	if(!found){
 	    		a = hash_arr.getHash(i).getHash_a();
@@ -504,6 +520,7 @@ public class ConClient extends Thread{
 	      
 	    		//hash = Math.abs((a*id + b)%(1<<i));
 	    		hash = Math.abs((a*id + b)%((int)Math.pow(2,i)));
+	    		
 	    		
 	    		PDoram_getBucket pdgb = new PDoram_getBucket(clientID,messageID,i,hash);
 	       
@@ -550,7 +567,7 @@ public class ConClient extends Thread{
 	    	  
 	    	  
 	    	  
-	  if (!found){
+	  if (!found && id != -1){
 		  System.out.println("COULD NOT FIND MAP, THE WHOLE WORLD IS FINISHED :(");
 		  System.exit(1);
 	  }

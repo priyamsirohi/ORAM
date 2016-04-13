@@ -20,7 +20,7 @@ public static void main(String[] args) throws IOException, ClassNotFoundExceptio
 		final int num_clients = 4;
 		final Random rn;
 		final String serverID = "127.0.0.1";
-		final boolean concurrent = false;
+		final boolean concurrent = true;
 		rn = new Random();
 		rn.setSeed(12345678);
 	

@@ -12,6 +12,7 @@ import java.util.logging.SimpleFormatter;
 
 import pdoram.PDOramServer;
 import pdoram.PDOrambucket;
+import pdoram.PMResultLog;
 
 import ringoram.DataBlock;
 import ringoram.DataResultLog;
@@ -31,6 +32,7 @@ import message.Message;
 import message.PDOram_WriteBucket;
 import message.PDoram_getBucket;
 import message.Ping;
+import message.SetPMLog;
 import message.WriteBlock;
 import message.WritePath;
 import message.WriteStash;
@@ -56,9 +58,10 @@ public class ServerWorkerConc implements Runnable{
     private SimpleFormatter formatter;
     private QueryLog qlog; 
 	private PDOramServer pdserver;
-    
+    private PMResultLog pmreslog;
+	
 	ServerWorkerConc(ServerSocket ss, TreeORAM tree, Stash stash, DataResultLog drs, 
-			AtomicInteger accessCounter, int eviction_rate, AtomicInteger path_counter, ClientQueue queue, QueryLog qlog, PDOramServer pdserver) 
+			AtomicInteger accessCounter, int eviction_rate, AtomicInteger path_counter, ClientQueue queue, QueryLog qlog, PDOramServer pdserver, PMResultLog pmreslog) 
 			throws IOException {
 		this.ss = ss;
 		this.stash = stash;
@@ -70,13 +73,15 @@ public class ServerWorkerConc implements Runnable{
 		this.queue = queue;
 		this.qlog = qlog;
 		this.pdserver = pdserver;
-		
+		this.pmreslog = pmreslog;
+		/*
 		 String fname = "Logs/Worker#" + ss.getLocalPort() + ".log";
 	        ServerLog = Logger.getLogger(fname);
 	        fh = new FileHandler(fname);
 	        ServerLog.addHandler(fh);
 	        formatter = new SimpleFormatter();
 	        fh.setFormatter(formatter);
+	*/
 	}
 
 	
@@ -247,6 +252,13 @@ public class ServerWorkerConc implements Runnable{
 						
 		}
 		
+		if (ms.getMessageType().compareTo(MessageType.SetPMLog)==0){
+			SetPMLog spml = (SetPMLog) ms;
+			synchronized(this.lock){
+			pmreslog.push(spml.getEntry(),spml.getVal());
+			}
+			
+		}
 		
 		
 		
@@ -409,6 +421,7 @@ public class ServerWorkerConc implements Runnable{
 		if (ms.getMessageType().compareTo(MessageType.ClearLogs)==0){
 			this.drs.clearDataResultLog();
 			this.qlog.clearQLog();
+			this.pmreslog.clear();
 			accessCounter.set(0);
 		}
 		

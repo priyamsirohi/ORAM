@@ -70,12 +70,14 @@ public class ServerWorkerSerial implements Runnable{
 		this.queue = queue;
 		this.pdserver = pdserver;
 		this.pmreslog = pmreslog;
-		 String fname = "Logs/Worker#" + ss.getLocalPort() + ".log";
+		/*
+		String fname = "Logs/Worker#" + ss.getLocalPort() + ".log";
 	        ServerLog = Logger.getLogger(fname);
 	        fh = new FileHandler(fname);
 	        ServerLog.addHandler(fh);
 	        formatter = new SimpleFormatter();
 	        fh.setFormatter(formatter);
+	*/
 	}
 
 	

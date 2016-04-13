@@ -65,7 +65,7 @@ public class Server extends Thread{
 				ServerSocket ss = new ServerSocket(++portnum);
 				if(concurrent){
 				ServerWorkerConc worker = new ServerWorkerConc(ss, this.tree, this.stash,this.drs,
-						this.accessCounter, this.eviction_rate,this.path_counter, this.queue,this.qlog,this.pdserver);
+						this.accessCounter, this.eviction_rate,this.path_counter, this.queue,this.qlog,this.pdserver,this.pmreslog);
 						Thread thread = new Thread(worker);
 						thread.start();
 				}
