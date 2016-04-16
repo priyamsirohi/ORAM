@@ -19,8 +19,8 @@ import java.util.Random;
  * @author priyam.sirohi
  */
 public class PDOramFunctionality {
-    String PDHashFunctions = "/home/nsac/anrin/ORAM/priyam/PDOram/PDHashFunctions";
-    String PDoramDB = "/home/nsac/anrin/ORAM/priyam/PDOram/PDoramDB";    
+    String PDHashFunctions = "C:\\Users\\priyam.sirohi\\Documents\\NetBeansProjects\\PDOram\\PDHashFunctions";
+    String PDoramDB = "C:\\Users\\priyam.sirohi\\Documents\\NetBeansProjects\\PDOram\\PDoramDB";    
     int levels, PDoramDBSize, M;
     /********
      * @param N, m
