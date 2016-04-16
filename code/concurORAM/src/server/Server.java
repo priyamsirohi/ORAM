@@ -30,7 +30,7 @@ public class Server extends Thread{
 	protected boolean concurrent;
 	protected PDOramServer pdserver;
 	
-	public Server(int N, int bucket_size, int num_dummy_blocks, int portnum, int eviction_rate, boolean concurrent) throws UnknownHostException, IOException{
+	public Server(int N, int bucket_size, int num_dummy_blocks, int portnum, int eviction_rate, boolean concurrent) throws UnknownHostException, IOException, ClassNotFoundException{
 		this.stash = new Stash();
 		this.tree = new TreeORAM(N,bucket_size,num_dummy_blocks);
 		this.portnum = portnum;

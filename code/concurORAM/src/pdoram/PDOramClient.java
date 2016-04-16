@@ -23,7 +23,7 @@ public class PDOramClient  {
 
 
 	
-	    String PDHashFunctions = "/home/nsac/anrin/ORAM/priyam/PDHashFunctions";
+	    String PDHashFunctions = "/home/anrin/ORAM/priyam/PDHashFunctions";
 	   // String PDoramDB = "/home/nsac/anrin/ORAM/priyam/PDoramDB/";    
 	    int levels, PDoramDBSize, M;
 	    ObjectInputStream is;
@@ -73,7 +73,7 @@ public class PDOramClient  {
 	    ************/
 	    
 	    
-	  
+	    
 	    
 	   public void build(ArrayList list, ObjectInputStream is, ObjectOutputStream os) throws FileNotFoundException, IOException, ClassNotFoundException{
 	       
@@ -109,11 +109,9 @@ public class PDOramClient  {
     	    	   	
     	    	   	for (int k = 0; k < M; k++){
     	    	   			   		
-	        			if (bucket.getMap()[k] == -1){
-	        				
-	        				bucket.setMapIndex(k, entry_counter++);
-	        				bucket.setBucketIndex(k, val);
-	        				break;
+	        			if (bucket.getEntries()[k].getLogID() == -1){
+	        	 				bucket.setEntryIndex(k, entry_counter++,val);
+	        	   				break;
 	        			}
 	        			
     	    	   	}

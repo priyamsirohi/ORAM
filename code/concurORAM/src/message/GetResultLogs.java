@@ -14,4 +14,9 @@ public class GetResultLogs extends Message{
 	public int getMessageID (){ return super.MessageID;}
 	public int getClientID() {return super.clientID;}
 	
+	
+	
+
 }
+
+	

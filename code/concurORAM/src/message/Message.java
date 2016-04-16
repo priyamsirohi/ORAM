@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 public abstract class Message implements Serializable {
 
-	public enum MessageType{Ping, GetMetadata, GetBlocksFromPath, GetPath, WriteBlock, WritePath, GetResultLogs, GetStash, WriteStash, ClearLogs, GetAccessCounter, AccessComplete, GetQLog, PDoram_GetBucket, PDoram_WriteBucket, SetPMLog};
+	public enum MessageType{Ping, GetMetadata, GetBlocksFromPath, GetPath, WriteBlock, WritePath, GetResultLogs, GetStash, WriteStash, ClearLogs, GetAccessCounter, AccessComplete, GetQLog, PDoram_GetBucket, PDoram_WriteBucket, SetPMLog, PDoram_getBucketsForReshuffle, WriteWSpacePart};
 	public int MessageID;
 	public int clientID;
 	

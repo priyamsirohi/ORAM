@@ -539,12 +539,13 @@ public class ConClient extends Thread{
 	        	    	
 	        
 		      for(int j =0;j<this.pdoram.getBucketSize();j++){
-		    	  if(new_pgdb.getBucket().getMap()[j] == id){
+		    	  if(new_pgdb.getBucket().getEntryIndex(j).getLogID() == id){
 		    		  found = true;
-		    		 val = new_pgdb.getBucket().getBucket().get(j);
+		    		 val = new_pgdb.getBucket().getEntryIndex(j).getLeafID();
 		    		 break;
 		    	  }
-		    		  
+		      
+		      
 		      }
 	    	}  
 		      else

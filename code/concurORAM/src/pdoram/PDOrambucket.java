@@ -5,35 +5,29 @@ import java.util.ArrayList;
 
 public class PDOrambucket implements Serializable {
 	
-	int[] maps;
-	ArrayList<Integer> list;
+	Pdoram_entry[] entries;
 	
-	public PDOrambucket(int bucket_size) {list = new ArrayList<Integer>(bucket_size); maps = new int[bucket_size]; for (int i = 0; i<bucket_size;i++) {list.add(i);}}
+	public PDOrambucket(int bucket_size) {entries = new Pdoram_entry[bucket_size];}
 	
 
-	public ArrayList<Integer> getBucket(){
-		return this.list;
+	public Pdoram_entry[] getEntries(){
+		return this.entries;
 	}
 	
-	public void setBucket(ArrayList<Integer> list){
-		this.list = list;
+	public void setEntries(Pdoram_entry[] entries){
+		this.entries = entries;
 	}
 	
-	public int[] getMap(){
-		return this.maps;
-	}
+	
 		
-	public void setMap(int[] maps){
-		this.maps = maps;
+	
+	public void setEntryIndex (int index, int log_id, int leaf_id){
+		entries[index].setLogID(log_id);
+		entries[index].setLeafID(leaf_id);
 	}
 	
-	
-	public void setMapIndex (int index, int val){
-		maps[index] = val;
-	}
-	
-	public void setBucketIndex(int index, int val){
-		list.set(index, val);
+	public Pdoram_entry getEntryIndex(int index){
+		return this.entries[index];
 	}
 }
 	

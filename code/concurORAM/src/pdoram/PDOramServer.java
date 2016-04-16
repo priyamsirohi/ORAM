@@ -13,12 +13,13 @@ import pdoram.*;
 
 public class PDOramServer {
 
-	 String PDoramDB = "/home/nsac/anrin/ORAM/code/concurORAM/PDoramDb/";
+	 String PDoramDB = "/home/anrin/ORAM/code/concurORAM/PDoramDb/";
+	 String PDoramDB_wspace = "/home/anrin/ORAM/code/concurORAM/PDoramDB/";
 	 int levels;
 	 int PDoramDBSize;
 	 int bucket_size;
 	  
-	 public PDOramServer(int N, int m) throws FileNotFoundException, IOException{
+	 public PDOramServer(int N, int m) throws FileNotFoundException, IOException, ClassNotFoundException{
 	      levels = (int)(Math.log(N) / Math.log(2))+1;
 	      PDoramDBSize = N*m*2; 
 	      bucket_size = m;
@@ -28,21 +29,35 @@ public class PDOramServer {
 	 
 	
 	    
-	    public void PDOram_init() throws IOException{
+	    public void PDOram_init() throws IOException, ClassNotFoundException{
 	    
 	    	String key;
-	    	int[] arr = new int[this.bucket_size];
-	    	for (int i = 0; i < this.bucket_size; i++)
-	    		arr[i] = -1;
+	    	Pdoram_entry[] arr = new Pdoram_entry[this.bucket_size];
+	    	for (int i = 0; i < this.bucket_size; i++){
+	    		arr[i] = new Pdoram_entry(-1,-1);
+	    }
+	   	
 	    	
 	    	for (int i = 0; i<this.levels;i++){
 	        	for (int j = 0; j< Math.pow(2, i);j++){
 	        	key = PDoramDB + "bucket#" + i+ "_" + j;	
 	        	WritePDBucket write_bucket = new WritePDBucket(key);
 	        	PDOrambucket bucket = new PDOrambucket(this.bucket_size);
-	        	bucket.setMap(arr);
+	        	bucket.setEntries(arr);
 	        	write_bucket.write_to_file(bucket);	
 	        	}
+	    	
+	    }
+	    	
+	    	
+	    for (int i = 0; i<this.levels;i++){
+	    	for (int j = 0; j< Math.pow(2, i);j++){
+	    		key = PDoramDB + "level" + i+ "wspace" + j;
+	    		Pdoram_workspace_partition part = new Pdoram_workspace_partition(this.bucket_size, i);
+	    		WriteWSpace write_w_space = new WriteWSpace(key);
+	    		write_w_space.write_space(part);
+	    			    		
+	    	}
 	    	
 	    }
 	}

@@ -2,7 +2,7 @@ package Operations;
 
 public abstract class Operations
 {
-	public enum OperationType {ReadNode, WriteNode, GetData, PutData, WritePDBucket, ReadPDBucket };
+	public enum OperationType {ReadNode, WriteNode, GetData, PutData, WritePDBucket, ReadPDBucket, ReadWSpace, WriteWSpace };
 	
 		
 	protected String key = null;
